@@ -43,6 +43,21 @@
   .prob .stmt { margin: 6px 0; }
   .prob .sol p { margin: 6px 0; }
   .prob .ans { font-weight: bold; color: #0f766e; margin: 8px 0 0; }
+  .prob.flash { outline: 3px solid #0f766e; outline-offset: 2px; background: #f0fdfa; }
+  /* ---- Solution finder: sticky bar under the nav ---- */
+  .finder { position: sticky; top: 54px; z-index: 6; background: #fdfbf7; border: 1px solid #0f766e; border-radius: 8px; padding: 10px 12px; margin: 14px 0 0; display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+  .finder label { font-weight: bold; color: #0f766e; white-space: nowrap; }
+  .finder-box { position: relative; flex: 1 1 280px; min-width: 200px; }
+  .finder input[type="text"] { width: 100%; font-family: Georgia, serif; font-size: 16px; padding: 10px 12px; border: 1px solid #d1d5db; border-radius: 6px; background: #fff; color: #1f2937; }
+  .finder input[type="text"]:focus { outline: 2px solid #0f766e; border-color: #0f766e; }
+  .finder select { font-family: Georgia, serif; font-size: 16px; padding: 10px 8px; border: 1px solid #d1d5db; border-radius: 6px; background: #fff; color: #1f2937; max-width: 100%; }
+  .finder-results { position: absolute; top: calc(100% + 6px); left: 0; right: 0; background: #fff; border: 1px solid #0f766e; border-radius: 8px; box-shadow: 0 8px 24px rgba(0,0,0,0.14); max-height: 340px; overflow-y: auto; z-index: 7; }
+  .finder-results button { display: block; width: 100%; text-align: left; background: none; border: none; border-bottom: 1px solid #f3f4f6; padding: 10px 12px; font-family: Georgia, serif; font-size: 15px; color: #1f2937; cursor: pointer; }
+  .finder-results button:last-child { border-bottom: none; }
+  .finder-results button:hover, .finder-results button.active { background: #f0fdfa; }
+  .finder-results button b { color: #0f766e; }
+  .finder-results button span { display: block; font-size: 13px; color: #6b7280; margin-top: 2px; }
+  .finder-results .finder-more, .finder-results .finder-none { padding: 10px 12px; font-size: 14px; color: #6b7280; }
   .dgraph { height: 300px; width: 100%; border: 1px solid #e5e7eb; border-radius: 8px; background: #fff; margin: 12px 0; display: flex; align-items: center; justify-content: center; color: #6b7280; font-size: 14px; font-family: Georgia, serif; text-align: center; padding: 8px; }
   .dgraph.loaded { display: block; padding: 0; }
   .dgraph .dcg-container { border-radius: 8px; }
@@ -115,7 +130,7 @@
   @media (min-width: 1800px) {
     .solutions { grid-template-columns: 1fr 1fr 1fr; }
   }
-  @media print { nav.contents { display: none; } body { font-size: 14px; } section { break-inside: avoid-page; } .solutions { display: block; } }
+  @media print { nav.contents { display: none; } .finder { display: none; } body { font-size: 14px; } section { break-inside: avoid-page; } .solutions { display: block; } }
 </style>
 </head>
 <body>
@@ -129,6 +144,14 @@
 <nav class="contents"><strong>Jump to:</strong>
 <a href="#lec-0">0 Recap</a><a href="#lec-1">1</a><a href="#lec-2">2</a><a href="#lec-3">3</a><a href="#lec-4">4</a><a href="#lec-5">5</a><a href="#lec-6">6</a><a href="#lec-7">7</a><a href="#lec-8">8</a><a href="#lec-9">9</a><a href="#lec-10">10</a><a href="#lec-11-12">11–12</a><a href="#lec-13">13</a><a href="#lec-14">14</a><a href="#lec-15">15</a><a href="#lec-16">16</a><a href="#lec-17">17</a><a href="#lec-18">18</a><a href="#lec-19">19</a><a href="#lec-20">20</a><a href="#lec-21">21</a><a href="#lec-22">22</a>
 </nav>
+<div class="finder" id="finder">
+<label for="finder-q">Find a solution:</label>
+<div class="finder-box">
+<input id="finder-q" type="text" placeholder="Type a problem, e.g. 14.2-3, 13.5 10, or MC 2" autocomplete="off" spellcheck="false" aria-label="Search solutions by problem number">
+<div class="finder-results" id="finder-results" role="listbox" hidden></div>
+</div>
+<select id="finder-lec" aria-label="Jump to a lecture's solutions"></select>
+</div>
 <div class="howto"><h3>Before the exam — a 3-pass plan</h3>
 <p><strong>Pass 1 (understand):</strong> read each lecture's explanation and diagram. If the diagram makes sense, the formulas will follow.</p>
 <p><strong>Pass 2 (recall):</strong> close the notes and answer each lecture's recall questions from memory. Anything you cannot say out loud is what you revise next.</p>
@@ -288,11 +311,11 @@
 <div class="dgraph" data-exprs='["(cos(t), -3t){0<=t<=3.14159}", "(-1, -9.42)"]' data-xmin="-2" data-xmax="2" data-ymin="-10" data-ymax="2"></div>
 <p class="ans">Answer: domain (−∞, +∞); r(π) = −i − 3πj.</p></div>
 <div class="prob"><h4>Ex. 12.1: 2</h4>
-<p class="stmt">Find the domain of r(t) = ⟨3t + 1, t<sup>2</sup>⟩ and the value of r(t<sub>0</sub>) for t<sub>0</sub> = 1.</p>
-<div class="sol"><p><b>Step 1.</b> Both components are polynomials, defined for all real t, so the domain is (−∞, +∞).</p>
-<p><b>Step 2.</b> r(1) = ⟨3(1) + 1, 1<sup>2</sup>⟩ = ⟨4, 1⟩.</p></div>
-<div class="dgraph" data-exprs='["(3t+1, t^2){-2<=t<=2}", "(4, 1)"]' data-xmin="-5" data-xmax="7" data-ymin="-1" data-ymax="5"></div>
-<p class="ans">Answer: domain (−∞, +∞); r(1) = ⟨4, 1⟩.</p></div>
+<p class="stmt">Find the domain of r(t) = ⟨√(3t + 1), t<sup>2</sup>⟩ and the value of r(t<sub>0</sub>) for t<sub>0</sub> = 1.</p>
+<div class="sol"><p><b>Step 1.</b> The first component needs 3t + 1 ≥ 0, i.e. t ≥ −1/3; the second is a polynomial, defined for all t. Hence the domain is [−1/3, +∞).</p>
+<p><b>Step 2.</b> r(1) = ⟨√(3(1) + 1), 1<sup>2</sup>⟩ = ⟨2, 1⟩.</p></div>
+<div class="dgraph" data-exprs='["(sqrt(3t+1), t^2){-1/3<=t<=4}", "(2, 1)"]' data-xmin="-1" data-xmax="4.5" data-ymin="-1" data-ymax="17"></div>
+<p class="ans">Answer: domain [−1/3, +∞); r(1) = ⟨2, 1⟩.</p></div>
 <div class="prob"><h4>Ex. 12.1: 3</h4>
 <p class="stmt">Find the domain of r(t) = cos πt i − ln t j + √(t − 2) k and the value of r(t<sub>0</sub>) for t<sub>0</sub> = 3.</p>
 <div class="sol"><p><b>Step 1.</b> The domain is the intersection of the component domains: ln t needs t &gt; 0, √(t − 2) needs t ≥ 2, and cos πt needs nothing. Hence the domain is [2, +∞).</p>
@@ -319,10 +342,10 @@
 <div class="dgraph3d" data-exprs='["(2t, 2sin(3t), 5cos(3t)){-3<=t<=3}"]'></div>
 <p class="ans">Answer: r(t) = 2t i + 2 sin 3t j + 5 cos 3t k.</p></div>
 <div class="prob"><h4>Ex. 12.1: 7</h4>
-<p class="stmt">Find the parametric equations that correspond to the vector equation r = 3t i − 2 j.</p>
-<div class="sol"><p>The i-component is x and the j-component is y: x = 3t, y = −2.</p></div>
-<div class="dgraph" data-exprs='["y=-2", "(3t, -2){-2<=t<=2}"]' data-xmin="-7" data-xmax="7" data-ymin="-4" data-ymax="2"></div>
-<p class="ans">Answer: x = 3t, y = −2.</p></div>
+<p class="stmt">Find the parametric equations that correspond to the vector equation r = 3t<sup>2</sup> i − 2 j.</p>
+<div class="sol"><p>The i-component is x and the j-component is y: x = 3t<sup>2</sup>, y = −2. Since x = 3t<sup>2</sup> ≥ 0, the graph is the ray y = −2, x ≥ 0, traced from the origin outward as |t| grows.</p></div>
+<div class="dgraph" data-exprs='["y=-2", "(3t^2, -2){-1.4<=t<=1.4}"]' data-xmin="-7" data-xmax="7" data-ymin="-4" data-ymax="2"></div>
+<p class="ans">Answer: x = 3t<sup>2</sup>, y = −2.</p></div>
 <div class="prob"><h4>Ex. 12.1: 8</h4>
 <p class="stmt">Find the parametric equations that correspond to the vector equation r = (2t − 1)i − 3√t j + sin 3t k.</p>
 <div class="sol"><p>Read off the three components: x = 2t − 1, y = −3√t, z = sin 3t.</p></div>
@@ -358,17 +381,17 @@
 <div class="prob"><h4>Ex. 12.1: 13</h4>
 <p class="stmt">Describe the graph of r = 2 cos t i − 3 sin t j + k.</p>
 <div class="sol"><p><b>Step 1.</b> z = 1 is constant, while x = 2 cos t, y = −3 sin t satisfy x<sup>2</sup>/4 + y<sup>2</sup>/9 = 1.</p>
-<p><b>Step 2.</b> The graph is an ellipse in the plane z = 1, centred at (0, 0, 1), with semi-axes 2 and 3.</p></div>
+<p><b>Step 2.</b> The graph is an ellipse in the plane z = 1, centred at (0, 0, 1), with semi-axes 2 and 3 — so the major axis has length 6, parallel to the y-axis, and the minor axis has length 4, parallel to the x-axis.</p></div>
 <div class="dgraph" data-exprs='["x^2/4+y^2/9=1"]' data-xmin="-3" data-xmax="3" data-ymin="-4" data-ymax="4"></div>
 <div class="dgraph3d" data-exprs='["(2cos(t), -3sin(t), 1){0<=t<=2pi}", "(0, 0, 1)"]'></div>
 <p class="ans">Answer: an ellipse centred at (0, 0, 1) in the plane z = 1.</p></div>
 <div class="prob"><h4>Ex. 12.1: 14</h4>
-<p class="stmt">Describe the graph of r = −3i + (1 − t)j + t k.</p>
-<div class="sol"><p><b>Step 1.</b> The parametric equations are x = −3, y = 1 − t, z = t, i.e. r = (−3i + j) + t(−j + k).</p>
-<p><b>Step 2.</b> It is a line in the plane x = −3, passing through (−3, 1, 0) with direction vector −j + k; note y + z = 1 on the line.</p></div>
-<div class="dgraph" data-exprs='["y=1-x", "(1, 0)"]' data-xmin="-2" data-xmax="3" data-ymin="-2" data-ymax="3"></div>
-<div class="dgraph3d" data-exprs='["(-3, 1-t, t){-2<=t<=2}", "(-3, 1, 0)"]'></div>
-<p class="ans">Answer: the line in the plane x = −3 through (−3, 1, 0) with direction −j + k.</p></div>
+<p class="stmt">Describe the graph of r = −3i + (1 − t<sup>2</sup>)j + t k.</p>
+<div class="sol"><p><b>Step 1.</b> The parametric equations are x = −3, y = 1 − t<sup>2</sup>, z = t.</p>
+<p><b>Step 2.</b> Eliminate t: t = z, so y = 1 − z<sup>2</sup>. The graph is the parabola y = 1 − z<sup>2</sup> in the plane x = −3, with vertex at (−3, 1, 0), opening in the negative y-direction.</p></div>
+<div class="dgraph" data-exprs='["y=1-x^2", "(1, 0)", "(-1, 0)"]' data-xmin="-2" data-xmax="3" data-ymin="-2" data-ymax="3"></div>
+<div class="dgraph3d" data-exprs='["(-3, 1-t^2, t){-2<=t<=2}", "(-3, 1, 0)"]'></div>
+<p class="ans">Answer: the parabola y = 1 − z<sup>2</sup> in the plane x = −3, vertex (−3, 1, 0), opening toward negative y.</p></div>
 <div class="prob"><h4>Ex. 12.1: 15</h4>
 <p class="stmt">(a) Find the slope of the line in 2-space represented by r = (1 − 2t)i − (2 − 3t)j. (b) Find the coordinates of the point where the line r = (2 + t)i + (1 − 2t)j + 3t k intersects the xz-plane.</p>
 <div class="sol"><p><b>Step 1 (a).</b> x = 1 − 2t, y = −2 + 3t. Eliminate t: t = (1 − x)/2, so y = −2 + 3(1 − x)/2 = −(1/2) − (3/2)x. The slope is −3/2. (Equivalently, direction vector ⟨−2, 3⟩ has slope 3/(−2).)</p>
@@ -583,12 +606,12 @@
 <section class="solutions" id="sol-2">
 <h3>Lecture 2 — Calculus of Vector-Valued Functions; Arc Length (Anton 12.2–12.3)</h3>
 <div class="prob"><h4>Ex. 12.2: 4</h4>
-<p class="stmt">Find the limit lim<sub>t→1</sub> ⟨3 ln t / t<sup>2</sup>, 3/(t<sup>2</sup> − 1), sin 2t⟩.</p>
-<div class="sol"><p><b>Step 1.</b> Limits are computed componentwise. First component: lim<sub>t→1</sub> 3 ln t / t<sup>2</sup> = 3 · 0 / 1 = 0.</p>
-<p><b>Step 2.</b> Third component: lim<sub>t→1</sub> sin 2t = sin 2.</p>
-<p><b>Step 3.</b> Second component: 3/(t<sup>2</sup> − 1) → −∞ as t → 1<sup>−</sup> and → +∞ as t → 1<sup>+</sup>, so it has no (two-sided) limit. Since one component fails, the vector limit fails.</p></div>
-<div class="dgraph" data-exprs='["y=3/(x^2-1)", "x=1", "x=-1"]' data-xmin="-3" data-xmax="3" data-ymin="-6" data-ymax="6"></div>
-<p class="ans">Answer: the limit does not exist (the middle component is unbounded near t = 1).</p></div>
+<p class="stmt">Find the limit lim<sub>t→1</sub> ⟨3/t<sup>2</sup>, (ln t)/(t<sup>2</sup> − 1), sin 2t⟩.</p>
+<div class="sol"><p><b>Step 1.</b> Limits are computed componentwise. First component: lim<sub>t→1</sub> 3/t<sup>2</sup> = 3/1 = 3.</p>
+<p><b>Step 2.</b> Second component: (ln t)/(t<sup>2</sup> − 1) is 0/0 at t = 1, so use L'Hôpital's rule: lim<sub>t→1</sub> (ln t)/(t<sup>2</sup> − 1) = lim<sub>t→1</sub> (1/t)/(2t) = lim<sub>t→1</sub> 1/(2t<sup>2</sup>) = 1/2.</p>
+<p><b>Step 3.</b> Third component: lim<sub>t→1</sub> sin 2t = sin 2. All three component limits exist, so the vector limit exists and equals ⟨3, 1/2, sin 2⟩.</p></div>
+<div class="dgraph" data-exprs='["y=ln(x)/(x^2-1){0<x<3}", "(1, 0.5)"]' data-xmin="0" data-xmax="3" data-ymin="-0.5" data-ymax="1.5"></div>
+<p class="ans">Answer: ⟨3, 1/2, sin 2⟩.</p></div>
 <div class="prob"><h4>Ex. 12.2: 6</h4>
 <p class="stmt">Determine whether r(t) is continuous at t = 0. (a) r(t) = e<sup>t</sup> i + j + csc t k. (b) r(t) = 5i − √(3t + 1) j + e<sup>2t</sup> k.</p>
 <div class="sol"><p><b>Step 1 (a).</b> A vector-valued function is continuous at t = 0 iff each component is. The component csc t = 1/sin t is undefined at t = 0, so r is discontinuous at 0.</p>
@@ -641,7 +664,7 @@
 <p class="stmt">Find the arc length of the graph of r(t) = t<sup>3</sup> i + t j + (√6/2) t<sup>2</sup> k, 1 ≤ t ≤ 3.</p>
 <div class="sol"><p><b>Step 1.</b> r′(t) = 3t<sup>2</sup> i + j + √6 t k, so ‖r′(t)‖ = √(9t<sup>4</sup> + 1 + 6t<sup>2</sup>) = √(3t<sup>2</sup> + 1)<sup>2</sup> = 3t<sup>2</sup> + 1.</p>
 <p><b>Step 2.</b> L = ∫<sub>1</sub><sup>3</sup> (3t<sup>2</sup> + 1) dt = [t<sup>3</sup> + t]<sub>1</sub><sup>3</sup> = 30 − 2 = 28.</p>
-<p><i>Note: the book's printed z-component is easily misread in the PDF text; the reading z = (√6/2)t<sup>2</sup> is the one that makes ‖r′‖ = 3t<sup>2</sup> + 1 and gives the book's answer L = 28.</i></p></div>
+<p><i>Note: the Solutions Manual confirms the z-component is (√6/2)t<sup>2</sup> — that is the reading that makes ‖r′‖ = 3t<sup>2</sup> + 1 and gives L = 28.</i></p></div>
 <div class="dgraph" data-exprs='["(t^3, t){1<=t<=3}", "(1, 1)", "(27, 3)"]' data-xmin="0" data-xmax="28" data-ymin="0" data-ymax="4"></div>
 <div class="dgraph3d" data-exprs='["(t^3, t, 1.225t^2){1<=t<=3}", "(1, 1, 1.225)", "(27, 3, 11.02)"]'></div>
 <p class="ans">Answer: L = 28.</p></div>
@@ -767,10 +790,11 @@
 <div class="prob"><h4>Ex. 12.4: 14</h4>
 <p class="stmt">Find T(t) and N(t) at the given point: r(t) = t i + t j + √(9 − t<sup>2</sup>) k; t<sub>0</sub> = 1.</p>
 <div class="sol"><p><b>Step 1.</b> r′(t) = i + j − (t/√(9 − t<sup>2</sup>))k. At t = 1: r′(1) = i + j − (1/√8)k = i + j − (1/(2√2))k, with ‖r′(1)‖ = √(1 + 1 + 1/8) = √(17/8) = √17/(2√2).</p>
-<p><b>Step 2.</b> T(1) = r′(1)/‖r′(1)‖ = (2√2 i + 2√2 j − k)/√17. (N(1) follows from T′(1)/‖T′(1)‖; it points in the direction of T′(1).)</p></div>
+<p><b>Step 2.</b> T(1) = r′(1)/‖r′(1)‖ = (2√2 i + 2√2 j − k)/√17.</p>
+<p><b>Step 3.</b> N(1): differentiating T and evaluating at t = 1 gives T′(1) in the direction ⟨−1, −1, −4√2⟩, so N(1) = T′(1)/‖T′(1)‖ = −(i + j + 4√2 k)/√34.</p></div>
 <div class="dgraph" data-exprs='["(t, t){-2<=t<=2}", "y=sqrt(9-x^2){-2<=x<=2}", "(1, 1)"]' data-xmin="-2.5" data-xmax="2.5" data-ymin="-1" data-ymax="3.5"></div>
 <div class="dgraph3d" data-exprs='["(t, t, sqrt(9-t^2)){-2<=t<=2}", "(1, 1, 2.828)", "(1+0.686s, 1+0.686s, 2.828-0.243s){0<=s<=1}"]'></div>
-<p class="ans">Answer: T = (2√2 i + 2√2 j − k)/√17.</p></div>
+<p class="ans">Answer: T = (2√2 i + 2√2 j − k)/√17, N = −(i + j + 4√2 k)/√34.</p></div>
 <div class="prob"><h4>Ex. 12.4: 18</h4>
 <p class="stmt">Use B(t) = T(t) × N(t) to find B(t) for the helix r(t) = a cos t i + a sin t j + ct k (a ≠ 0, c ≠ 0), and check with the direct formula B = (r′ × r′′)/‖r′ × r′′‖.</p>
 <div class="sol"><p><b>Step 1.</b> r′(t) = −a sin t i + a cos t j + c k, ‖r′‖ = √(a<sup>2</sup> + c<sup>2</sup>), so T = (−a sin t i + a cos t j + c k)/√(a<sup>2</sup> + c<sup>2</sup>).</p>
@@ -904,13 +928,13 @@
 <div class="prob"><h4>Ex. 13.1: 26</h4><p class="stmt">Sketch the domain of <i>f</i>(<i>x</i>, <i>y</i>) = ln <i>xy</i>. Use solid lines for portions of the boundary included in the domain and dashed lines for portions not included.</p><div class="sol"><p>The logarithm needs <i>xy</i> &gt; 0. A product is positive when both factors have the same sign: <i>x</i> &gt; 0 and <i>y</i> &gt; 0 (the first quadrant), or <i>x</i> &lt; 0 and <i>y</i> &lt; 0 (the third quadrant). On either axis <i>xy</i> = 0, so the axes are excluded and drawn dashed.</p></div><div class="dgraph" data-exprs='["y=0", "x=0", "(1, 1)", "(-1, -1)"]' data-xmin="-3" data-xmax="3" data-ymin="-3" data-ymax="3"></div>
 <p class="ans">Answer: <i>xy</i> &gt; 0 — the (open) first and third quadrants, axes excluded (dashed).</p></div>
 
-<div class="prob"><h4>Ex. 13.1: 27</h4><p class="stmt">Describe the domain of <i>f</i> in words. (a) <i>f</i>(<i>x</i>, <i>y</i>) = <i>x</i>e<sup>√(2 − <i>y</i>)</sup> &nbsp; (b) <i>f</i>(<i>x</i>, <i>y</i>, <i>z</i>) = √(25 − <i>x</i><sup>2</sup> − <i>y</i><sup>2</sup> − <i>z</i><sup>2</sup>) &nbsp; (c) <i>f</i>(<i>x</i>, <i>y</i>, <i>z</i>) = e<sup><i>xyz</i></sup></p><div class="sol"><p>(a) The exponential is defined for every real exponent, so the only restriction comes from the square root: 2 − <i>y</i> ≥ 0, i.e. <i>y</i> ≤ 2. There is no restriction on <i>x</i>.</p><p>(b) The square root needs 25 − <i>x</i><sup>2</sup> − <i>y</i><sup>2</sup> − <i>z</i><sup>2</sup> ≥ 0, i.e. <i>x</i><sup>2</sup> + <i>y</i><sup>2</sup> + <i>z</i><sup>2</sup> ≤ 25. That is the solid ball of radius 5 centred at the origin, including its spherical boundary.</p><p>(c) The exponential <i>e</i><sup><i>xyz</i></sup> is defined for every real exponent, and <i>xyz</i> is defined for all (<i>x</i>, <i>y</i>, <i>z</i>), so there is no restriction at all.</p></div><div class="dgraph" data-exprs='["y=2", "x^2+y^2=25"]' data-xmin="-6" data-xmax="6" data-ymin="-6" data-ymax="6"></div>
+<div class="prob"><h4>Ex. 13.1: 27</h4><p class="stmt">Describe the domain of <i>f</i> in words. (a) <i>f</i>(<i>x</i>, <i>y</i>) = <i>x</i>e<sup>−√(<i>y</i> + 2)</sup> &nbsp; (b) <i>f</i>(<i>x</i>, <i>y</i>, <i>z</i>) = √(25 − <i>x</i><sup>2</sup> − <i>y</i><sup>2</sup> − <i>z</i><sup>2</sup>) &nbsp; (c) <i>f</i>(<i>x</i>, <i>y</i>, <i>z</i>) = e<sup><i>xyz</i></sup></p><div class="sol"><p>(a) The exponential is defined for every real exponent, so the only restriction comes from the square root: <i>y</i> + 2 ≥ 0, i.e. <i>y</i> ≥ −2. There is no restriction on <i>x</i>.</p><p>(b) The square root needs 25 − <i>x</i><sup>2</sup> − <i>y</i><sup>2</sup> − <i>z</i><sup>2</sup> ≥ 0, i.e. <i>x</i><sup>2</sup> + <i>y</i><sup>2</sup> + <i>z</i><sup>2</sup> ≤ 25. That is the solid ball of radius 5 centred at the origin, including its spherical boundary.</p><p>(c) The exponential <i>e</i><sup><i>xyz</i></sup> is defined for every real exponent, and <i>xyz</i> is defined for all (<i>x</i>, <i>y</i>, <i>z</i>), so there is no restriction at all.</p></div><div class="dgraph" data-exprs='["y=-2", "x^2+y^2=25"]' data-xmin="-6" data-xmax="6" data-ymin="-6" data-ymax="6"></div>
 <div class="dgraph3d" data-exprs='["x^2+y^2+z^2=25"]'></div>
-<p class="ans">Answer: (a) All points (<i>x</i>, <i>y</i>) with <i>y</i> ≤ 2 — the half-plane on and below the line <i>y</i> = 2. (b) The closed ball <i>x</i><sup>2</sup> + <i>y</i><sup>2</sup> + <i>z</i><sup>2</sup> ≤ 25 (radius 5, centre the origin). (c) All of space, ℝ<sup>3</sup>.</p></div>
+<p class="ans">Answer: (a) All points (<i>x</i>, <i>y</i>) with <i>y</i> ≥ −2 — the half-plane on and above the line <i>y</i> = −2. (b) The closed ball <i>x</i><sup>2</sup> + <i>y</i><sup>2</sup> + <i>z</i><sup>2</sup> ≤ 25 (radius 5, centre the origin). (c) All of space, ℝ<sup>3</sup>.</p></div>
 
-<div class="prob"><h4>Ex. 13.1: 28</h4><p class="stmt">Describe the domain of <i>f</i> in words. (a) <i>f</i>(<i>x</i>, <i>y</i>) = √(4 − <i>x</i><sup>2</sup>) / (<i>y</i> + 3) &nbsp; (b) <i>f</i>(<i>x</i>, <i>y</i>) = ln(<i>y</i> − 2<i>x</i>) &nbsp; (c) <i>f</i>(<i>x</i>, <i>y</i>, <i>z</i>) = <i>xyz</i> / (<i>x</i> + <i>y</i> + <i>z</i>)</p><div class="sol"><p>(a) Two conditions: the square root needs 4 − <i>x</i><sup>2</sup> ≥ 0, i.e. −2 ≤ <i>x</i> ≤ 2, and the denominator needs <i>y</i> + 3 ≠ 0, i.e. <i>y</i> ≠ −3.</p><p>(b) The logarithm needs <i>y</i> − 2<i>x</i> &gt; 0, i.e. <i>y</i> &gt; 2<i>x</i> — the open half-plane strictly above the line <i>y</i> = 2<i>x</i> (the line itself is excluded).</p><p>(c) Only the denominator matters: <i>x</i> + <i>y</i> + <i>z</i> ≠ 0.</p></div><div class="dgraph" data-exprs='["x=-2", "x=2", "y=-3", "y=2x"]' data-xmin="-4" data-xmax="4" data-ymin="-4" data-ymax="4"></div>
+<div class="prob"><h4>Ex. 13.1: 28</h4><p class="stmt">Describe the domain of <i>f</i> in words. (a) <i>f</i>(<i>x</i>, <i>y</i>) = √(4 − <i>x</i><sup>2</sup>) / (<i>y</i><sup>2</sup> + 3) &nbsp; (b) <i>f</i>(<i>x</i>, <i>y</i>) = ln(<i>y</i> − 2<i>x</i>) &nbsp; (c) <i>f</i>(<i>x</i>, <i>y</i>, <i>z</i>) = <i>xyz</i> / (<i>x</i> + <i>y</i> + <i>z</i>)</p><div class="sol"><p>(a) The square root needs 4 − <i>x</i><sup>2</sup> ≥ 0, i.e. −2 ≤ <i>x</i> ≤ 2. The denominator <i>y</i><sup>2</sup> + 3 is never zero, so it adds no restriction.</p><p>(b) The logarithm needs <i>y</i> − 2<i>x</i> &gt; 0, i.e. <i>y</i> &gt; 2<i>x</i> — the open half-plane strictly above the line <i>y</i> = 2<i>x</i> (the line itself is excluded).</p><p>(c) Only the denominator matters: <i>x</i> + <i>y</i> + <i>z</i> ≠ 0.</p></div><div class="dgraph" data-exprs='["x=-2", "x=2", "y=2x"]' data-xmin="-4" data-xmax="4" data-ymin="-4" data-ymax="4"></div>
 <div class="dgraph3d" data-exprs='["x+y+z=0"]'></div>
-<p class="ans">Answer: (a) The vertical strip −2 ≤ <i>x</i> ≤ 2 with the horizontal line <i>y</i> = −3 removed. (b) All points with <i>y</i> &gt; 2<i>x</i>. (c) All of space except the plane <i>x</i> + <i>y</i> + <i>z</i> = 0.</p></div>
+<p class="ans">Answer: (a) The vertical strip −2 ≤ <i>x</i> ≤ 2. (b) All points with <i>y</i> &gt; 2<i>x</i>. (c) All of space except the plane <i>x</i> + <i>y</i> + <i>z</i> = 0.</p></div>
 
 <div class="prob"><h4>Ex. 13.1: 33</h4><p class="stmt">Sketch the graph of <i>f</i>(<i>x</i>, <i>y</i>) = 3.</p><div class="sol"><p>The graph is the surface <i>z</i> = 3. The height is 3 no matter what <i>x</i> and <i>y</i> are, so every point of the surface has <i>z</i>-coordinate 3: it is the horizontal plane 3 units above the <i>xy</i>-plane, parallel to it. Every trace is a horizontal line at height 3.</p></div><div class="dgraph" data-exprs='["y=3"]' data-xmin="-5" data-xmax="5" data-ymin="-1" data-ymax="5"></div>
 <div class="dgraph3d" data-exprs='["z=3"]'></div>
@@ -920,13 +944,13 @@
 <div class="dgraph3d" data-exprs='["z=sqrt(9-x^2-y^2)", "(0, 0, 3)"]'></div>
 <p class="ans">Answer: The upper hemisphere of radius 3 centred at the origin (top point (0, 0, 3), rim the circle <i>x</i><sup>2</sup> + <i>y</i><sup>2</sup> = 9 in the plane <i>z</i> = 0).</p></div>
 
-<div class="prob"><h4>Ex. 13.1: 35</h4><p class="stmt">Sketch the graph of <i>f</i>(<i>x</i>, <i>y</i>) = <i>x</i><sup>2</sup> + <i>y</i><sup>2</sup>.</p><div class="sol"><p>The surface is <i>z</i> = <i>x</i><sup>2</sup> + <i>y</i><sup>2</sup> ≥ 0. In the plane <i>y</i> = 0 it is the parabola <i>z</i> = <i>x</i><sup>2</sup>, and the same in the plane <i>x</i> = 0; rotating that parabola about the <i>z</i>-axis gives the surface. Horizontal slices <i>z</i> = <i>k</i> &gt; 0 are circles of radius √<i>k</i>. The lowest point is the vertex (0, 0, 0), and the surface rises in every direction from it.</p></div><div class="dgraph" data-exprs='["x^2+y^2=1", "x^2+y^2=4", "y=x^2"]' data-xmin="-3" data-xmax="3" data-ymin="-1" data-ymax="4"></div>
+<div class="prob"><h4>Ex. 13.1: 35</h4><p class="stmt">Sketch the graph of <i>f</i>(<i>x</i>, <i>y</i>) = √(x<sup>2</sup> + y<sup>2</sup>).</p><div class="sol"><p>The surface is <i>z</i> = √(x<sup>2</sup> + y<sup>2</sup>) ≥ 0. In the plane <i>y</i> = 0 it is the V-shape <i>z</i> = |<i>x</i>|, and the same in the plane <i>x</i> = 0; rotating that V about the <i>z</i>-axis gives the surface. Horizontal slices <i>z</i> = <i>k</i> &gt; 0 are circles of radius <i>k</i>. The lowest point is the vertex (0, 0, 0), and the surface rises at a steady 45° slope in every direction from it — a right circular cone.</p></div><div class="dgraph" data-exprs='["x^2+y^2=1", "x^2+y^2=4"]' data-xmin="-3" data-xmax="3" data-ymin="-1" data-ymax="4"></div>
+<div class="dgraph3d" data-exprs='["z=sqrt(x^2+y^2)", "(0, 0, 0)"]'></div>
+<p class="ans">Answer: A right circular cone with vertex at the origin, opening upward along the <i>z</i>-axis.</p></div>
+
+<div class="prob"><h4>Ex. 13.1: 36</h4><p class="stmt">Sketch the graph of <i>f</i>(<i>x</i>, <i>y</i>) = <i>x</i><sup>2</sup> + <i>y</i><sup>2</sup>.</p><div class="sol"><p>The surface is <i>z</i> = <i>x</i><sup>2</sup> + <i>y</i><sup>2</sup> ≥ 0. In the plane <i>y</i> = 0 it is the parabola <i>z</i> = <i>x</i><sup>2</sup>, and the same in the plane <i>x</i> = 0; rotating that parabola about the <i>z</i>-axis gives the surface. Horizontal slices <i>z</i> = <i>k</i> &gt; 0 are circles of radius √<i>k</i>. The lowest point is the vertex (0, 0, 0), and the surface rises in every direction from it.</p></div><div class="dgraph" data-exprs='["x^2+y^2=1", "x^2+y^2=4", "(0, 0)"]' data-xmin="-3" data-xmax="3" data-ymin="-3" data-ymax="3"></div>
 <div class="dgraph3d" data-exprs='["z=x^2+y^2", "(0, 0, 0)"]'></div>
 <p class="ans">Answer: A circular paraboloid with vertex at the origin, opening upward along the <i>z</i>-axis.</p></div>
-
-<div class="prob"><h4>Ex. 13.1: 36</h4><p class="stmt">Sketch the graph of <i>f</i>(<i>x</i>, <i>y</i>) = <i>x</i> + <i>y</i><sup>2</sup>.</p><div class="sol"><p>The surface is <i>z</i> = <i>x</i> + <i>y</i><sup>2</sup>. For fixed <i>x</i> it is the parabola <i>z</i> = <i>y</i><sup>2</sup> + (constant) in the <i>yz</i>-direction, opening upward; for fixed <i>y</i> it is the straight line <i>z</i> = <i>x</i> + (constant) of slope 1. So the parabola <i>z</i> = <i>y</i><sup>2</sup> in the plane <i>x</i> = 0 is carried along the line <i>z</i> = <i>x</i>, <i>y</i> = 0. It passes through the origin, rises as |<i>y</i>| grows, and rises steadily as <i>x</i> increases.</p></div><div class="dgraph" data-exprs='["x=-y^2", "x=1-y^2"]' data-xmin="-3" data-xmax="3" data-ymin="-3" data-ymax="3"></div>
-<div class="dgraph3d" data-exprs='["z=x+y^2"]'></div>
-<p class="ans">Answer: A parabolic cylinder (parabola <i>z</i> = <i>y</i><sup>2</sup> shifted along the line <i>z</i> = <i>x</i>, <i>y</i> = 0); vertex line <i>z</i> = <i>x</i> in the plane <i>y</i> = 0.</p></div>
 
 <div class="prob"><h4>Ex. 13.1: 37</h4><p class="stmt">Sketch the graph of <i>f</i>(<i>x</i>, <i>y</i>) = <i>x</i><sup>2</sup> − <i>y</i><sup>2</sup>.</p><div class="sol"><p>The surface is <i>z</i> = <i>x</i><sup>2</sup> − <i>y</i><sup>2</sup>. In the plane <i>y</i> = 0 it is the upward parabola <i>z</i> = <i>x</i><sup>2</sup>; in the plane <i>x</i> = 0 it is the downward parabola <i>z</i> = −<i>y</i><sup>2</sup>. So the surface rises in the <i>x</i>-direction and falls in the <i>y</i>-direction from the origin, which is a saddle point: (0, 0, 0) is a minimum along the <i>x</i>-axis but a maximum along the <i>y</i>-axis. Horizontal slices <i>z</i> = <i>k</i> ≠ 0 are hyperbolas.</p></div><div class="dgraph" data-exprs='["x^2-y^2=1", "x^2-y^2=-1", "y=x", "y=-x"]' data-xmin="-3" data-xmax="3" data-ymin="-3" data-ymax="3"></div>
 <div class="dgraph3d" data-exprs='["z=x^2-y^2", "(0, 0, 0)"]'></div>
@@ -936,13 +960,13 @@
 <div class="dgraph3d" data-exprs='["z=4-x^2-y^2", "(0, 0, 4)"]'></div>
 <p class="ans">Answer: A circular paraboloid with vertex (0, 0, 4), opening downward, meeting the <i>xy</i>-plane in the circle of radius 2.</p></div>
 
-<div class="prob"><h4>Ex. 13.1: 39</h4><p class="stmt">Sketch the graph of <i>f</i>(<i>x</i>, <i>y</i>) = <i>x</i><sup>2</sup> + <i>y</i><sup>2</sup> + 1.</p><div class="sol"><p>This is the paraboloid <i>z</i> = <i>x</i><sup>2</sup> + <i>y</i><sup>2</sup> of Ex. 35 shifted up by 1 unit. The vertex moves from (0, 0, 0) to (0, 0, 1), the lowest point of the surface; horizontal slices <i>z</i> = <i>k</i> &gt; 1 are circles of radius √(<i>k</i> − 1). The surface never meets the <i>xy</i>-plane.</p></div><div class="dgraph" data-exprs='["x^2+y^2=1", "y=1+x^2", "(0, 1)"]' data-xmin="-3" data-xmax="3" data-ymin="-1" data-ymax="4"></div>
-<div class="dgraph3d" data-exprs='["z=x^2+y^2+1", "(0, 0, 1)"]'></div>
-<p class="ans">Answer: A circular paraboloid with vertex (0, 0, 1), opening upward.</p></div>
+<div class="prob"><h4>Ex. 13.1: 39</h4><p class="stmt">Sketch the graph of <i>f</i>(<i>x</i>, <i>y</i>) = √(x<sup>2</sup> + y<sup>2</sup> + 1).</p><div class="sol"><p>The surface is <i>z</i> = √(x<sup>2</sup> + y<sup>2</sup> + 1), so <i>x</i><sup>2</sup> + <i>y</i><sup>2</sup> − <i>z</i><sup>2</sup> = −1 with <i>z</i> ≥ 1: the upper half of a hyperboloid of one sheet. Its lowest point is the vertex (0, 0, 1); horizontal slices <i>z</i> = <i>k</i> &gt; 1 are circles of radius √(<i>k</i><sup>2</sup> − 1). Far from the axis it flattens out toward the cone <i>z</i> = √(x<sup>2</sup> + y<sup>2</sup>) of Ex. 35. The surface never meets the <i>xy</i>-plane.</p></div><div class="dgraph" data-exprs='["x^2+y^2=1", "x^2+y^2=4", "(0, 0)"]' data-xmin="-3" data-xmax="3" data-ymin="-1" data-ymax="4"></div>
+<div class="dgraph3d" data-exprs='["z=sqrt(x^2+y^2+1)", "(0, 0, 1)"]'></div>
+<p class="ans">Answer: The upper half of a hyperboloid of one sheet, with vertex (0, 0, 1), opening upward and asymptotic to the cone z = √(x² + y²).</p></div>
 
-<div class="prob"><h4>Ex. 13.1: 40</h4><p class="stmt">Sketch the graph of <i>f</i>(<i>x</i>, <i>y</i>) = <i>x</i><sup>2</sup> + <i>y</i><sup>2</sup> − 1.</p><div class="sol"><p>This is the paraboloid <i>z</i> = <i>x</i><sup>2</sup> + <i>y</i><sup>2</sup> of Ex. 35 shifted down by 1 unit. The vertex is (0, 0, −1), the lowest point; horizontal slices <i>z</i> = <i>k</i> &gt; −1 are circles of radius √(<i>k</i> + 1). It meets the <i>xy</i>-plane (<i>z</i> = 0) in the unit circle <i>x</i><sup>2</sup> + <i>y</i><sup>2</sup> = 1.</p></div><div class="dgraph" data-exprs='["x^2+y^2=1", "y=-1+x^2", "(0, -1)"]' data-xmin="-3" data-xmax="3" data-ymin="-2" data-ymax="3"></div>
-<div class="dgraph3d" data-exprs='["z=x^2+y^2-1", "(0, 0, -1)"]'></div>
-<p class="ans">Answer: A circular paraboloid with vertex (0, 0, −1), opening upward, meeting the <i>xy</i>-plane in the unit circle.</p></div>
+<div class="prob"><h4>Ex. 13.1: 40</h4><p class="stmt">Sketch the graph of <i>f</i>(<i>x</i>, <i>y</i>) = √(x<sup>2</sup> + y<sup>2</sup> − 1).</p><div class="sol"><p>The surface is <i>z</i> = √(x<sup>2</sup> + y<sup>2</sup> − 1), defined where <i>x</i><sup>2</sup> + <i>y</i><sup>2</sup> ≥ 1, so <i>x</i><sup>2</sup> + <i>y</i><sup>2</sup> − <i>z</i><sup>2</sup> = 1 with <i>z</i> ≥ 0: a hyperboloid of one sheet, cut off below the <i>xy</i>-plane. It meets the <i>xy</i>-plane (<i>z</i> = 0) in the unit circle <i>x</i><sup>2</sup> + <i>y</i><sup>2</sup> = 1, which is its rim; horizontal slices <i>z</i> = <i>k</i> &gt; 0 are circles of radius √(<i>k</i><sup>2</sup> + 1). Far from the axis it flattens out toward the cone <i>z</i> = √(x<sup>2</sup> + y<sup>2</sup>) of Ex. 35.</p></div><div class="dgraph" data-exprs='["x^2+y^2=1", "x^2+y^2=4", "(0, 0)"]' data-xmin="-3" data-xmax="3" data-ymin="-2" data-ymax="3"></div>
+<div class="dgraph3d" data-exprs='["z=sqrt(x^2+y^2-1)", "(1, 0, 0)"]'></div>
+<p class="ans">Answer: A hyperboloid of one sheet (z ≥ 0), with rim the unit circle x² + y² = 1 in the plane z = 0, opening upward and asymptotic to the cone z = √(x² + y²).</p></div>
 
 <div class="prob"><h4>Ex. 13.1: 41</h4><p class="stmt">Sketch the graph of <i>f</i>(<i>x</i>, <i>y</i>) = <i>y</i> + 1.</p><div class="sol"><p>The surface is the plane <i>z</i> = <i>y</i> + 1. It does not depend on <i>x</i>, so it is constant along every line parallel to the <i>x</i>-axis. In the <i>yz</i>-plane it is the line <i>z</i> = <i>y</i> + 1 of slope 1, crossing the <i>z</i>-axis at (0, 0, 1) and the <i>y</i>-axis at (0, −1, 0); the plane is that line swept parallel to the <i>x</i>-axis. It rises as <i>y</i> increases and is flat in the <i>x</i>-direction.</p></div><div class="dgraph" data-exprs='["y=x+1", "(0, 1)", "(-1, 0)"]' data-xmin="-4" data-xmax="4" data-ymin="-3" data-ymax="4"></div>
 <div class="dgraph3d" data-exprs='["z=y+1"]'></div>
@@ -1075,14 +1099,14 @@
 <p class="ans">Answer: 0</p></div>
 
 <div class="prob"><h4>Ex. 13.2: 6</h4>
-<p class="stmt">lim<sub>(x,y) → (4,−2)</sub> ∛(x<sup>3</sup>y<sup>3</sup> + 2x). (Note: the radical in the book is a <b>cube</b> root.)</p>
-<div class="sol"><p>The cube-root function is continuous everywhere, and x<sup>3</sup>y<sup>3</sup> + 2x is a polynomial, so substitute directly: x<sup>3</sup>y<sup>3</sup> = (4)<sup>3</sup>(−2)<sup>3</sup> = 64·(−8) = −512, and 2x = 8, so the quantity under the root is −512 + 8 = −504. Hence the limit is ∛(−504) = −∛504 = −2∛63 ≈ −7.96.</p></div>
-<div class="dgraph" data-exprs='["x^3y^3+2x=-504", "(4, -2)"]' data-xmin="0" data-xmax="6" data-ymin="-4" data-ymax="0"></div>
-<p class="ans">Answer: −2∛63 ≈ −7.96</p></div>
+<p class="stmt">lim<sub>(x,y) → (4,−2)</sub> x∛(y<sup>3</sup> + 2x).</p>
+<div class="sol"><p>The cube-root function is continuous everywhere, and <i>x</i>∛(<i>y</i><sup>3</sup> + 2<i>x</i>) is a composition of continuous functions, so substitute directly: at (4, −2), <i>y</i><sup>3</sup> + 2<i>x</i> = (−2)<sup>3</sup> + 2(4) = −8 + 8 = 0, so the limit is 4·∛0 = 0.</p></div>
+<div class="dgraph" data-exprs='["y=x*(2x-8)^(1/3){0<=x<=6}", "(4, 0)"]' data-xmin="0" data-xmax="6" data-ymin="-2" data-ymax="10"></div>
+<p class="ans">Answer: 0</p></div>
 
 <div class="prob"><h4>Ex. 13.2: 7</h4>
-<p class="stmt">Show that the limit does not exist by considering the limits as (x, y) → (0, 0) along the coordinate axes. (a) lim<sub>(x,y) → (0,0)</sub> 3/(x + 2y) &nbsp;&nbsp; (b) lim<sub>(x,y) → (0,0)</sub> (x + y)/(2x<sup>2</sup> + y<sup>2</sup>).</p>
-<div class="sol"><p>(a) Along the x-axis (y = 0) the function is 3/x, which tends to +∞ as x → 0<sup>+</sup> and to −∞ as x → 0<sup>−</sup>; it has no (finite or infinite) limit along this one path, so the two-variable limit cannot exist. (Along the y-axis, x = 0, it is 3/(2y), which likewise blows up.)</p>
+<p class="stmt">Show that the limit does not exist by considering the limits as (x, y) → (0, 0) along the coordinate axes. (a) lim<sub>(x,y) → (0,0)</sub> 3/(x<sup>2</sup> + 2y<sup>2</sup>) &nbsp;&nbsp; (b) lim<sub>(x,y) → (0,0)</sub> (x + y)/(2x<sup>2</sup> + y<sup>2</sup>).</p>
+<div class="sol"><p>(a) Along the x-axis (y = 0) the function is 3/x<sup>2</sup>, which tends to +∞ as x → 0; along the y-axis (x = 0) it is 3/(2y<sup>2</sup>), which also tends to +∞ as y → 0. The function blows up to +∞ along both axes, so it has no finite limit at (0, 0) — the limit does not exist.</p>
 <p>(b) Along the x-axis (y = 0) the function is x/(2x<sup>2</sup>) = 1/(2x) for x ≠ 0, which tends to +∞ as x → 0<sup>+</sup> and −∞ as x → 0<sup>−</sup>. Since the limit fails to exist along the x-axis alone, the two-variable limit does not exist.</p></div>
 <div class="dgraph" data-exprs='["y=0", "x=0", "(0, 0)"]' data-xmin="-2" data-xmax="2" data-ymin="-2" data-ymax="2"></div>
 <p class="ans">Answer: Both limits do not exist.</p></div>
@@ -1113,9 +1137,9 @@
 <p class="ans">Answer: 0</p></div>
 
 <div class="prob"><h4>Ex. 13.2: 12</h4>
-<p class="stmt">Evaluate the limit using the substitution z = x<sup>2</sup> + y<sup>2</sup>: lim<sub>(x,y) → (0,0)</sub> e<sup>−1/√(x<sup>2</sup> + y<sup>2</sup>)</sup> / (x<sup>2</sup> + y<sup>2</sup>).</p>
-<div class="sol"><p>With z = x<sup>2</sup> + y<sup>2</sup> → 0<sup>+</sup>, the limit is lim<sub>z → 0<sup>+</sup></sub> e<sup>−1/√z</sup>/z. Put t = 1/√z, so t → +∞ and z = 1/t<sup>2</sup>; the expression becomes t<sup>2</sup>e<sup>−t</sup> = t<sup>2</sup>/e<sup>t</sup> → 0 as t → ∞, since the exponential dominates any power. Hence the limit is 0.</p></div>
-<div class="dgraph" data-exprs='["y=e^(-1/sqrt(x))/x", "(0, 0)"]' data-xmin="0" data-xmax="2" data-ymin="-1" data-ymax="2"></div>
+<p class="stmt">Evaluate the limit using the substitution z = x<sup>2</sup> + y<sup>2</sup>: lim<sub>(x,y) → (0,0)</sub> e<sup>−1/√(x<sup>2</sup> + y<sup>2</sup>)</sup> / √(x<sup>2</sup> + y<sup>2</sup>).</p>
+<div class="sol"><p>With z = x<sup>2</sup> + y<sup>2</sup> → 0<sup>+</sup>, the limit is lim<sub>z → 0<sup>+</sup></sub> e<sup>−1/√z</sup>/√z. Put t = 1/√z, so t → +∞ and 1/√z = t; the expression becomes t·e<sup>−t</sup> = t/e<sup>t</sup> → 0 as t → ∞, since the exponential dominates any power. Hence the limit is 0.</p></div>
+<div class="dgraph" data-exprs='["y=e^(-1/x)/x{0<x<=2}", "(0, 0)"]' data-xmin="0" data-xmax="2" data-ymin="-1" data-ymax="2"></div>
 <p class="ans">Answer: 0</p></div>
 
 <div class="prob"><h4>Ex. 13.2: 13</h4>
@@ -1185,9 +1209,9 @@
 <p class="ans">Answer: π/2</p></div>
 
 <div class="prob"><h4>Ex. 13.2: 23</h4>
-<p class="stmt">Evaluate the limit by converting to polar coordinates, as in Example 7: lim<sub>(x,y) → (0,0)</sub> (x<sup>2</sup> + y<sup>2</sup>) ln(x<sup>2</sup> + y<sup>2</sup>).</p>
-<div class="sol"><p>Put x = r cos θ, y = r sin θ, so x<sup>2</sup> + y<sup>2</sup> = r<sup>2</sup> and r → 0<sup>+</sup>. The limit becomes lim<sub>r → 0<sup>+</sup></sub> r<sup>2</sup> ln(r<sup>2</sup>) = lim<sub>r → 0<sup>+</sup></sub> 2r<sup>2</sup> ln r. This is the standard limit: r<sup>2</sup> ln r → 0 (e.g. by l'Hôpital on ln r/(1/r<sup>2</sup>)). The result is independent of θ, so the two-variable limit is 0.</p></div>
-<div class="dgraph" data-exprs='["y=x^2*ln(x^2)", "(0, 0)"]' data-xmin="-2" data-xmax="2" data-ymin="-1" data-ymax="1"></div>
+<p class="stmt">Evaluate the limit by converting to polar coordinates, as in Example 7: lim<sub>(x,y) → (0,0)</sub> √(x<sup>2</sup> + y<sup>2</sup>) ln(x<sup>2</sup> + y<sup>2</sup>).</p>
+<div class="sol"><p>Put x = r cos θ, y = r sin θ, so √(x<sup>2</sup> + y<sup>2</sup>) = r and r → 0<sup>+</sup>. The limit becomes lim<sub>r → 0<sup>+</sup></sub> r ln(r<sup>2</sup>) = lim<sub>r → 0<sup>+</sup></sub> 2r ln r. This is the standard limit: r ln r → 0 (e.g. by l'Hôpital on ln r/(1/r)). The result is independent of θ, so the two-variable limit is 0.</p></div>
+<div class="dgraph" data-exprs='["y=abs(x)*ln(x^2){-2<=x<=2}", "(0, 0)"]' data-xmin="-2" data-xmax="2" data-ymin="-1" data-ymax="3"></div>
 <p class="ans">Answer: 0</p></div>
 
 <div class="prob"><h4>Ex. 13.2: 24</h4>
@@ -1197,16 +1221,16 @@
 <p class="ans">Answer: 0</p></div>
 
 <div class="prob"><h4>Ex. 13.2: 25</h4>
-<p class="stmt">lim<sub>(x,y) → (0,0)</sub> x<sup>2</sup>y<sup>2</sup>/(x<sup>2</sup> + y<sup>2</sup>).</p>
-<div class="sol"><p>In polar coordinates the expression is r<sup>4</sup> cos<sup>2</sup> θ sin<sup>2</sup> θ/r<sup>2</sup> = r<sup>2</sup> cos<sup>2</sup> θ sin<sup>2</sup> θ. Since 0 ≤ cos<sup>2</sup> θ sin<sup>2</sup> θ ≤ 1, we have 0 ≤ |expression| ≤ r<sup>2</sup> → 0 as r → 0<sup>+</sup>. By the squeeze theorem the limit is 0. (Equivalently, 0 ≤ x<sup>2</sup>y<sup>2</sup>/(x<sup>2</sup> + y<sup>2</sup>) ≤ x<sup>2</sup> + y<sup>2</sup>.)</p></div>
-<div class="dgraph" data-exprs='["y=x^2/2", "(0, 0)"]' data-xmin="-2" data-xmax="2" data-ymin="-1" data-ymax="2"></div>
+<p class="stmt">lim<sub>(x,y) → (0,0)</sub> x<sup>2</sup>y<sup>2</sup>/√(x<sup>2</sup> + y<sup>2</sup>).</p>
+<div class="sol"><p>In polar coordinates the expression is r<sup>4</sup> cos<sup>2</sup> θ sin<sup>2</sup> θ/r = r<sup>3</sup> cos<sup>2</sup> θ sin<sup>2</sup> θ. Since 0 ≤ cos<sup>2</sup> θ sin<sup>2</sup> θ ≤ 1, we have 0 ≤ |expression| ≤ r<sup>3</sup> → 0 as r → 0<sup>+</sup>. By the squeeze theorem the limit is 0.</p></div>
+<div class="dgraph" data-exprs='["y=abs(x)^3/sqrt(2){-2<=x<=2}", "(0, 0)"]' data-xmin="-2" data-xmax="2" data-ymin="-1" data-ymax="6"></div>
 <p class="ans">Answer: 0</p></div>
 
 <div class="prob"><h4>Ex. 13.2: 26</h4>
-<p class="stmt">lim<sub>(x,y) → (0,0)</sub> xy/(x<sup>2</sup> + 2y<sup>2</sup>).</p>
-<div class="sol"><p>In polar coordinates the expression is r<sup>2</sup> cos θ sin θ/(r<sup>2</sup>(cos<sup>2</sup> θ + 2 sin<sup>2</sup> θ)) = cos θ sin θ/(cos<sup>2</sup> θ + 2 sin<sup>2</sup> θ), which still depends on θ — a warning that the limit may not exist. Check two paths: along the x-axis (y = 0) the function is 0, so the limit along this path is 0; along the line y = x it is x<sup>2</sup>/(x<sup>2</sup> + 2x<sup>2</sup>) = 1/3 for x ≠ 0, so the limit along this path is 1/3. Since 0 ≠ 1/3, the limit does not exist. (Note the trap: along every parabola y = kx<sup>2</sup> the limit is 0, yet the limit still fails to exist.)</p></div>
-<div class="dgraph" data-exprs='["y=0", "y=x", "(0, 0)"]' data-xmin="-2" data-xmax="2" data-ymin="-2" data-ymax="2"></div>
-<p class="ans">Answer: The limit does not exist (0 along y = 0, 1/3 along y = x).</p></div>
+<p class="stmt">lim<sub>(x,y) → (0,0)</sub> xy/√(x<sup>2</sup> + 2y<sup>2</sup>).</p>
+<div class="sol"><p>In polar coordinates, with x = r cos θ and y = r sin θ, the expression is r<sup>2</sup> cos θ sin θ/(r√(cos<sup>2</sup> θ + 2 sin<sup>2</sup> θ)) = r·cos θ sin θ/√(cos<sup>2</sup> θ + 2 sin<sup>2</sup> θ). Now |cos θ sin θ| ≤ 1 and √(cos<sup>2</sup> θ + 2 sin<sup>2</sup> θ) ≥ 1, so |expression| ≤ r → 0 as r → 0<sup>+</sup>. By the squeeze theorem the limit is 0. (Note the trap this problem is built around: without the square root in the denominator the limit would not exist — along y = x it would be 1/3 — but the radical makes the denominator one power of r stronger than the numerator, so the quotient is squeezed to 0.)</p></div>
+<div class="dgraph" data-exprs='["y=0", "y=x", "y=abs(x)/sqrt(3){-2<=x<=2}", "(0, 0)"]' data-xmin="-2" data-xmax="2" data-ymin="-2" data-ymax="2"></div>
+<p class="ans">Answer: 0</p></div>
 
 <div class="prob"><h4>Ex. 13.2: 27</h4>
 <p class="stmt">Evaluate the limit by converting to spherical coordinates (ρ, θ, φ), observing that ρ → 0<sup>+</sup> if and only if (x, y, z) → (0, 0, 0): lim<sub>(x,y,z) → (0,0,0)</sub> xyz/(x<sup>2</sup> + y<sup>2</sup> + z<sup>2</sup>).</p>
@@ -1216,11 +1240,11 @@
 <p class="ans">Answer: 0</p></div>
 
 <div class="prob"><h4>Ex. 13.2: 28</h4>
-<p class="stmt">lim<sub>(x,y,z) → (0,0,0)</sub> sin x sin y/(x<sup>2</sup> + 2y<sup>2</sup> + 3z<sup>2</sup>).</p>
-<div class="sol"><p>In spherical coordinates the expression is (sin(ρ sin φ cos θ) sin(ρ sin φ sin θ))/ρ<sup>2</sup>(sin<sup>2</sup> φ cos<sup>2</sup> θ + 2 sin<sup>2</sup> φ sin<sup>2</sup> θ + 3 cos<sup>2</sup> φ). Using sin u ~ u, this behaves like sin<sup>2</sup> φ cos θ sin θ/(sin<sup>2</sup> φ cos<sup>2</sup> θ + 2 sin<sup>2</sup> φ sin<sup>2</sup> θ + 3 cos<sup>2</sup> φ), which depends on the direction — so test paths directly. Along the x-axis (y = z = 0) the numerator is 0, so the limit along this path is 0. Along the line y = x, z = 0 the function is sin<sup>2</sup> x/(3x<sup>2</sup>) → 1/3, since sin x/x → 1. Since 0 ≠ 1/3, the limit does not exist.</p></div>
-<div class="dgraph" data-exprs='["y=0", "y=x", "(0, 0)"]' data-xmin="-2" data-xmax="2" data-ymin="-2" data-ymax="2"></div>
-<div class="dgraph3d" data-exprs='["x^2+y^2+z^2=1", "(0, 0, 0)"]'></div>
-<p class="ans">Answer: The limit does not exist (0 along the x-axis, 1/3 along y = x, z = 0).</p></div>
+<p class="stmt">lim<sub>(x,y,z) → (0,0,0)</sub> sin x sin y/√(x<sup>2</sup> + 2y<sup>2</sup> + 3z<sup>2</sup>).</p>
+<div class="sol"><p>Use the squeeze theorem with |sin u| ≤ |u|. Then |sin x sin y| ≤ |xy| ≤ (x<sup>2</sup> + y<sup>2</sup>)/2, while the denominator √(x<sup>2</sup> + 2y<sup>2</sup> + 3z<sup>2</sup>) is at least √(x<sup>2</sup> + y<sup>2</sup> + z<sup>2</sup>) = ρ, the distance from the origin. Hence |expression| ≤ (ρ<sup>2</sup>/2)/ρ = ρ/2 → 0 as (x, y, z) → (0, 0, 0), so the limit is 0. (Again the square root in the denominator is essential: without it the expression would behave like sin<sup>2</sup> x/(3x<sup>2</sup>) → 1/3 along y = x, z = 0, and the limit would not exist.)</p></div>
+<div class="dgraph" data-exprs='["y=0", "y=x", "y=(sin(x))^2/(sqrt(3)*abs(x)){-2<=x<=2}", "(0, 0)"]' data-xmin="-2" data-xmax="2" data-ymin="-2" data-ymax="2"></div>
+<div class="dgraph3d" data-exprs='["z=sin(x)sin(y)/sqrt(x^2+2y^2)", "(0, 0, 0)"]'></div>
+<p class="ans">Answer: 0</p></div>
 
 <div class="prob"><h4>Ex. 13.2: 33</h4>
 <p class="stmt">The accompanying figure (Figure Ex-33) shows a portion of the graph of f(x, y) = x<sup>2</sup>y/(x<sup>4</sup> + y<sup>2</sup>). (a) Based on the graph in the figure, does f(x, y) have a limit as (x, y) → (0, 0)? Explain your reasoning. (b) Show that f(x, y) → 0 as (x, y) → (0, 0) along any line y = mx. Does this imply that f(x, y) → 0 as (x, y) → (0, 0)? Explain. (c) Show that f(x, y) → 1/2 as (x, y) → (0, 0) along the parabola y = x<sup>2</sup>, and confirm visually that this is consistent with the graph of f(x, y). (d) Based on parts (b) and (c), does f(x, y) have a limit as (x, y) → (0, 0)? Is this consistent with your answer to part (a)?</p>
@@ -1290,10 +1314,10 @@
 <p class="ans">Answer: The closed half-plane y ≤ x (including the line y = x).</p></div>
 
 <div class="prob"><h4>Ex. 13.2: 43</h4>
-<p class="stmt">Sketch the largest region on which the function f(x, y) = x<sup>2</sup>y/(25 − x<sup>2</sup> − y<sup>2</sup>) is continuous.</p>
-<div class="sol"><p>A rational function is continuous wherever its denominator is non-zero. Here we need 25 − x<sup>2</sup> − y<sup>2</sup> ≠ 0, i.e. x<sup>2</sup> + y<sup>2</sup> ≠ 25. Hence f is continuous on the whole plane except for the circle of radius 5 centred at the origin.</p></div>
+<p class="stmt">Sketch the largest region on which the function f(x, y) = x<sup>2</sup>y/√(25 − x<sup>2</sup> − y<sup>2</sup>) is continuous.</p>
+<div class="sol"><p>The numerator is a polynomial, continuous everywhere, so f is continuous wherever the denominator is defined and non-zero: the square root needs 25 − x<sup>2</sup> − y<sup>2</sup> &gt; 0, i.e. x<sup>2</sup> + y<sup>2</sup> &lt; 25. Hence f is continuous on the open disk of radius 5 centred at the origin (the boundary circle, where the root is zero, is excluded).</p></div>
 <div class="dgraph" data-exprs='["x^2+y^2=25", "(0, 0)"]' data-xmin="-6" data-xmax="6" data-ymin="-6" data-ymax="6"></div>
-<p class="ans">Answer: The whole plane minus the circle x<sup>2</sup> + y<sup>2</sup> = 25.</p></div>
+<p class="ans">Answer: The open disk x² + y² < 25.</p></div>
 
 <div class="prob"><h4>Ex. 13.2: 44</h4>
 <p class="stmt">Sketch the largest region on which the function f(x, y) = ln(2x − y + 1) is continuous.</p>
@@ -1410,13 +1434,13 @@
 <h3>Lecture 6 — Partial Derivatives (Anton §13.3)</h3>
 
 <div class="prob"><h4>Ex. 13.3: 11</h4>
-<p class="stmt">Let f(x, y) = 3x + 2y. (a) Find the slope of the surface z = f(x, y) in the x-direction at the point (4, 2). (b) Find the slope of the surface z = f(x, y) in the y-direction at the point (4, 2).</p>
+<p class="stmt">Let f(x, y) = √(3x + 2y). (a) Find the slope of the surface z = f(x, y) in the x-direction at the point (4, 2). (b) Find the slope of the surface z = f(x, y) in the y-direction at the point (4, 2).</p>
 <div class="sol">
-<p>The slope in the x-direction is f<sub>x</sub> and the slope in the y-direction is f<sub>y</sub>. Holding y fixed and differentiating with respect to x: f<sub>x</sub>(x, y) = 3. Holding x fixed and differentiating with respect to y: f<sub>y</sub>(x, y) = 2. Both partials are constant (the surface is a plane), so their values at (4, 2) are the same as everywhere.</p>
+<p>The slope in the x-direction is f<sub>x</sub> and the slope in the y-direction is f<sub>y</sub>. Write f(x, y) = (3x + 2y)<sup>1/2</sup>. Holding y fixed and differentiating with respect to x: f<sub>x</sub>(x, y) = 3/(2√(3x + 2y)). Holding x fixed and differentiating with respect to y: f<sub>y</sub>(x, y) = 1/√(3x + 2y). At (4, 2), 3x + 2y = 16, so f<sub>x</sub>(4, 2) = 3/8 and f<sub>y</sub>(4, 2) = 1/4.</p>
 </div>
 <div class="dgraph" data-exprs='["3x+2y=16", "(4, 2)"]' data-xmin="0" data-xmax="6" data-ymin="0" data-ymax="6"></div>
-<div class="dgraph3d" data-exprs='["z=3x+2y", "(4, 2, 16)"]'></div>
-<p class="ans">Answer: (a) 3; (b) 2.</p></div>
+<div class="dgraph3d" data-exprs='["z=sqrt(3x+2y)", "(4, 2, 4)"]'></div>
+<p class="ans">Answer: (a) 3/8; (b) 1/4.</p></div>
 
 <div class="prob"><h4>Ex. 13.3: 12</h4>
 <p class="stmt">Let f(x, y) = xe<sup>−y</sup> + 5y. (a) Find the slope of the surface z = f(x, y) in the x-direction at the point (3, 0). (b) Find the slope of the surface z = f(x, y) in the y-direction at the point (3, 0).</p>
@@ -1465,13 +1489,13 @@
 <p class="ans">Answer: 6 (z increases 6 units per unit increase in y).</p></div>
 
 <div class="prob"><h4>Ex. 13.3: 57</h4>
-<p class="stmt">A point moves along the intersection of the plane y = 3 and the surface z = 29 − x<sup>2</sup> − y<sup>2</sup>. At what rate is z changing with respect to x when the point is at (4, 3, 2)?</p>
+<p class="stmt">A point moves along the intersection of the plane y = 3 and the surface z = √(29 − x<sup>2</sup> − y<sup>2</sup>). At what rate is z changing with respect to x when the point is at (4, 3, 2)?</p>
 <div class="sol">
-<p>On the plane y = 3 the point moves with y fixed, so the rate is ∂z/∂x. Holding y constant, ∂z/∂x = −2x. At x = 4 this is −2(4) = −8. (Note: 29 − 4<sup>2</sup> − 3<sup>2</sup> = 4, so the printed point (4, 3, 2) does not lie on the surface as stated — the intended z-value is 4. The rate ∂z/∂x = −8 is unaffected.)</p>
+<p>On the plane y = 3 the point moves with y fixed, so the rate is ∂z/∂x. Write z = (29 − x<sup>2</sup> − y<sup>2</sup>)<sup>1/2</sup>; holding y constant, ∂z/∂x = −x/√(29 − x<sup>2</sup> − y<sup>2</sup>). At (4, 3) the root is √(29 − 16 − 9) = 2, so ∂z/∂x = −4/2 = −2. (Check: z = 2 at (4, 3), so the point (4, 3, 2) does lie on the surface.)</p>
 </div>
-<div class="dgraph" data-exprs='["y=20-x^2", "(4, 4)"]' data-xmin="-5" data-xmax="5" data-ymin="-5" data-ymax="21"></div>
-<div class="dgraph3d" data-exprs='["z=29-x^2-y^2", "(4, 3, 4)"]'></div>
-<p class="ans">Answer: −8 (z decreases 8 units per unit increase in x).</p></div>
+<div class="dgraph" data-exprs='["y=sqrt(20-x^2)", "(4, 2)"]' data-xmin="-5" data-xmax="5" data-ymin="-1" data-ymax="6"></div>
+<div class="dgraph3d" data-exprs='["z=sqrt(29-x^2-y^2)", "(4, 3, 2)"]'></div>
+<p class="ans">Answer: −2 (z decreases 2 units per unit increase in x).</p></div>
 
 <div class="prob"><h4>Ex. 13.3: 58</h4>
 <p class="stmt">Find the slope of the tangent line at (−1, 1, 5) to the curve of intersection of the surface z = x<sup>2</sup> + 4y<sup>2</sup> and (a) the plane x = −1, (b) the plane y = 1.</p>
@@ -1492,13 +1516,13 @@
 <p class="ans">Answer: (a) ∂V/∂r = 2πrh; (b) ∂V/∂h = πr<sup>2</sup>; (c) 48π in<sup>2</sup>/in; (d) 64π in<sup>2</sup>/in.</p></div>
 
 <div class="prob"><h4>Ex. 13.3: 60</h4>
-<p class="stmt">The volume V of a right circular cone is given by V = (π/24)d<sup>2</sup>(4s<sup>2</sup> − d<sup>2</sup>), where s is the slant height and d is the diameter of the base. (a) Find a formula for the instantaneous rate of change of V with respect to s if d remains constant. (b) Find a formula for the instantaneous rate of change of V with respect to d if s remains constant. (c) Suppose that d has a constant value of 16 cm, but s varies. Find the rate of change of V with respect to s when s = 10 cm. (d) Suppose that s has a constant value of 10 cm, but d varies. Find the rate of change of V with respect to d when d = 16 cm.</p>
+<p class="stmt">The volume V of a right circular cone is given by V = (π/24)d<sup>2</sup>√(4s<sup>2</sup> − d<sup>2</sup>), where s is the slant height and d is the diameter of the base. (a) Find a formula for the instantaneous rate of change of V with respect to s if d remains constant. (b) Find a formula for the instantaneous rate of change of V with respect to d if s remains constant. (c) Suppose that d has a constant value of 16 cm, but s varies. Find the rate of change of V with respect to s when s = 10 cm. (d) Suppose that s has a constant value of 10 cm, but d varies. Find the rate of change of V with respect to d when d = 16 cm.</p>
 <div class="sol">
-<p>Expand: V = (π/24)(4d<sup>2</sup>s<sup>2</sup> − d<sup>4</sup>). (a) Hold d fixed: ∂V/∂s = (π/24)(8d<sup>2</sup>s) = πd<sup>2</sup>s/3. (b) Hold s fixed: ∂V/∂d = (π/24)(8ds<sup>2</sup> − 4d<sup>3</sup>) = πd(2s<sup>2</sup> − d<sup>2</sup>)/6. (c) With d = 16, s = 10: ∂V/∂s = π(16)<sup>2</sup>(10)/3 = 2560π/3 ≈ 2680.8 cm<sup>2</sup>/cm. (d) With s = 10, d = 16: ∂V/∂d = π(16)(2·100 − 256)/6 = π(16)(−56)/6 = −448π/3 ≈ −469.1 cm<sup>2</sup>/cm. The negative sign is correct: with the slant height fixed, widening the base shortens the height, and past a point the volume falls.</p>
+<p>Write V = (π/24)d<sup>2</sup>(4s<sup>2</sup> − d<sup>2</sup>)<sup>1/2</sup>. (a) Hold d fixed: ∂V/∂s = (π/24)d<sup>2</sup>·(1/2)(4s<sup>2</sup> − d<sup>2</sup>)<sup>−1/2</sup>·8s = πsd<sup>2</sup>/(6√(4s<sup>2</sup> − d<sup>2</sup>)). (b) Hold s fixed: ∂V/∂d = (π/24)[2d√(4s<sup>2</sup> − d<sup>2</sup>) + d<sup>2</sup>·(−d)/√(4s<sup>2</sup> − d<sup>2</sup>)] = πd(8s<sup>2</sup> − 3d<sup>2</sup>)/(24√(4s<sup>2</sup> − d<sup>2</sup>)). (c) With d = 16, s = 10: √(4s<sup>2</sup> − d<sup>2</sup>) = √(400 − 256) = 12, so ∂V/∂s = π(10)(256)/(6·12) = 320π/9 ≈ 111.7 cm<sup>2</sup>/cm. (d) With s = 10, d = 16: ∂V/∂d = π(16)(800 − 768)/(24·12) = 16π/9 ≈ 5.59 cm<sup>2</sup>/cm.</p>
 </div>
-<div class="dgraph" data-exprs='["y=(32pi/3)(4x^2-256)", "y=(pi/24)x^2(400-x^2)", "(10, 4825.49)", "(16, 4825.49)"]' data-xmin="0" data-xmax="20" data-ymin="-1000" data-ymax="6000"></div>
-<div class="dgraph3d" data-exprs='["z=(pi/24)x^2(4y^2-x^2)"]'></div>
-<p class="ans">Answer: (a) ∂V/∂s = πd<sup>2</sup>s/3; (b) ∂V/∂d = πd(2s<sup>2</sup> − d<sup>2</sup>)/6; (c) 2560π/3 cm<sup>2</sup>/cm ≈ 2680.8 cm<sup>2</sup>/cm; (d) −448π/3 cm<sup>2</sup>/cm ≈ −469.1 cm<sup>2</sup>/cm.</p></div>
+<div class="dgraph" data-exprs='["y=(pi/24)x^2sqrt(400-x^2){0<=x<=20}", "y=(128pi/3)x/sqrt(4x^2-256){8<x<=12}", "(16, 402.12)", "(10, 111.70)"]' data-xmin="0" data-xmax="20" data-ymin="-50" data-ymax="450"></div>
+<div class="dgraph3d" data-exprs='["z=(pi/24)x^2sqrt(4y^2-x^2)"]'></div>
+<p class="ans">Answer: (a) ∂V/∂s = πsd²/(6√(4s² − d²)); (b) ∂V/∂d = πd(8s² − 3d²)/(24√(4s² − d²)); (c) 320π/9 cm²/cm ≈ 111.7 cm²/cm; (d) 16π/9 cm²/cm ≈ 5.59 cm²/cm.</p></div>
 
 <div class="prob"><h4>Ex. 13.3: 65</h4>
 <p class="stmt">The volume of a right circular cone of radius r and height h is V = (1/3)πr<sup>2</sup>h. Show that if the height remains constant while the radius changes, then the volume satisfies ∂V/∂r = 2V/r.</p>
@@ -1572,12 +1596,12 @@
 <p class="ans">Answer: f<sub>x</sub> = sin((x − y)<sup>3</sup>) − sin((x + y)<sup>3</sup>), f<sub>y</sub> = −sin((x − y)<sup>3</sup>) − sin((x + y)<sup>3</sup>).</p></div>
 
 <div class="prob"><h4>Ex. 13.3: 81</h4>
-<p class="stmt">Let z = x cos y. Find (a) ∂<sup>2</sup>z/∂x<sup>2</sup>, (b) ∂<sup>2</sup>z/∂y<sup>2</sup>, (c) ∂<sup>2</sup>z/∂x∂y, (d) ∂<sup>2</sup>z/∂y∂x.</p>
+<p class="stmt">Let z = √x cos y. Find (a) ∂<sup>2</sup>z/∂x<sup>2</sup>, (b) ∂<sup>2</sup>z/∂y<sup>2</sup>, (c) ∂<sup>2</sup>z/∂x∂y, (d) ∂<sup>2</sup>z/∂y∂x.</p>
 <div class="sol">
-<p>First-order partials: ∂z/∂x = cos y and ∂z/∂y = −x sin y. (a) Differentiate ∂z/∂x with respect to x: ∂<sup>2</sup>z/∂x<sup>2</sup> = 0. (b) Differentiate ∂z/∂y with respect to y: ∂<sup>2</sup>z/∂y<sup>2</sup> = −x cos y. (c) Differentiate ∂z/∂x with respect to y (note: in ∂-notation the rightmost variable is differentiated first, so ∂<sup>2</sup>z/∂x∂y means differentiate with respect to y, then x — equivalently differentiate ∂z/∂x with respect to y): ∂<sup>2</sup>z/∂x∂y = −sin y. (d) Differentiate ∂z/∂y with respect to x: ∂<sup>2</sup>z/∂y∂x = −sin y. The mixed partials agree, as Clairaut's theorem promises.</p>
+<p>First-order partials: ∂z/∂x = cos y/(2√x) and ∂z/∂y = −√x sin y. (a) Differentiate ∂z/∂x with respect to x: ∂<sup>2</sup>z/∂x<sup>2</sup> = −cos y/(4x<sup>3/2</sup>). (b) Differentiate ∂z/∂y with respect to y: ∂<sup>2</sup>z/∂y<sup>2</sup> = −√x cos y. (c) Differentiate ∂z/∂x with respect to y (note: in ∂-notation the rightmost variable is differentiated first, so ∂<sup>2</sup>z/∂x∂y means differentiate with respect to y, then x — equivalently differentiate ∂z/∂x with respect to y): ∂<sup>2</sup>z/∂x∂y = −sin y/(2√x). (d) Differentiate ∂z/∂y with respect to x: ∂<sup>2</sup>z/∂y∂x = −sin y/(2√x). The mixed partials agree, as Clairaut's theorem promises.</p>
 </div>
-<div class="dgraph" data-exprs='["y=x", "y=-x", "(0, 0)"]' data-xmin="-3" data-xmax="3" data-ymin="-3" data-ymax="3"></div>
-<p class="ans">Answer: (a) 0; (b) −x cos y; (c) −sin y; (d) −sin y.</p></div>
+<div class="dgraph" data-exprs='["y=sqrt(x){0<=x<=9}", "y=0", "(1, 1)"]' data-xmin="-1" data-xmax="9" data-ymin="-1" data-ymax="3.5"></div><div class="dgraph3d" data-exprs='["z=sqrt(x)cos(y)"]'></div>
+<p class="ans">Answer: (a) −cos y/(4x<sup>3/2</sup>); (b) −√x cos y; (c) −sin y/(2√x); (d) −sin y/(2√x).</p></div>
 
 <div class="prob"><h4>Ex. 13.3: 82</h4>
 <p class="stmt">Let f(x, y) = 4x<sup>2</sup> − 2y + 7x<sup>4</sup>y<sup>5</sup>. Find (a) f<sub>xx</sub>, (b) f<sub>yy</sub>, (c) f<sub>xy</sub>, (d) f<sub>yx</sub>.</p>
@@ -1767,14 +1791,14 @@
 <p class="ans">Answer: d<em>f</em> ≈ 0.58; actual Δ<em>f</em> ≈ 0.6053.</p></div>
 
 <div class="prob"><h4>Ex. 13.4: 33</h4>
-<p class="stmt">(a) Find the local linear approximation <em>L</em> to the specified function <em>f</em> at the designated point <em>P</em>. (b) Compare the error in approximating <em>f</em> by <em>L</em> at the specified point <em>Q</em> with the distance between <em>P</em> and <em>Q</em>. <em>f</em>(<em>x</em>, <em>y</em>) = 1/√(<em>x</em> + <em>y</em><sup>2</sup>); <em>P</em>(4, 3), <em>Q</em>(3.92, 3.01).</p>
+<p class="stmt">(a) Find the local linear approximation <em>L</em> to the specified function <em>f</em> at the designated point <em>P</em>. (b) Compare the error in approximating <em>f</em> by <em>L</em> at the specified point <em>Q</em> with the distance between <em>P</em> and <em>Q</em>. <em>f</em>(<em>x</em>, <em>y</em>) = 1/√(<em>x</em><sup>2</sup> + <em>y</em><sup>2</sup>); <em>P</em>(4, 3), <em>Q</em>(3.92, 3.01).</p>
 <div class="sol">
-<p>(a) <em>f</em>(4, 3) = 1/√13 ≈ 0.27735. Partials: <em>f<sub>x</sub></em> = −½(<em>x</em> + <em>y</em><sup>2</sup>)<sup>−3/2</sup> and <em>f<sub>y</sub></em> = −<em>y</em>(<em>x</em> + <em>y</em><sup>2</sup>)<sup>−3/2</sup>. At <em>P</em>: <em>f<sub>x</sub></em> = −1/(2·13√13) ≈ −0.01067, <em>f<sub>y</sub></em> = −3/(13√13) ≈ −0.06400. Hence <em>L</em>(<em>x</em>, <em>y</em>) ≈ 0.27735 − 0.01067(<em>x</em> − 4) − 0.06400(<em>y</em> − 3).</p>
-<p>(b) <em>L</em>(3.92, 3.01) ≈ 0.27735 + (−0.01067)(−0.08) + (−0.06400)(0.01) ≈ 0.27756. The actual value is <em>f</em>(3.92, 3.01) = 1/√12.9801 ≈ 0.27756, so the error is about 0.000001. The distance |<em>PQ</em>| = √(0.08<sup>2</sup> + 0.01<sup>2</sup>) ≈ 0.081. The error (≈10<sup>−6</sup>) is far smaller than the distance — exactly what differentiability promises: the error shrinks faster than the distance moved.</p>
+<p>(a) <em>f</em>(4, 3) = 1/√25 = 1/5 = 0.2. Partials: <em>f<sub>x</sub></em> = −<em>x</em>(<em>x</em><sup>2</sup> + <em>y</em><sup>2</sup>)<sup>−3/2</sup> and <em>f<sub>y</sub></em> = −<em>y</em>(<em>x</em><sup>2</sup> + <em>y</em><sup>2</sup>)<sup>−3/2</sup>. At <em>P</em>: <em>f<sub>x</sub></em> = −4/125 = −0.032, <em>f<sub>y</sub></em> = −3/125 = −0.024. Hence <em>L</em>(<em>x</em>, <em>y</em>) = 1/5 − (4/125)(<em>x</em> − 4) − (3/125)(<em>y</em> − 3).</p>
+<p>(b) <em>L</em>(3.92, 3.01) = 0.2 + (−4/125)(−0.08) + (−3/125)(0.01) = 0.20232. The actual value is <em>f</em>(3.92, 3.01) = 1/√(3.92<sup>2</sup> + 3.01<sup>2</sup>) = 1/√24.4265 ≈ 0.202334, so the error is <em>L</em>(<em>Q</em>) − <em>f</em>(<em>Q</em>) ≈ −0.000014. The distance |<em>PQ</em>| = √(0.08<sup>2</sup> + 0.01<sup>2</sup>) ≈ 0.0806, so |error|/|<em>PQ</em>| ≈ 0.00018. The error is far smaller than the distance — exactly what differentiability promises: the error shrinks faster than the distance moved.</p>
 </div>
-<div class="dgraph" data-exprs='["x+y^2=13", "(4, 3)", "(3.92, 3.01)"]' data-xmin="3" data-xmax="5" data-ymin="2" data-ymax="4"></div>
-<div class="dgraph3d" data-exprs='["z=1/sqrt(x+y^2)", "z=-0.01067x-0.064y+0.512", "(4, 3, 0.277)"]'></div>
-<p class="ans">Answer: <em>L</em>(<em>x</em>, <em>y</em>) ≈ 0.27735 − 0.01067(<em>x</em> − 4) − 0.06400(<em>y</em> − 3); <em>L</em>(<em>Q</em>) ≈ 0.27756, error ≈ 0.000001, |<em>PQ</em>| ≈ 0.081.</p></div>
+<div class="dgraph" data-exprs='["x^2+y^2=25", "(4, 3)", "(3.92, 3.01)"]' data-xmin="3" data-xmax="5" data-ymin="2" data-ymax="4"></div>
+<div class="dgraph3d" data-exprs='["z=1/sqrt(x^2+y^2)", "z=-0.032x-0.024y+0.4", "(4, 3, 0.2)"]'></div>
+<p class="ans">Answer: <em>L</em>(<em>x</em>, <em>y</em>) = 1/5 − (4/125)(<em>x</em> − 4) − (3/125)(<em>y</em> − 3); <em>L</em>(<em>Q</em>) = 0.20232, error ≈ −0.000014, |<em>PQ</em>| ≈ 0.0806.</p></div>
 
 <div class="prob"><h4>Ex. 13.4: 34</h4>
 <p class="stmt">(a) Find the local linear approximation <em>L</em> to the specified function <em>f</em> at the designated point <em>P</em>. (b) Compare the error in approximating <em>f</em> by <em>L</em> at the specified point <em>Q</em> with the distance between <em>P</em> and <em>Q</em>. <em>f</em>(<em>x</em>, <em>y</em>) = <em>x</em><sup>0.5</sup><em>y</em><sup>0.3</sup>; <em>P</em>(1, 1), <em>Q</em>(1.05, 0.97).</p>
@@ -2014,13 +2038,14 @@ Diagrams: Example 1</a></p>
 <div class="dgraph" data-exprs='["y=5cos(1)-sin(x^2)", "y=-2xcos(x^2)"]' data-xmin="-3" data-xmax="3" data-ymin="-8" data-ymax="8"></div>
 <p class="ans">Answer: −2t cos(t<sup>2</sup>)</p></div>
 <div class="prob"><h4>Ex. 13.5: 10</h4>
-<p class="stmt">Use the chain rule to find dw/dt if w = 1 + x − 2yz<sup>4</sup>x, x = ln t, y = t, z = 4t.</p>
+<p class="stmt">Use the chain rule to find dw/dt if w = √(1 + x − 2yz<sup>4</sup>x), x = ln t, y = t, z = 4t.</p>
 <div class="sol">
-<p>First simplify: z<sup>4</sup> = 256t<sup>4</sup>, so w = 1 + ln t − 512t<sup>5</sup> ln t.</p>
-<p>Differentiating directly, dw/dt = 1/t − 512(5t<sup>4</sup> ln t + t<sup>4</sup>) = 1/t − 2560t<sup>4</sup> ln t − 512t<sup>4</sup>. (The chain rule gives the same result: ∂w/∂x = 1 − 2yz<sup>4</sup>, ∂w/∂y = −2z<sup>4</sup>x, ∂w/∂z = −8yz<sup>3</sup>x, with dx/dt = 1/t, dy/dt = 1, dz/dt = 4.)</p>
+<p>Put u = 1 + x − 2yz<sup>4</sup>x, so w = √u. Since z<sup>4</sup> = 256t<sup>4</sup>, u = 1 + ln t − 512t<sup>5</sup> ln t.</p>
+<p>∂w/∂x = (1 − 2yz<sup>4</sup>)/(2√u) = (1 − 512t<sup>5</sup>)/(2√u), ∂w/∂y = −z<sup>4</sup>x/√u = −256t<sup>4</sup> ln t/√u, ∂w/∂z = −4yz<sup>3</sup>x/√u = −256t<sup>4</sup> ln t/√u, with dx/dt = 1/t, dy/dt = 1, dz/dt = 4.</p>
+<p>Hence dw/dt = (1 − 512t<sup>5</sup>)/(2t√u) − (256t<sup>4</sup> ln t)/√u − 4(256t<sup>4</sup> ln t)/√u = (1 − 512t<sup>5</sup> − 2560t<sup>5</sup> ln t)/(2t√(1 + ln t − 512t<sup>5</sup> ln t)).</p>
 </div>
-<div class="dgraph" data-exprs='["y=1+ln(x)-512x^5ln(x)"]' data-xmin="1" data-xmax="1.5" data-ymin="-2000" data-ymax="5"></div>
-<p class="ans">Answer: dw/dt = 1/t − 2560t<sup>4</sup> ln t − 512t<sup>4</sup></p></div>
+<div class="dgraph" data-exprs='["y=sqrt(1+ln(x)-512x^5ln(x)){1<=x<=1.002}", "(1, 1)"]' data-xmin="1" data-xmax="1.002" data-ymin="-0.1" data-ymax="1.2"></div>
+<p class="ans">Answer: dw/dt = (1 − 512t<sup>5</sup> − 2560t<sup>5</sup> ln t)/(2t√(1 + ln t − 512t<sup>5</sup> ln t))</p></div>
 <div class="prob"><h4>Ex. 13.5: 17</h4>
 <p class="stmt">Find ∂z/∂u and ∂z/∂v if z = 8x<sup>2</sup>y − 2x + 3y, x = uv, y = u − v.</p>
 <div class="sol">
@@ -2061,14 +2086,14 @@ Diagrams: Example 1</a></p>
 <div class="dgraph3d" data-exprs='["z=3x-2y"]'></div>
 <p class="ans">Answer: ∂z/∂u = 3 + 3v/u − 4u; ∂z/∂v = 3 ln u + 2 ln v + 2</p></div>
 <div class="prob"><h4>Ex. 13.5: 21</h4>
-<p class="stmt">Find ∂z/∂u and ∂z/∂v if z = e<sup>xy<sup>2</sup></sup>, x = uv, y = 1/v.</p>
+<p class="stmt">Find ∂z/∂u and ∂z/∂v if z = e<sup>x<sup>2</sup>y</sup>, x = √(uv), y = 1/v.</p>
 <div class="sol">
-<p>First simplify: xy<sup>2</sup> = uv·(1/v<sup>2</sup>) = u/v, so z = e<sup>u/v</sup>.</p>
-<p>∂z/∂u = e<sup>u/v</sup>·(1/v), ∂z/∂v = e<sup>u/v</sup>·(−u/v<sup>2</sup>).</p>
+<p>First simplify: x<sup>2</sup>y = (uv)(1/v) = u, so z = e<sup>u</sup> — the v-dependence cancels entirely.</p>
+<p>Hence ∂z/∂u = e<sup>u</sup> and ∂z/∂v = 0. (By the chain rule: ∂z/∂x = 2xy e<sup>x<sup>2</sup>y</sup>, ∂z/∂y = x<sup>2</sup> e<sup>x<sup>2</sup>y</sup>, with ∂x/∂u = √v/(2√u), ∂y/∂u = 0, ∂x/∂v = √u/(2√v), ∂y/∂v = −1/v<sup>2</sup>; the terms combine to the same result.)</p>
 </div>
 <div class="dgraph" data-exprs='["y=e^x"]' data-xmin="-2" data-xmax="2" data-ymin="0" data-ymax="8"></div>
-<div class="dgraph3d" data-exprs='["z=e^(x*y^2)"]'></div>
-<p class="ans">Answer: ∂z/∂u = e<sup>u/v</sup>/v; ∂z/∂v = −u e<sup>u/v</sup>/v<sup>2</sup></p></div>
+<div class="dgraph3d" data-exprs='["z=e^(x^2*y)"]'></div>
+<p class="ans">Answer: ∂z/∂u = e<sup>u</sup>; ∂z/∂v = 0</p></div>
 <div class="prob"><h4>Ex. 13.5: 22</h4>
 <p class="stmt">Find ∂z/∂u and ∂z/∂v if z = cos x sin y, x = u − v, y = u<sup>2</sup> + v<sup>2</sup>.</p>
 <div class="sol">
@@ -2147,9 +2172,10 @@ Diagrams: Example 1</a></p>
 <div class="sol">
 <p>w = 3x(3x<sup>2</sup> + 2)<sup>2</sup>(x − 1)<sup>3/2</sup>. By the product rule (three factors), dw/dx = 3(3x<sup>2</sup> + 2)<sup>2</sup>(x − 1)<sup>3/2</sup> + 36x<sup>2</sup>(3x<sup>2</sup> + 2)(x − 1)<sup>3/2</sup> + (9/2)x(3x<sup>2</sup> + 2)<sup>2</sup>(x − 1)<sup>1/2</sup>.</p>
 <p>Factoring √(x − 1)(3x<sup>2</sup> + 2): dw/dx = √(x − 1)(3x<sup>2</sup> + 2)[3(3x<sup>2</sup> + 2)(x − 1) + 36x<sup>2</sup>(x − 1) + (9/2)x(3x<sup>2</sup> + 2)].</p>
+<p>Expanding the bracket and factoring again gives dw/dx = (3√(x − 1)/2)(3x<sup>2</sup> + 2)(39x<sup>3</sup> − 30x<sup>2</sup> + 10x − 4).</p>
 </div>
 <div class="dgraph" data-exprs='["y=3x(3x^2+2)^2(x-1)^(3/2)"]' data-xmin="1" data-xmax="2" data-ymin="0" data-ymax="1200"></div>
-<p class="ans">Answer: dw/dx = √(x − 1)(351x<sup>5</sup>/2 − 135x<sup>4</sup> + 162x<sup>3</sup> − 108x<sup>2</sup> + 30x − 12)</p></div>
+<p class="ans">Answer: dw/dx = (3√(x − 1)/2)(3x<sup>2</sup> + 2)(39x<sup>3</sup> − 30x<sup>2</sup> + 10x − 4)</p></div>
 <div class="prob"><h4>Ex. 13.5: 36</h4>
 <p class="stmt">The voltage V across a circuit is V = IR. Two resistors R<sub>1</sub> and R<sub>2</sub> in parallel have combined resistance 1/R = 1/R<sub>1</sub> + 1/R<sub>2</sub>. The current is 3 A and increasing at 10<sup>−2</sup> A/s; R<sub>1</sub> is 2 Ω and increasing at 0.4 Ω/s; R<sub>2</sub> is 5 Ω and decreasing at 0.7 Ω/s. Estimate the rate at which the voltage is changing.</p>
 <div class="sol">
@@ -2234,16 +2260,16 @@ Diagrams: Example 1</a></p>
 <div class="dgraph" data-exprs='["x^2+y^2=4", "y=x{0<=x<=2}", "(2,0)"]' data-xmin="-3" data-xmax="3" data-ymin="-3" data-ymax="3"></div>
 <p class="ans">Answer: r ∂z/∂r = x ∂z/∂x + y ∂z/∂y; ∂z/∂θ = −y ∂z/∂x + x ∂z/∂y</p></div>
 <div class="prob"><h4>Ex. MC 2</h4>
-<p class="stmt">A function f(x, y) is homogeneous of degree n if f(tx, ty) = t<sup>n</sup>f(x, y) for t &gt; 0. Show each function is homogeneous and find its degree: (a) f = 3x<sup>2</sup> + y<sup>2</sup>; (b) f = √(x<sup>2</sup> + y<sup>2</sup>); (c) f = x<sup>2</sup>y − 2y<sup>3</sup>; (d) f = 2/(x + 2y<sup>2</sup>)<sup>2</sup>.</p>
+<p class="stmt">A function f(x, y) is homogeneous of degree n if f(tx, ty) = t<sup>n</sup>f(x, y) for t &gt; 0. Show each function is homogeneous and find its degree: (a) f = 3x<sup>2</sup> + y<sup>2</sup>; (b) f = √(x<sup>2</sup> + y<sup>2</sup>); (c) f = x<sup>2</sup>y − 2y<sup>3</sup>; (d) f = 5/(x<sup>2</sup> + 2y<sup>2</sup>)<sup>2</sup>.</p>
 <div class="sol">
 <p>(a) f(tx, ty) = 3t<sup>2</sup>x<sup>2</sup> + t<sup>2</sup>y<sup>2</sup> = t<sup>2</sup>f(x, y): homogeneous of degree 2.</p>
 <p>(b) f(tx, ty) = √(t<sup>2</sup>x<sup>2</sup> + t<sup>2</sup>y<sup>2</sup>) = t√(x<sup>2</sup> + y<sup>2</sup>) = t f(x, y) (t &gt; 0): homogeneous of degree 1.</p>
 <p>(c) f(tx, ty) = t<sup>3</sup>x<sup>2</sup>y − 2t<sup>3</sup>y<sup>3</sup> = t<sup>3</sup>f(x, y): homogeneous of degree 3.</p>
-<p>(d) f(tx, ty) = 2/(tx + 2t<sup>2</sup>y<sup>2</sup>)<sup>2</sup>. The denominator mixes t and t<sup>2</sup>, so this is not t<sup>n</sup> times f(x, y) for any n: the function is <strong>not</strong> homogeneous. (Note: some summaries list this as homogeneous — it is not; check by t = 2, x = 1, y = 1: f(2, 2) = 2/100 = 1/50, while t<sup>n</sup>f(1, 1) = 2<sup>n</sup>·(2/9) for no n.)</p>
+<p>(d) f(tx, ty) = 5/(t<sup>2</sup>x<sup>2</sup> + 2t<sup>2</sup>y<sup>2</sup>)<sup>2</sup> = 5/(t<sup>4</sup>(x<sup>2</sup> + 2y<sup>2</sup>)<sup>2</sup>) = t<sup>−4</sup>f(x, y): homogeneous of degree −4.</p>
 </div>
-<div class="dgraph" data-exprs='["y=4x^2", "y=sqrt(2)*x", "y=-x^3", "y=2/(x+2x^2)^2"]' data-xmin="0" data-xmax="2" data-ymin="-8" data-ymax="16"></div>
+<div class="dgraph" data-exprs='["y=4x^2", "y=sqrt(2)*x", "y=-x^3", "y=5/(9x^4){0.5<=x<=2}"]' data-xmin="0" data-xmax="2" data-ymin="-8" data-ymax="16"></div>
 <div class="dgraph3d" data-exprs='["z=3x^2+y^2", "z=sqrt(x^2+y^2)"]'></div>
-<p class="ans">Answer: (a) degree 2; (b) degree 1; (c) degree 3; (d) not homogeneous</p></div>
+<p class="ans">Answer: (a) degree 2; (b) degree 1; (c) degree 3; (d) degree −4</p></div>
 <div class="prob"><h4>Ex. MC 3</h4>
 <p class="stmt">Suppose f(x, y) is defined for all (x, y) ≠ (0, 0). Prove that f is homogeneous of degree n if and only if there is a 2π-periodic function g(θ) such that in polar form z = f(x, y) becomes z = r<sup>n</sup>g(θ) for r &gt; 0.</p>
 <div class="sol">
@@ -2257,7 +2283,7 @@ Diagrams: Example 1</a></p>
 <div class="sol">
 <p>(a) Let u = tx, v = ty. The homogeneity identity f(u, v) = t<sup>n</sup>f(x, y) differentiated with respect to t gives, by the chain rule, f<sub>u</sub>·x + f<sub>v</sub>·y = n t<sup>n−1</sup>f(x, y). Setting t = 1 (so u = x, v = y) gives x f<sub>x</sub> + y f<sub>y</sub> = n f.</p>
 <p>(b) By Exercise 3, z = r<sup>n</sup>g(θ), so ∂z/∂r = n r<sup>n−1</sup>g(θ) = nz/r. By Exercise 1, r ∂z/∂r = x ∂z/∂x + y ∂z/∂y, hence x f<sub>x</sub> + y f<sub>y</sub> = nz = nf.</p>
-<p>(c) (a) f = 3x<sup>2</sup> + y<sup>2</sup>: x(6x) + y(2y) = 6x<sup>2</sup> + 2y<sup>2</sup> = 2f ✓ (n = 2). (b) f = √(x<sup>2</sup> + y<sup>2</sup>): x·x/f + y·y/f = (x<sup>2</sup> + y<sup>2</sup>)/f = f ✓ (n = 1). (c) f = x<sup>2</sup>y − 2y<sup>3</sup>: x(2xy) + y(x<sup>2</sup> − 6y<sup>2</sup>) = 3x<sup>2</sup>y − 6y<sup>3</sup> = 3f ✓ (n = 3). (d) is not homogeneous, so the theorem does not apply.</p>
+<p>(c) (a) f = 3x<sup>2</sup> + y<sup>2</sup>: x(6x) + y(2y) = 6x<sup>2</sup> + 2y<sup>2</sup> = 2f ✓ (n = 2). (b) f = √(x<sup>2</sup> + y<sup>2</sup>): x·x/f + y·y/f = (x<sup>2</sup> + y<sup>2</sup>)/f = f ✓ (n = 1). (c) f = x<sup>2</sup>y − 2y<sup>3</sup>: x(2xy) + y(x<sup>2</sup> − 6y<sup>2</sup>) = 3x<sup>2</sup>y − 6y<sup>3</sup> = 3f ✓ (n = 3). (d) f = 5/(x<sup>2</sup> + 2y<sup>2</sup>)<sup>2</sup>: f<sub>x</sub> = −20x/(x<sup>2</sup> + 2y<sup>2</sup>)<sup>3</sup>, f<sub>y</sub> = −40y/(x<sup>2</sup> + 2y<sup>2</sup>)<sup>3</sup>, so x f<sub>x</sub> + y f<sub>y</sub> = −20(x<sup>2</sup> + 2y<sup>2</sup>)/(x<sup>2</sup> + 2y<sup>2</sup>)<sup>3</sup> = −4f ✓ (n = −4).</p>
 </div>
 <div class="dgraph" data-exprs='["y=4x^2", "y=8x^2"]' data-xmin="0" data-xmax="2" data-ymin="0" data-ymax="32"></div>
 <p class="ans">Answer: Euler’s theorem: x f<sub>x</sub> + y f<sub>y</sub> = nf for homogeneous f of degree n</p></div>
@@ -2392,14 +2418,14 @@ Tangent Plane? (MathCraft8)</a></p>
 <div class="dgraph3d" data-exprs='["xy+z^2=16", "(-3,0,4)"]'></div>
 <p class="ans">Answer: D<sub>u</sub>f = 5/√3 ≈ 2.89</p></div>
 <div class="prob"><h4>Ex. 13.6: 16</h4>
-<p class="stmt">Find the directional derivative of f(x, y, z) = √(y − x<sup>2</sup> + z<sup>2</sup>) at P(−3, 1, 4) in the direction of a = 2i − 2j − k.</p>
+<p class="stmt">Find the directional derivative of f(x, y, z) = y − √(x<sup>2</sup> + z<sup>2</sup>) at P(−3, 1, 4) in the direction of a = 2i − 2j − k.</p>
 <div class="sol">
-<p>∇f = (−x, 1, z)/(2√(y − x<sup>2</sup> + z<sup>2</sup>)). At P, y − x<sup>2</sup> + z<sup>2</sup> = 8, so ∇f(P) = (3√2/4, √2/8, √2).</p>
-<p>The unit vector is u = (2/3, −2/3, −1/3). D<sub>u</sub>f = (3√2/4)(2/3) + (√2/8)(−2/3) + √2(−1/3) = √2/2 − √2/12 − √2/3 = √2/12.</p>
+<p>f<sub>x</sub> = −x/√(x<sup>2</sup> + z<sup>2</sup>), f<sub>y</sub> = 1, f<sub>z</sub> = −z/√(x<sup>2</sup> + z<sup>2</sup>). At P, √(x<sup>2</sup> + z<sup>2</sup>) = √(9 + 16) = 5, so ∇f(P) = (3/5, 1, −4/5).</p>
+<p>The unit vector is u = (2/3, −2/3, −1/3). D<sub>u</sub>f = (3/5)(2/3) + (1)(−2/3) + (−4/5)(−1/3) = 2/5 − 2/3 + 4/15 = 0.</p>
 </div>
-<div class="dgraph" data-exprs='["y=x^2-16", "y=x^2-8", "(-3,1)"]' data-xmin="-5" data-xmax="5" data-ymin="-16" data-ymax="6"></div>
-<div class="dgraph3d" data-exprs='["y-x^2+z^2=8", "(-3,1,4)"]'></div>
-<p class="ans">Answer: D<sub>u</sub>f = √2/12 ≈ 0.118</p></div>
+<div class="dgraph" data-exprs='["y=-4+sqrt(x^2+16)", "y=sqrt(x^2+16)", "(-3, 1)"]' data-xmin="-5" data-xmax="5" data-ymin="-5" data-ymax="7"></div>
+<div class="dgraph3d" data-exprs='["x^2+z^2=(y+4)^2", "(-3, 1, 4)"]'></div>
+<p class="ans">Answer: D<sub>u</sub>f = 0</p></div>
 <div class="prob"><h4>Ex. 13.6: 17</h4>
 <p class="stmt">Find the directional derivative of f(x, y, z) = (z − x)/(z + y) at P(1, 0, −3) in the direction of a = −6i + 3j − 2k.</p>
 <div class="sol">
@@ -2419,13 +2445,13 @@ Tangent Plane? (MathCraft8)</a></p>
 <div class="dgraph3d" data-exprs='["x+y+3z=-3", "(-2,2,-1)"]'></div>
 <p class="ans">Answer: D<sub>u</sub>f = 31e<sup>−3</sup>/21 ≈ 0.0735</p></div>
 <div class="prob"><h4>Ex. 13.6: 19</h4>
-<p class="stmt">Find the directional derivative of f(x, y) = xy at P(1, 4) in the direction θ = π/3.</p>
+<p class="stmt">Find the directional derivative of f(x, y) = √(xy) at P(1, 4) in the direction θ = π/3.</p>
 <div class="sol">
-<p>∇f = (y, x), so ∇f(1, 4) = (4, 1). The unit vector is u = (cos π/3, sin π/3) = (1/2, √3/2).</p>
-<p>D<sub>u</sub>f = 4(1/2) + 1(√3/2) = 2 + √3/2.</p>
+<p>f<sub>x</sub> = √y/(2√x), f<sub>y</sub> = √x/(2√y), so ∇f(1, 4) = (1, 1/4). The unit vector is u = (cos π/3, sin π/3) = (1/2, √3/2).</p>
+<p>D<sub>u</sub>f = 1(1/2) + (1/4)(√3/2) = 1/2 + √3/8.</p>
 </div>
 <div class="dgraph" data-exprs='["xy=4", "xy=1", "xy=9", "(1+4t,4+t){0<=t<=1}"]' data-xmin="-1" data-xmax="6" data-ymin="-1" data-ymax="7"></div>
-<p class="ans">Answer: D<sub>u</sub>f = 2 + √3/2 ≈ 2.87</p></div>
+<p class="ans">Answer: D<sub>u</sub>f = 1/2 + √3/8 ≈ 0.72</p></div>
 <div class="prob"><h4>Ex. 13.6: 20</h4>
 <p class="stmt">Find the directional derivative of f(x, y) = (x − y)/(x + y) at P(−1, −2) in the direction θ = π/2.</p>
 <div class="sol">
@@ -2467,13 +2493,13 @@ Tangent Plane? (MathCraft8)</a></p>
 <div class="dgraph" data-exprs='["e^(-x)*sec(y)=1.4142", "e^(-x)*sec(y)=1", "(0,0.7854-0.7854t){0<=t<=1}", "(0,0.7854)"]' data-xmin="-2" data-xmax="2" data-ymin="-1" data-ymax="2"></div>
 <p class="ans">Answer: D<sub>u</sub>f = −√2 ≈ −1.41</p></div>
 <div class="prob"><h4>Ex. 13.6: 25</h4>
-<p class="stmt">Find the directional derivative of f(x, y) = xy e<sup>y</sup> at P(1, 1) in the direction of the negative y-axis.</p>
+<p class="stmt">Find the directional derivative of f(x, y) = √(xy) e<sup>y</sup> at P(1, 1) in the direction of the negative y-axis.</p>
 <div class="sol">
-<p>f<sub>x</sub> = y e<sup>y</sup>, f<sub>y</sub> = x e<sup>y</sup> + xy e<sup>y</sup>. At P(1, 1): ∇f = (e, 2e).</p>
-<p>The unit vector in the negative y-direction is (0, −1). D<sub>u</sub>f = −2e.</p>
+<p>f<sub>x</sub> = (e<sup>y</sup>/2)√(y/x), f<sub>y</sub> = (e<sup>y</sup>/2)√(x/y) + √(xy) e<sup>y</sup>. At P(1, 1): ∇f = (e/2, 3e/2).</p>
+<p>The unit vector in the negative y-direction is (0, −1). D<sub>u</sub>f = −3e/2.</p>
 </div>
-<div class="dgraph" data-exprs='["x*y*e^y=2.7183", "x*y*e^y=1", "(1,1-t){0<=t<=1}", "(1,1)"]' data-xmin="-1" data-xmax="3" data-ymin="-1" data-ymax="3"></div>
-<p class="ans">Answer: D<sub>u</sub>f = −2e ≈ −5.44</p></div>
+<div class="dgraph" data-exprs='["x*y*e^(2y)=e^2", "x*y*e^(2y)=1", "(1,1-t){0<=t<=1}", "(1,1)"]' data-xmin="-1" data-xmax="3" data-ymin="-1" data-ymax="3"></div>
+<p class="ans">Answer: D<sub>u</sub>f = −3e/2 ≈ −4.08</p></div>
 <div class="prob"><h4>Ex. 13.6: 57</h4>
 <p class="stmt">Find the direction of most rapid increase of f(x, y, z) = x<sup>3</sup>z<sup>2</sup> + y<sup>3</sup>z + z − 1 at (1, 1, −1), and the rate of change in that direction.</p>
 <div class="sol">
@@ -2559,14 +2585,14 @@ Tangent Plane? (MathCraft8)</a></p>
 <div class="dgraph3d" data-exprs='["z=sqrt(x)+sqrt(y)", "z=x/4+y/6+2.5", "(4,9,5)"]'></div>
 <p class="ans">Answer: Tangent plane z = x/4 + y/6 + 5/2; normal line x = 4 − t/4, y = 9 − t/6, z = 5 + t</p></div>
 <div class="prob"><h4>Ex. 13.7: 23</h4>
-<p class="stmt">Find a unit vector normal to the surface (z + x)/(y − 1) = z<sup>2</sup> at the point (3, 5, 1).</p>
+<p class="stmt">Find two unit vectors normal to the surface √((z + x)/(y − 1)) = z<sup>2</sup> at the point (3, 5, 1).</p>
 <div class="sol">
-<p>Let F(x, y, z) = (z + x)/(y − 1) − z<sup>2</sup>. Then F<sub>x</sub> = 1/(y − 1), F<sub>y</sub> = −(z + x)/(y − 1)<sup>2</sup>, F<sub>z</sub> = 1/(y − 1) − 2z.</p>
-<p>At (3, 5, 1): ∇F = (1/4, −1/4, −7/4), with |∇F| = √(1 + 1 + 49)/4 = √51/4. Dividing by the length gives the unit normal ±(1, −1, −7)/√51.</p>
+<p>Squaring both sides, the surface is (z + x)/(y − 1) = z<sup>4</sup>. Let F(x, y, z) = z + x − z<sup>4</sup>(y − 1). Then F<sub>x</sub> = 1, F<sub>y</sub> = −z<sup>4</sup>, F<sub>z</sub> = 1 − 4z<sup>3</sup>(y − 1).</p>
+<p>At (3, 5, 1): ∇F = (1, −1, −15), with |∇F| = √(1 + 1 + 225) = √227. Dividing by the length gives the unit normals ±(1, −1, −15)/√227.</p>
 </div>
 <div class="dgraph" data-exprs='["y=x+2", "(3,5)"]' data-xmin="-1" data-xmax="7" data-ymin="-1" data-ymax="9"></div>
-<div class="dgraph3d" data-exprs='["(z+x)/(y-1)=z^2", "(3,5,1)"]'></div>
-<p class="ans">Answer: ±(1, −1, −7)/√51, i.e. ±(√51/51, −√51/51, −7√51/51)</p></div>
+<div class="dgraph3d" data-exprs='["(z+x)/(y-1)=z^4", "(3,5,1)"]'></div>
+<p class="ans">Answer: ±(1, −1, −15)/√227, i.e. ±(√227/227, −√227/227, −15√227/227)</p></div>
 <div class="prob"><h4>Ex. 13.7: 24</h4>
 <p class="stmt">Find a unit vector normal to the surface sin xz − 4 cos yz = 4 at the point (π, π, 1).</p>
 <div class="sol">
@@ -2596,13 +2622,14 @@ Tangent Plane? (MathCraft8)</a></p>
 <div class="dgraph3d" data-exprs='["z=sqrt(x^2+y^2)", "x+2y+2z=20", "(4,3,5)"]'></div>
 <p class="ans">Answer: x = 4 − 16t/5, y = 3 + 13t/5, z = 5 − t</p></div>
 <div class="prob"><h4>Ex. 13.7: 33</h4>
-<p class="stmt">Let f and g be differentiable functions of x and y such that z = f(x, y) and z = g(x, y) are tangent planes at a point (a, b, c). Show that f<sub>x</sub>(a, b) = g<sub>x</sub>(a, b) and f<sub>y</sub>(a, b) = g<sub>y</sub>(a, b).</p>
+<p class="stmt">Show that the equation of the plane tangent to the ellipsoid x<sup>2</sup>/a<sup>2</sup> + y<sup>2</sup>/b<sup>2</sup> + z<sup>2</sup>/c<sup>2</sup> = 1 at (x<sub>0</sub>, y<sub>0</sub>, z<sub>0</sub>) can be written as x<sub>0</sub>x/a<sup>2</sup> + y<sub>0</sub>y/b<sup>2</sup> + z<sub>0</sub>z/c<sup>2</sup> = 1.</p>
 <div class="sol">
-<p>Two planes tangent to the same surface at the same point are the same plane. The tangent plane to z = f(x, y) at (a, b, c) is z = c + f<sub>x</sub>(a, b)(x − a) + f<sub>y</sub>(a, b)(y − b); the tangent plane to z = g(x, y) is z = c + g<sub>x</sub>(a, b)(x − a) + g<sub>y</sub>(a, b)(y − b).</p>
-<p>Since the two planes coincide, their coefficients must be equal: f<sub>x</sub>(a, b) = g<sub>x</sub>(a, b) and f<sub>y</sub>(a, b) = g<sub>y</sub>(a, b).</p>
+<p>Near (x<sub>0</sub>, y<sub>0</sub>, z<sub>0</sub>) with z<sub>0</sub> ≠ 0, solve for z: z = c√(1 − x<sup>2</sup>/a<sup>2</sup> − y<sup>2</sup>/b<sup>2</sup>). By implicit differentiation, ∂z/∂x = −c<sup>2</sup>x/(a<sup>2</sup>z) and ∂z/∂y = −c<sup>2</sup>y/(b<sup>2</sup>z).</p>
+<p>At (x<sub>0</sub>, y<sub>0</sub>, z<sub>0</sub>) a normal vector is (−c<sup>2</sup>x<sub>0</sub>/(a<sup>2</sup>z<sub>0</sub>), −c<sup>2</sup>y<sub>0</sub>/(b<sup>2</sup>z<sub>0</sub>), −1), so the tangent plane is −(c<sup>2</sup>x<sub>0</sub>/(a<sup>2</sup>z<sub>0</sub>))(x − x<sub>0</sub>) − (c<sup>2</sup>y<sub>0</sub>/(b<sup>2</sup>z<sub>0</sub>))(y − y<sub>0</sub>) − (z − z<sub>0</sub>) = 0.</p>
+<p>Multiply by −z<sub>0</sub>/c<sup>2</sup>: (x<sub>0</sub>/a<sup>2</sup>)x + (y<sub>0</sub>/b<sup>2</sup>)y + (z<sub>0</sub>/c<sup>2</sup>)z = x<sub>0</sub><sup>2</sup>/a<sup>2</sup> + y<sub>0</sub><sup>2</sup>/b<sup>2</sup> + z<sub>0</sub><sup>2</sup>/c<sup>2</sup> = 1, since (x<sub>0</sub>, y<sub>0</sub>, z<sub>0</sub>) lies on the ellipsoid.</p>
 </div>
-<div class="dgraph" data-exprs='["y=x^2", "y=2x-1", "(1,1)"]' data-xmin="-2" data-xmax="3" data-ymin="-1" data-ymax="5"></div>
-<p class="ans">Answer: f<sub>x</sub>(a, b) = g<sub>x</sub>(a, b) and f<sub>y</sub>(a, b) = g<sub>y</sub>(a, b)</p></div>
+<div class="dgraph" data-exprs='["x^2/4+y^2=1", "y=sqrt(2)-x/2", "(1.414, 0.707)"]' data-xmin="-2" data-xmax="3" data-ymin="-1.5" data-ymax="2"></div><div class="dgraph3d" data-exprs='["x^2/4+y^2+z^2=1", "z=sqrt(2)-x/2", "(1.414, 0, 0.707)"]'></div>
+<p class="ans">Answer: Tangent plane x<sub>0</sub>x/a<sup>2</sup> + y<sub>0</sub>y/b<sup>2</sup> + z<sub>0</sub>z/c<sup>2</sup> = 1</p></div>
 <div class="prob"><h4>Ex. 13.7: 36</h4>
 <p class="stmt">Use the result of Exercise 35 to show that the normal lines to the cone z = ±√(x<sup>2</sup> + y<sup>2</sup>) are perpendicular to the normal lines to the sphere x<sup>2</sup> + y<sup>2</sup> + z<sup>2</sup> = a<sup>2</sup> at the points where the surfaces intersect.</p>
 <div class="sol">
@@ -2973,14 +3000,14 @@ href="https://runestone.academy/ns/books/published/APEXPROTEUS/sec_multi_extreme
 <div class="dgraph3d" data-exprs='["x^2-yz=5", "(2.2361,0,0)", "(-2.2361,0,0)"]'></div>
 <p class="ans">Answer: Closest points (±√5, 0, 0), distance √5</p></div>
 <div class="prob"><h4>Ex. 13.8: 41</h4>
-<p class="stmt">Find the volume of the largest rectangular box (with sides parallel to the coordinate planes) that can be inscribed in the ellipsoid (x/a)<sup>2</sup> + (y/b)<sup>2</sup> + (z/c)<sup>2</sup> = 1, and show it is 8abc/(3√3). (In particular, for a sphere of radius a the volume is 8a<sup>3</sup>/(3√3).)</p>
+<p class="stmt">Find the dimensions of the rectangular box of maximum volume that can be inscribed in a sphere of radius a.</p>
 <div class="sol">
-<p>Let the box have half-sides x, y, z with x<sup>2</sup>/a<sup>2</sup> + y<sup>2</sup>/b<sup>2</sup> + z<sup>2</sup>/c<sup>2</sup> = 1; its volume is V = 8xyz. Maximise ln V = ln x + ln y + ln z by Lagrange multipliers: 1/x = 2λx/a<sup>2</sup>, 1/y = 2λy/b<sup>2</sup>, 1/z = 2λz/c<sup>2</sup>, so x<sup>2</sup>/a<sup>2</sup> = y<sup>2</sup>/b<sup>2</sup> = z<sup>2</sup>/c<sup>2</sup> = 1/(2λ). With the constraint, each equals 1/3.</p>
-<p>Hence x = a/√3, y = b/√3, z = c/√3, and V = 8abc/(3√3). For a sphere a = b = c, V = 8a<sup>3</sup>/(3√3).</p>
+<p>Put the sphere at the origin and let the box have half-sides x, y, z, so a corner (x, y, z) lies on the sphere: x<sup>2</sup> + y<sup>2</sup> + z<sup>2</sup> = a<sup>2</sup>. The volume is V = 8xyz. Maximise ln V = ln x + ln y + ln z by Lagrange multipliers: 1/x = 2λx, 1/y = 2λy, 1/z = 2λz, so x<sup>2</sup> = y<sup>2</sup> = z<sup>2</sup> = 1/(2λ). With the constraint, each equals a<sup>2</sup>/3.</p>
+<p>Hence x = y = z = a/√3, the box has sides 2a/√3, and V = 8(a/√3)<sup>3</sup> = 8a<sup>3</sup>/(3√3).</p>
 </div>
 <div class="dgraph" data-exprs='["y=8x^3", "(0.5774,1.5396)"]' data-xmin="0" data-xmax="1" data-ymin="0" data-ymax="2"></div>
 <div class="dgraph3d" data-exprs='["x^2+y^2+z^2=1", "(0.5774,0.5774,0.5774)"]'></div>
-<p class="ans">Answer: Maximum volume 8abc/(3√3) (box sides 2a/√3, 2b/√3, 2c/√3); for a sphere, 8a<sup>3</sup>/(3√3)</p></div>
+<p class="ans">Answer: Box sides 2a/√3 × 2a/√3 × 2a/√3; maximum volume 8a<sup>3</sup>/(3√3)</p></div>
 <div class="prob"><h4>Ex. 13.8: 42</h4>
 <p class="stmt">A suitcase must satisfy width + length + height ≤ 129 cm. Find the dimensions of the suitcase of maximum volume, and its volume.</p>
 <div class="sol">
@@ -3350,14 +3377,14 @@ Academy</a></p>
 <div class="dgraph3d" data-exprs='["x^2-yz=5", "(2.2361,0,0)", "(-2.2361,0,0)"]'></div>
 <p class="ans">Answer: Closest points (±√5, 0, 0), distance √5</p></div>
 <div class="prob"><h4>Ex. 13.9: 28</h4>
-<p class="stmt">Find the volume of the largest rectangular box (with sides parallel to the coordinate planes) that can be inscribed in the ellipsoid (x/a)<sup>2</sup> + (y/b)<sup>2</sup> + (z/c)<sup>2</sup> = 1. (Same problem as Exercise 13.8: 41, solved here with Lagrange multipliers.)</p>
+<p class="stmt">Find the volume of the largest rectangular box (with sides parallel to the coordinate planes) that can be inscribed in a sphere of radius a. (Same problem as Exercise 13.8: 41, solved here with Lagrange multipliers.)</p>
 <div class="sol">
-<p>Let the box have half-sides x, y, z with x<sup>2</sup>/a<sup>2</sup> + y<sup>2</sup>/b<sup>2</sup> + z<sup>2</sup>/c<sup>2</sup> = 1; its volume is V = 8xyz. Maximise ln V = ln x + ln y + ln z: Lagrange gives 1/x = 2λx/a<sup>2</sup>, 1/y = 2λy/b<sup>2</sup>, 1/z = 2λz/c<sup>2</sup>, so x<sup>2</sup>/a<sup>2</sup> = y<sup>2</sup>/b<sup>2</sup> = z<sup>2</sup>/c<sup>2</sup> = 1/(2λ).</p>
-<p>With the constraint, each term equals 1/3, so x = a/√3, y = b/√3, z = c/√3, and V = 8abc/(3√3). For a sphere of radius a, V = 8a<sup>3</sup>/(3√3). (Compare Exercise 13.8: 41.)</p>
+<p>Let the box have sides x, y, z. Its diagonal must equal the diameter of the sphere, so x<sup>2</sup> + y<sup>2</sup> + z<sup>2</sup> = 4a<sup>2</sup>. Maximise V = xyz, or for convenience f = V<sup>2</sup> = x<sup>2</sup>y<sup>2</sup>z<sup>2</sup>, subject to that constraint. Lagrange: 2xy<sup>2</sup>z<sup>2</sup> = 2λx, 2x<sup>2</sup>yz<sup>2</sup> = 2λy, 2x<sup>2</sup>y<sup>2</sup>z = 2λz.</p>
+<p>Since V ≠ 0, x, y, z ≠ 0; dividing the three equations by 2x, 2y, 2z gives y<sup>2</sup>z<sup>2</sup> = x<sup>2</sup>z<sup>2</sup> = x<sup>2</sup>y<sup>2</sup> = λ, so x = y = z. With the constraint 3x<sup>2</sup> = 4a<sup>2</sup>, x = 2a/√3, and V = 8a<sup>3</sup>/(3√3). (Compare Exercise 13.8: 41.)</p>
 </div>
 <div class="dgraph" data-exprs='["y=8x^3", "(0.5774,1.5396)"]' data-xmin="0" data-xmax="1" data-ymin="0" data-ymax="2"></div>
 <div class="dgraph3d" data-exprs='["x^2+y^2+z^2=1", "(0.5774,0.5774,0.5774)"]'></div>
-<p class="ans">Answer: Maximum volume 8abc/(3√3); for a sphere, 8a<sup>3</sup>/(3√3)</p></div>
+<p class="ans">Answer: Maximum volume 8a<sup>3</sup>/(3√3) (box sides 2a/√3)</p></div>
 <div class="prob"><h4>Ex. 13.9: 29</h4>
 <p class="stmt">An open box with a rectangular base is to have volume 16 ft<sup>3</sup>. The top and bottom cost 10 cents per square foot and the sides cost 5 cents per square foot. Find the dimensions that minimise the cost. (Same problem as Exercise 13.8: 43, solved here with Lagrange multipliers.)</p>
 <div class="sol">
@@ -3429,11 +3456,10 @@ Academy</a></p>
 <p>Double integrals over rectangles (14.1) and over general regions (14.2). All answers were checked with SymPy and against the book's answers appendix (odd-numbered exercises). Where the text extraction garbled a symbol, the reading adopted is noted in the solution.</p>
 
 <div class="prob"><h4>Ex. 14.1: 11</h4>
-<p class="stmt">Evaluate the iterated integral ∫<sub>0</sub><sup>ln 2</sup> ∫<sub>0</sub><sup>1</sup> xy e<sup>y−x</sup> dy dx.</p>
+<p class="stmt">Evaluate the iterated integral ∫<sub>0</sub><sup>ln 2</sup> ∫<sub>0</sub><sup>1</sup> xy e<sup>y<sup>2</sup>x</sup> dy dx.</p>
 <div class="sol">
-<p>Integrate with respect to y first. For fixed x, ∫<sub>0</sub><sup>1</sup> xy e<sup>y−x</sup> dy = x e<sup>−x</sup> ∫<sub>0</sub><sup>1</sup> y e<sup>y</sup> dy. Since ∫ y e<sup>y</sup> dy = (y − 1)e<sup>y</sup>, the y-integral from 0 to 1 is [(y−1)e<sup>y</sup>]<sub>0</sub><sup>1</sup> = 0 − (−1) = 1, so the inner integral is x e<sup>−x</sup>.</p>
-<p>Now ∫<sub>0</sub><sup>ln 2</sup> x e<sup>−x</sup> dx = [−(x + 1)e<sup>−x</sup>]<sub>0</sub><sup>ln 2</sup> = 1 − (ln 2 + 1)·(1/2) = (1 − ln 2)/2.</p>
-<p><i>Note on the statement:</i> the text extraction renders the exponent as "yx"; the minus sign is confirmed by the book's answers appendix, which gives (1 − ln 2)/2. (Reading the exponent as yx instead gives ≈ 0.166, with no closed form.)</p>
+<p>Integrate with respect to y first. For fixed x, put u = xy<sup>2</sup> (du = 2xy dy): ∫<sub>0</sub><sup>1</sup> xy e<sup>xy<sup>2</sup></sup> dy = (1/2)∫<sub>0</sub><sup>x</sup> e<sup>u</sup> du = (e<sup>x</sup> − 1)/2.</p>
+<p>Now ∫<sub>0</sub><sup>ln 2</sup> (e<sup>x</sup> − 1)/2 dx = (1/2)[e<sup>x</sup> − x]<sub>0</sub><sup>ln 2</sup> = (1/2)(2 − ln 2 − 1) = (1 − ln 2)/2.</p>
 </div>
 <div class="dgraph" data-exprs='["y>=0", "y<=1", "x>=0", "x<=ln(2)"]' data-xmin="-0.5" data-xmax="1.5" data-ymin="-0.5" data-ymax="1.5"></div>
 <p class="ans">Answer: (1 − ln 2)/2 ≈ 0.153</p></div>
@@ -3509,12 +3535,12 @@ Academy</a></p>
 <p class="ans">Answer: 15</p></div>
 
 <div class="prob"><h4>Ex. 14.1: 36</h4>
-<p class="stmt">Find the average value of f(x, y) = x + 7y over the rectangle [0, 3] × [0, 6].</p>
+<p class="stmt">Find the average value of f(x, y) = x<sup>2</sup> + 7y over the rectangle [0, 3] × [0, 6].</p>
 <div class="sol">
-<p>The area is A(R) = 3 · 6 = 18. ∬<sub>R</sub> (x + 7y) dA = ∫<sub>0</sub><sup>3</sup> ∫<sub>0</sub><sup>6</sup> (x + 7y) dy dx = ∫<sub>0</sub><sup>3</sup> (6x + 126) dx = 27 + 378 = 405. Hence f<sub>ave</sub> = 405/18 = 45/2.</p>
+<p>The area is A(R) = 3 · 6 = 18. ∬<sub>R</sub> (x<sup>2</sup> + 7y) dA = ∫<sub>0</sub><sup>3</sup> ∫<sub>0</sub><sup>6</sup> (x<sup>2</sup> + 7y) dy dx = ∫<sub>0</sub><sup>3</sup> (6x<sup>2</sup> + 126) dx = [2x<sup>3</sup> + 126x]<sub>0</sub><sup>3</sup> = 54 + 378 = 432. Hence f<sub>ave</sub> = 432/18 = 24.</p>
 </div>
 <div class="dgraph" data-exprs='["y>=0", "y<=6", "x>=0", "x<=3"]' data-xmin="-0.5" data-xmax="3.5" data-ymin="-0.5" data-ymax="6.5"></div>
-<p class="ans">Answer: 45/2 = 22.5</p></div>
+<p class="ans">Answer: 24</p></div>
 
 <div class="prob"><h4>Ex. 14.1: 37</h4>
 <p class="stmt">Find the average value of f(x, y) = y sin(xy) over the rectangle [0, 1] × [0, π/2].</p>
@@ -3525,22 +3551,20 @@ Academy</a></p>
 <p class="ans">Answer: 1 − 2/π ≈ 0.363</p></div>
 
 <div class="prob"><h4>Ex. 14.2: 3</h4>
-<p class="stmt">Evaluate the iterated integral ∫<sub>0</sub><sup>3</sup> ∫<sub>0</sub><sup>9−y</sup> y dx dy.</p>
+<p class="stmt">Evaluate the iterated integral ∫<sub>0</sub><sup>3</sup> ∫<sub>0</sub><sup>√(9 − y<sup>2</sup>)</sup> y dx dy.</p>
 <div class="sol">
-<p>Inner: ∫<sub>0</sub><sup>9−y</sup> y dx = y(9 − y) = 9y − y<sup>2</sup>. Outer: ∫<sub>0</sub><sup>3</sup> (9y − y<sup>2</sup>) dy = [9y<sup>2</sup>/2 − y<sup>3</sup>/3]<sub>0</sub><sup>3</sup> = 81/2 − 9 = 63/2.</p>
-<p><i>Note:</i> the book's answers appendix is garbled at this entry (it shows only "9"); the statement as printed, the course guide, and SymPy all give 63/2.</p>
+<p>Inner: ∫<sub>0</sub><sup>√(9 − y<sup>2</sup>)</sup> y dx = y√(9 − y<sup>2</sup>). Outer: put u = 9 − y<sup>2</sup>, so ∫<sub>0</sub><sup>3</sup> y√(9 − y<sup>2</sup>) dy = [−(9 − y<sup>2</sup>)<sup>3/2</sup>/3]<sub>0</sub><sup>3</sup> = 0 − (−27/3) = 9.</p>
 </div>
-<div class="dgraph" data-exprs='["y>=0", "y<=3", "x>=0", "x<=9-y", "(6, 3)"]' data-xmin="-1" data-xmax="10" data-ymin="-1" data-ymax="4"></div>
-<p class="ans">Answer: 63/2 = 31.5</p></div>
+<div class="dgraph" data-exprs='["y>=0", "y<=3", "x>=0", "x<=sqrt(9-y^2)", "(3, 0)", "(0, 3)"]' data-xmin="-1" data-xmax="4" data-ymin="-1" data-ymax="4"></div>
+<p class="ans">Answer: 9</p></div>
 
 <div class="prob"><h4>Ex. 14.2: 4</h4>
-<p class="stmt">Evaluate the iterated integral ∫<sub>1/4</sub><sup>1</sup> ∫<sub>x<sup>2</sup></sub><sup>x</sup> (1/y) dy dx.</p>
+<p class="stmt">Evaluate the iterated integral ∫<sub>1/4</sub><sup>1</sup> ∫<sub>x<sup>2</sup></sub><sup>x</sup> √(x/y) dy dx.</p>
 <div class="sol">
-<p>Inner: ∫<sub>x<sup>2</sup></sub><sup>x</sup> (1/y) dy = ln x − ln x<sup>2</sup> = −ln x. Outer: ∫<sub>1/4</sub><sup>1</sup> (−ln x) dx = [x − x ln x]<sub>1/4</sub><sup>1</sup> = 1 − (1/4 + (ln 4)/4) = 3/4 − (ln 2)/2 ≈ 0.403.</p>
-<p><i>Note:</i> the extraction shows the integrand only as "y" (the "1/" of the fraction is lost in the two-column layout); the reading 1/y is the standard form of this exercise.</p>
+<p>Inner: ∫<sub>x<sup>2</sup></sub><sup>x</sup> √(x/y) dy = √x ∫<sub>x<sup>2</sup></sub><sup>x</sup> y<sup>−1/2</sup> dy = √x [2√y]<sub>x<sup>2</sup></sub><sup>x</sup> = √x(2√x − 2x) = 2x − 2x<sup>3/2</sup>. Outer: ∫<sub>1/4</sub><sup>1</sup> (2x − 2x<sup>3/2</sup>) dx = [x<sup>2</sup> − (4/5)x<sup>5/2</sup>]<sub>1/4</sub><sup>1</sup> = (1 − 4/5) − (1/16 − (4/5)(1/32)) = 1/5 − 3/80 = 13/80.</p>
 </div>
 <div class="dgraph" data-exprs='["y>=x^2", "y<=x", "x>=1/4", "x<=1", "(1, 1)"]' data-xmin="0" data-xmax="1.5" data-ymin="0" data-ymax="1.5"></div>
-<p class="ans">Answer: 3/4 − (ln 2)/2 ≈ 0.403</p></div>
+<p class="ans">Answer: 13/80 = 0.1625</p></div>
 
 <div class="prob"><h4>Ex. 14.2: 9</h4>
 <p class="stmt">Let R be the region shown in Figure Ex-9 (the region under the parabola y = x<sup>2</sup>, above y = 0, from x = 0 to x = 2). Fill in the missing limits of integration: (a) ∬<sub>R</sub> f(x, y) dA = ∫<sub>?</sub><sup>?</sup> ∫<sub>?</sub><sup>?</sup> f(x, y) dy dx; (b) ∬<sub>R</sub> f(x, y) dA = ∫<sub>?</sub><sup>?</sup> ∫<sub>?</sub><sup>?</sup> f(x, y) dx dy.</p>
@@ -3571,10 +3595,10 @@ Academy</a></p>
 <div class="prob"><h4>Ex. 14.2: 12</h4>
 <p class="stmt">Let R be the region shown in Figure Ex-12. Fill in the missing limits of integration: (a) ∬<sub>R</sub> f(x, y) dA = ∫<sub>?</sub><sup>?</sup> ∫<sub>?</sub><sup>?</sup> f(x, y) dy dx; (b) ∬<sub>R</sub> f(x, y) dA = ∫<sub>?</sub><sup>?</sup> ∫<sub>?</sub><sup>?</sup> f(x, y) dx dy.</p>
 <div class="sol">
-<p>Needs book figure. The text extraction of Figure Ex-12 shows only the coordinate axes, marked −1 and 1 on the x-axis and −1 and 1 on the y-axis, with the region R shaded — but the boundary curves themselves are not recoverable from the extracted text, so the limits cannot be determined without seeing the figure. Method once the figure is in front of you: (a) for the dy dx order, read off the leftmost and rightmost x-values of R as the outer limits, and for each x read the lower and upper boundary curves y = g<sub>1</sub>(x), y = g<sub>2</sub>(x) as the inner limits; (b) for the dx dy order, read off the bottom and top y-values as the outer limits, and for each y read the left and right boundary curves x = h<sub>1</sub>(y), x = h<sub>2</sub>(y) as the inner limits. Split into two integrals in either order if the boundary curve changes partway across.</p>
+<p>The figure is the unit disk x<sup>2</sup> + y<sup>2</sup> ≤ 1 (the axes are marked −1 and 1). (a) As a Type I region, x runs from −1 to 1, and for each x, y runs from the lower semicircle y = −√(1 − x<sup>2</sup>) to the upper semicircle y = √(1 − x<sup>2</sup>). (b) As a Type II region, y runs from −1 to 1, and for each y, x runs from the left semicircle x = −√(1 − y<sup>2</sup>) to the right semicircle x = √(1 − y<sup>2</sup>).</p>
 </div>
-<div class="dgraph" data-exprs='["x>=-1", "x<=1", "y>=-1", "y<=1", "(-1, 0)"]' data-xmin="-2" data-xmax="2" data-ymin="-2" data-ymax="2"></div>
-<p class="ans">Answer: needs book figure</p></div>
+<div class="dgraph" data-exprs='["x^2+y^2<=1", "x^2+y^2=1", "(1, 0)", "(-1, 0)"]' data-xmin="-2" data-xmax="2" data-ymin="-2" data-ymax="2"></div>
+<p class="ans">Answer: (a) ∫<sub>−1</sub><sup>1</sup> ∫<sub>−√(1 − x<sup>2</sup>)</sub><sup>√(1 − x<sup>2</sup>)</sup> f(x, y) dy dx; (b) ∫<sub>−1</sub><sup>1</sup> ∫<sub>−√(1 − y<sup>2</sup>)</sub><sup>√(1 − y<sup>2</sup>)</sup> f(x, y) dx dy</p></div>
 
 <div class="prob"><h4>Ex. 14.2: 15</h4>
 <p class="stmt">Evaluate the double integral in two ways using iterated integrals: (a) viewing R as a type I region, and (b) viewing R as a type II region: ∬<sub>R</sub> x<sup>2</sup> dA, where R is the region bounded by y = 16/x, y = x, and x = 8.</p>
@@ -3995,11 +4019,11 @@ Academy</a></p>
 <div class="prob"><h4>Ex. 14.3: 26</h4>
 <p class="stmt">Use polar coordinates to evaluate ∬<sub>R</sub> 2y dA, where R is the region in the first quadrant bounded above by the circle (x − 1)<sup>2</sup> + y<sup>2</sup> = 1 and below by the line y = x.</p>
 <div class="sol">
-<p>The circle (x − 1)<sup>2</sup> + y<sup>2</sup> = 1 is x<sup>2</sup> + y<sup>2</sup> = 2x, i.e. r = 2 cos θ. It meets the line y = x (θ = π/4) at (1, 1), and both pass through the origin, so in the first quadrant R is 0 ≤ θ ≤ π/4, 0 ≤ r ≤ 2 cos θ.</p>
-<p>∬<sub>R</sub> 2y dA = ∫<sub>0</sub><sup>π/4</sup> ∫<sub>0</sub><sup>2 cos θ</sup> (2r sin θ) r dr dθ = ∫<sub>0</sub><sup>π/4</sup> (16/3) sin θ cos<sup>3</sup> θ dθ. Put u = cos θ: ∫<sub>0</sub><sup>π/4</sup> sin θ cos<sup>3</sup> θ dθ = [−cos<sup>4</sup> θ/4]<sub>0</sub><sup>π/4</sup> = (1 − 1/4)/4 = 3/16. Hence the integral is (16/3)(3/16) = 1.</p>
+<p>The circle (x − 1)<sup>2</sup> + y<sup>2</sup> = 1 is x<sup>2</sup> + y<sup>2</sup> = 2x, i.e. r = 2 cos θ. It meets the line y = x (θ = π/4) at (1, 1), and both pass through the origin. The region R is the lens between the chord y = x and the arc: the arc bulges <i>above</i> the line — its midpoint (1 − √2/2, √2/2) sits at θ = 3π/8 — so in polar coordinates R is π/4 ≤ θ ≤ π/2, 0 ≤ r ≤ 2 cos θ. (The range 0 ≤ θ ≤ π/4 would be the region <i>below</i> the line, not R.)</p>
+<p>∬<sub>R</sub> 2y dA = ∫<sub>π/4</sub><sup>π/2</sup> ∫<sub>0</sub><sup>2 cos θ</sup> (2r sin θ) r dr dθ = ∫<sub>π/4</sub><sup>π/2</sup> (16/3) sin θ cos<sup>3</sup> θ dθ. Put u = cos θ: ∫<sub>π/4</sub><sup>π/2</sup> sin θ cos<sup>3</sup> θ dθ = [−cos<sup>4</sup> θ/4]<sub>π/4</sub><sup>π/2</sup> = 1/16. Hence the integral is (16/3)(1/16) = 1/3.</p>
 </div>
-<div class="dgraph" data-exprs='["(x-1)^2+y^2<=1", "y>=0", "y<=x"]' data-xmin="-0.5" data-xmax="2.5" data-ymin="-0.5" data-ymax="1.5"></div>
-<p class="ans">Answer: 1</p></div>
+<div class="dgraph" data-exprs='["(x-1)^2+y^2<=1", "y>=x"]' data-xmin="-0.5" data-xmax="2.5" data-ymin="-0.5" data-ymax="1.5"></div>
+<p class="ans">Answer: 1/3</p></div>
 
 <div class="prob"><h4>Ex. 14.3: 27</h4>
 <p class="stmt">Evaluate the iterated integral ∫<sub>0</sub><sup>1</sup> ∫<sub>0</sub><sup>√(1 − x<sup>2</sup>)</sup> (x<sup>2</sup> + y<sup>2</sup>) dy dx by converting to polar coordinates.</p>
@@ -4234,14 +4258,14 @@ Academy</a></p>
 <p class="ans">Answer: 4 (cubic units).</p></div>
 
 <div class="prob"><h4>Ex. 14.5: 16</h4>
-<p class="stmt">Use a triple integral to find the volume of the solid bounded by the surface z = y and the planes x + y = 1, x = 0, and z = 0.</p>
+<p class="stmt">Use a triple integral to find the volume of the solid bounded by the surface z = √y and the planes x + y = 1, x = 0, and z = 0.</p>
 <div class="sol">
-<p>The solid sits over the triangle in the xy-plane bounded by x = 0, y = 0 (from z = y meeting z = 0) and x + y = 1: 0 ≤ x ≤ 1, 0 ≤ y ≤ 1 − x. For each (x, y) there, z runs from 0 up to the surface z = y.</p>
-<p>V = ∫<sub>0</sub><sup>1</sup> ∫<sub>0</sub><sup>1−x</sup> ∫<sub>0</sub><sup>y</sup> dz dy dx = ∫<sub>0</sub><sup>1</sup> ∫<sub>0</sub><sup>1−x</sup> y dy dx = ∫<sub>0</sub><sup>1</sup> (1 − x)<sup>2</sup>/2 dx = [−(1 − x)<sup>3</sup>/6]<sub>0</sub><sup>1</sup> = 1/6.</p>
+<p>The solid sits over the triangle in the xy-plane bounded by x = 0, y = 0 (from z = √y meeting z = 0) and x + y = 1: 0 ≤ x ≤ 1, 0 ≤ y ≤ 1 − x. For each (x, y) there, z runs from 0 up to the surface z = √y.</p>
+<p>V = ∫<sub>0</sub><sup>1</sup> ∫<sub>0</sub><sup>1−x</sup> ∫<sub>0</sub><sup>√y</sup> dz dy dx = ∫<sub>0</sub><sup>1</sup> ∫<sub>0</sub><sup>1−x</sup> √y dy dx = ∫<sub>0</sub><sup>1</sup> (2/3)(1 − x)<sup>3/2</sup> dx = (2/3)[−(2/5)(1 − x)<sup>5/2</sup>]<sub>0</sub><sup>1</sup> = (2/3)(2/5) = 4/15.</p>
 </div>
 <div class="dgraph" data-exprs='["y>=0", "y<=1-x", "x>=0", "x<=1", "(1, 0)"]' data-xmin="-0.5" data-xmax="1.5" data-ymin="-0.5" data-ymax="1.5"></div>
-<div class="dgraph3d" data-exprs='["z=y", "z=0"]'></div>
-<p class="ans">Answer: 1/6 (cubic units).</p></div>
+<div class="dgraph3d" data-exprs='["z=sqrt(y)", "z=0"]'></div>
+<p class="ans">Answer: 4/15 (cubic units).</p></div>
 
 <div class="prob"><h4>Ex. 14.5: 17</h4>
 <p class="stmt">Use a triple integral to find the volume of the solid bounded by the surface y = x<sup>2</sup> and the planes y + z = 4 and z = 0.</p>
@@ -4257,13 +4281,12 @@ Academy</a></p>
 <div class="prob"><h4>Ex. 14.5: 18</h4>
 <p class="stmt">Use a triple integral to find the volume of the wedge in the first octant that is cut from the solid cylinder y<sup>2</sup> + z<sup>2</sup> ≤ 1 by the planes y = x and x = 0.</p>
 <div class="sol">
-<p>In the first octant the cylinder y<sup>2</sup> + z<sup>2</sup> ≤ 1 gives 0 ≤ z ≤ √(1 − y<sup>2</sup>) with 0 ≤ y ≤ 1. The plane y = x cuts the wedge so that, for fixed x, y runs from 0 to x, and x runs from 0 to 1.</p>
-<p>V = ∫<sub>0</sub><sup>1</sup> ∫<sub>0</sub><sup>x</sup> √(1 − y<sup>2</sup>) dy dx. Reversing the order in the xy-plane (the triangle 0 ≤ y ≤ x ≤ 1 becomes 0 ≤ y ≤ 1, y ≤ x ≤ 1) gives V = ∫<sub>0</sub><sup>1</sup> (1 − y)√(1 − y<sup>2</sup>) dy.</p>
-<p>Split it: ∫<sub>0</sub><sup>1</sup> √(1 − y<sup>2</sup>) dy is the area of a quarter unit circle, π/4; and ∫<sub>0</sub><sup>1</sup> y√(1 − y<sup>2</sup>) dy = [−(1 − y<sup>2</sup>)<sup>3/2</sup>/3]<sub>0</sub><sup>1</sup> = 1/3. So V = π/4 − 1/3.</p>
+<p>In the first octant the cylinder y<sup>2</sup> + z<sup>2</sup> ≤ 1 gives 0 ≤ z ≤ √(1 − y<sup>2</sup>) with 0 ≤ y ≤ 1. The wedge is the part of the cylinder between the two planes x = 0 and y = x: for each y, x runs from 0 (the plane x = 0) to y (the plane y = x), i.e. 0 ≤ x ≤ y ≤ 1. (Taking y from 0 to x instead would give the wedge on the other side of the plane y = x, bounded by y = 0 rather than by x = 0.)</p>
+<p>V = ∫<sub>0</sub><sup>1</sup> ∫<sub>0</sub><sup>y</sup> ∫<sub>0</sub><sup>√(1 − y<sup>2</sup>)</sup> dz dx dy = ∫<sub>0</sub><sup>1</sup> ∫<sub>0</sub><sup>y</sup> √(1 − y<sup>2</sup>) dx dy = ∫<sub>0</sub><sup>1</sup> y√(1 − y<sup>2</sup>) dy. Put u = 1 − y<sup>2</sup>: ∫<sub>0</sub><sup>1</sup> y√(1 − y<sup>2</sup>) dy = [−(1 − y<sup>2</sup>)<sup>3/2</sup>/3]<sub>0</sub><sup>1</sup> = 1/3.</p>
 </div>
-<div class="dgraph" data-exprs='["y>=0", "y<=x", "x>=0", "x<=1", "(1, 1)"]' data-xmin="-0.5" data-xmax="1.5" data-ymin="-0.5" data-ymax="1.5"></div>
+<div class="dgraph" data-exprs='["y>=0", "y>=x", "x>=0", "y<=1", "(1, 1)"]' data-xmin="-0.5" data-xmax="1.5" data-ymin="-0.5" data-ymax="1.5"></div>
 <div class="dgraph3d" data-exprs='["y^2+z^2=1", "y=x", "z=0"]'></div>
-<p class="ans">Answer: π/4 − 1/3 (cubic units).</p></div>
+<p class="ans">Answer: 1/3 (cubic units).</p></div>
 
 <div class="prob"><h4>Ex. 14.5: 33</h4>
 <p class="stmt">Find the average value of f(x, y, z) = x + y + z over the tetrahedron shown in Figure Ex-33.</p>
@@ -4739,6 +4762,7 @@ Academy</a></p>
 <div class="sol">
 <p>The region is the whole ball of radius 3, and the integrand is ρ<sup>2</sup>. In spherical coordinates, with dV = ρ<sup>2</sup> sin φ dρ dφ dθ:</p>
 <p>I = ∫<sub>0</sub><sup>2π</sup> ∫<sub>0</sub><sup>π</sup> ∫<sub>0</sub><sup>3</sup> ρ<sup>2</sup> · ρ<sup>2</sup> sin φ dρ dφ dθ = 2π · 2 · (3<sup>5</sup>/5) = 972π/5.</p>
+<p><i>Note:</i> the solutions manual gives 81π for this exercise number, but for the plain iterated integral ∫<sub>0</sub><sup>2π</sup> ∫<sub>0</sub><sup>π</sup> ∫<sub>0</sub><sup>3</sup> ρ<sup>3</sup> sin φ dρ dφ dθ — the version in a different printing. In this textbook the integral is over the ball of radius 3 with integrand x<sup>2</sup> + y<sup>2</sup> + z<sup>2</sup>, and the value is 972π/5.</p>
 </div>
 <div class="dgraph" data-exprs='["x^2+y^2<=9"]' data-xmin="-3.5" data-xmax="3.5" data-ymin="-3.5" data-ymax="3.5"></div>
 <div class="dgraph3d" data-exprs='["x^2+y^2+z^2=9"]'></div>
@@ -4842,7 +4866,7 @@ Academy</a></p>
 <div class="prob"><h4>Ex. 15.1: 18</h4><p class="stmt">Find div F and curl F for F(x, y, z) = xz<sup>3</sup> i + 2y<sup>4</sup>x<sup>2</sup> j + 5z<sup>2</sup>y k.</p><div class="sol"><p>div F = z<sup>3</sup> + 8x<sup>2</sup>y<sup>3</sup> + 10yz. curl F = (∂(5z<sup>2</sup>y)/∂y − 0, ∂(xz<sup>3</sup>)/∂z − 0, ∂(2y<sup>4</sup>x<sup>2</sup>)/∂x − 0) = (5z<sup>2</sup>, 3xz<sup>2</sup>, 4xy<sup>4</sup>).</p></div><div class="dgraph" data-exprs='["8x^2*y^3=8","8x^2*y^3=-8","(1+0.5t, 1+1t){0<=t<=1}"]' data-xmin="-3" data-xmax="3" data-ymin="-3" data-ymax="3"></div><div class="dgraph3d" data-exprs='["(1+0t, 1+2t, 0+0t){0<=t<=1}", "(0+0t, 1+0t, 1+5t){0<=t<=1}", "(1+1t, 0+0t, 1+0t){0<=t<=1}"]'></div><p class="ans">Answer: div F = z<sup>3</sup> + 8x<sup>2</sup>y<sup>3</sup> + 10yz; curl F = 5z<sup>2</sup> i + 3xz<sup>2</sup> j + 4xy<sup>4</sup> k.</p></div>
 <div class="prob"><h4>Ex. 15.1: 19</h4><p class="stmt">Find div F and curl F for F(x, y, z) = 7y<sup>3</sup>z<sup>2</sup> i − 8x<sup>2</sup>z<sup>5</sup> j − 3xy<sup>4</sup> k.</p><div class="sol"><p>div F = 0 + 0 + 0 = 0. curl F: i-component ∂(−3xy<sup>4</sup>)/∂y − ∂(−8x<sup>2</sup>z<sup>5</sup>)/∂z = −12xy<sup>3</sup> + 40x<sup>2</sup>z<sup>4</sup>; j-component ∂(7y<sup>3</sup>z<sup>2</sup>)/∂z − ∂(−3xy<sup>4</sup>)/∂x = 14y<sup>3</sup>z + 3y<sup>4</sup>; k-component ∂(−8x<sup>2</sup>z<sup>5</sup>)/∂x − ∂(7y<sup>3</sup>z<sup>2</sup>)/∂y = −16xz<sup>5</sup> − 21y<sup>2</sup>z<sup>2</sup>.</p></div><div class="dgraph" data-exprs='["(1+1.4t, 1-1.6t){0<=t<=1}","(1+0t, 0-1.6t){0<=t<=1}","x^2+y^2=1"]' data-xmin="-3" data-xmax="3" data-ymin="-3" data-ymax="3"></div><div class="dgraph3d" data-exprs='["(1+7t, 1-8t, 1-3t){0<=t<=1}", "(0+7t, 1+0t, 1+0t){0<=t<=1}", "(1+0t, 0-8t, 1+0t){0<=t<=1}"]'></div><p class="ans">Answer: div F = 0; curl F = (40x<sup>2</sup>z<sup>4</sup> − 12xy<sup>3</sup>) i + (14y<sup>3</sup>z + 3y<sup>4</sup>) j − (16xz<sup>5</sup> + 21y<sup>2</sup>z<sup>2</sup>) k.</p></div>
 <div class="prob"><h4>Ex. 15.1: 20</h4><p class="stmt">Find div F and curl F for F(x, y, z) = e<sup>xy</sup> i − cos y j + sin<sup>2</sup>z k.</p><div class="sol"><p>div F = ye<sup>xy</sup> + sin y + 2 sin z cos z = ye<sup>xy</sup> + sin y + sin 2z. curl F: only the k-component is nonzero, ∂(−cos y)/∂x − ∂(e<sup>xy</sup>)/∂y = −xe<sup>xy</sup>.</p></div><div class="dgraph" data-exprs='["(0+0.5t, 0-0.5t){0<=t<=1}","(1+1.4t, 0-0.5t){0<=t<=1}"]' data-xmin="-3" data-xmax="3" data-ymin="-3" data-ymax="3"></div><div class="dgraph3d" data-exprs='["(0+1t, 0-1t, 0+0t){0<=t<=1}", "(1+1t, 0-1t, 0+0t){0<=t<=1}", "(0+1t, 0-1t, 1+0.708t){0<=t<=1}"]'></div><p class="ans">Answer: div F = ye<sup>xy</sup> + sin y + sin 2z; curl F = −xe<sup>xy</sup> k.</p></div>
-<div class="prob"><h4>Ex. 15.1: 21</h4><p class="stmt">Find div F and curl F for F(x, y, z) = (1/(x<sup>2</sup> + y<sup>2</sup> + z<sup>2</sup>))(x i + y j + z k).</p><div class="sol"><p>Write r<sup>2</sup> = x<sup>2</sup> + y<sup>2</sup> + z<sup>2</sup>. Then ∂/∂x (x/r<sup>2</sup>) = 1/r<sup>2</sup> − 2x<sup>2</sup>/r<sup>4</sup>, and similarly for y, z. Adding: div F = 3/r<sup>2</sup> − 2(x<sup>2</sup> + y<sup>2</sup> + z<sup>2</sup>)/r<sup>4</sup> = 1/r<sup>2</sup>. The curl vanishes by symmetry (each component is a difference of equal terms, e.g. ∂(z/r<sup>2</sup>)/∂y − ∂(y/r<sup>2</sup>)/∂z = −2yz/r<sup>4</sup> + 2yz/r<sup>4</sup> = 0).</p></div><div class="dgraph" data-exprs='["(1+0.5t, 0+0t){0<=t<=1}","(0+0t, 1+0.5t){0<=t<=1}","x^2+y^2=1"]' data-xmin="-3" data-xmax="3" data-ymin="-3" data-ymax="3"></div><div class="dgraph3d" data-exprs='["x^2+y^2+z^2=1", "(1+1t, 0+0t, 0+0t){0<=t<=1}", "(0+0t, 1+1t, 0+0t){0<=t<=1}", "(0+0t, 0+0t, 1+1t){0<=t<=1}"]'></div><p class="ans">Answer: div F = 1/(x<sup>2</sup> + y<sup>2</sup> + z<sup>2</sup>); curl F = 0 (for (x, y, z) ≠ (0, 0, 0)).</p></div>
+<div class="prob"><h4>Ex. 15.1: 21</h4><p class="stmt">Find div F and curl F for F(x, y, z) = (1/√(x<sup>2</sup> + y<sup>2</sup> + z<sup>2</sup>))(x i + y j + z k).</p><div class="sol"><p>Write r = √(x<sup>2</sup> + y<sup>2</sup> + z<sup>2</sup>). Then ∂/∂x (x/r) = 1/r − x<sup>2</sup>/r<sup>3</sup>, and similarly for y, z. Adding: div F = 3/r − (x<sup>2</sup> + y<sup>2</sup> + z<sup>2</sup>)/r<sup>3</sup> = 3/r − r<sup>2</sup>/r<sup>3</sup> = 2/r. The curl vanishes by symmetry (each component is a difference of equal terms, e.g. ∂(z/r)/∂y − ∂(y/r)/∂z = −yz/r<sup>3</sup> + yz/r<sup>3</sup> = 0).</p></div><div class="dgraph" data-exprs='["(1+0.5t, 0+0t){0<=t<=1}","(0+0t, 1+0.5t){0<=t<=1}","x^2+y^2=1"]' data-xmin="-3" data-xmax="3" data-ymin="-3" data-ymax="3"></div><div class="dgraph3d" data-exprs='["x^2+y^2+z^2=1", "(1+1t, 0+0t, 0+0t){0<=t<=1}", "(0+0t, 1+1t, 0+0t){0<=t<=1}", "(0+0t, 0+0t, 1+1t){0<=t<=1}"]'></div><p class="ans">Answer: div F = 2/√(x<sup>2</sup> + y<sup>2</sup> + z<sup>2</sup>); curl F = 0 (for (x, y, z) ≠ (0, 0, 0)).</p></div>
 <div class="prob"><h4>Ex. 15.1: 22</h4><p class="stmt">Find div F and curl F for F(x, y, z) = ln x i + e<sup>xyz</sup> j + tan<sup>−1</sup>(z/x) k.</p><div class="sol"><p>div F = 1/x + xz e<sup>xyz</sup> + (1/(1 + (z/x)<sup>2</sup>))·(1/x) = 1/x + xz e<sup>xyz</sup> + x/(x<sup>2</sup> + z<sup>2</sup>). curl F: i-component 0 − xy e<sup>xyz</sup>; j-component 0 − (1/(1 + (z/x)<sup>2</sup>))·(−z/x<sup>2</sup>) = z/(x<sup>2</sup> + z<sup>2</sup>); k-component yz e<sup>xyz</sup> − 0.</p></div><div class="dgraph" data-exprs='["(1+0t, 0+0.5t){0<=t<=1}","(2.718+0.5t, 0+0.5t){0<=t<=1}","y=ln(x){0.5<=x<=3}"]' data-xmin="-1" data-xmax="4" data-ymin="-2" data-ymax="2"></div><div class="dgraph3d" data-exprs='["(1+0t, 0+1t, 0+0t){0<=t<=1}", "(2+0.693t, 0+1t, 1+0.464t){0<=t<=1}", "(1+0t, 1+2.718t, 1+0.785t){0<=t<=1}"]'></div><p class="ans">Answer: div F = 1/x + xz e<sup>xyz</sup> + x/(x<sup>2</sup> + z<sup>2</sup>); curl F = −xy e<sup>xyz</sup> i + z/(x<sup>2</sup> + z<sup>2</sup>) j + yz e<sup>xyz</sup> k.</p></div>
 <div class="prob"><h4>Ex. 15.1: 23</h4><p class="stmt">Find ∇ · (F × G) for F(x, y, z) = 2x i + j + 4y k and G(x, y, z) = x i + y j − z k.</p><div class="sol"><p>F × G = |i j k; 2x 1 4y; x y −z| = (−z − 4y<sup>2</sup>) i + (2xz + 4xy) j + (2xy − x) k. Then ∇ · (F × G) = ∂(−z − 4y<sup>2</sup>)/∂x + ∂(2xz + 4xy)/∂y + ∂(2xy − x)/∂z = 0 + 4x + 0.</p></div><div class="dgraph" data-exprs='["(1+1t, 1+0.5t){0<=t<=1}","(1+0.5t, 1+0.5t){0<=t<=1}"]' data-xmin="-3" data-xmax="3" data-ymin="-3" data-ymax="3"></div><div class="dgraph3d" data-exprs='["(1+2t, 1+1t, 1+4t){0<=t<=1}", "(1+1t, 1+1t, 1-1t){0<=t<=1}", "(1-5t, 1+6t, 1+1t){0<=t<=1}"]'></div><p class="ans">Answer: ∇ · (F × G) = 4x.</p></div>
 <div class="prob"><h4>Ex. 15.1: 24</h4><p class="stmt">Find ∇ · (F × G) for F(x, y, z) = yz i + xz j + xy k and G(x, y, z) = xy j + xyz k.</p><div class="sol"><p>F × G = |i j k; yz xz xy; 0 xy xyz| = (x<sup>2</sup>yz<sup>2</sup> − x<sup>2</sup>y<sup>2</sup>) i − xy<sup>2</sup>z<sup>2</sup> j + xy<sup>2</sup>z k. Then ∇ · (F × G) = (2xyz<sup>2</sup> − 2xy<sup>2</sup>) − 2xyz<sup>2</sup> + xy<sup>2</sup> = −xy<sup>2</sup>.</p></div><div class="dgraph" data-exprs='["(1+0.5t, 1+0.5t){0<=t<=1}","(1+0t, 1+0.5t){0<=t<=1}"]' data-xmin="-3" data-xmax="3" data-ymin="-3" data-ymax="3"></div><div class="dgraph3d" data-exprs='["(1+1t, 1+1t, 1+1t){0<=t<=1}", "(1+0t, 1+1t, 1+1t){0<=t<=1}", "(1+0t, 1-1t, 1+1t){0<=t<=1}"]'></div><p class="ans">Answer: ∇ · (F × G) = −xy<sup>2</sup>.</p></div>
@@ -4858,7 +4882,7 @@ Academy</a></p>
 <div class="prob"><h4>Ex. 15.2: 10</h4><p class="stmt">Evaluate ∫<sub>C</sub> F · dr for F(x, y) = −8x i + 3y j along the line segment from P(−1, 0) to Q(6, 0).</p><div class="sol"><p>On the horizontal segment y = 0, dr = dx i, so F · dr = −8x dx. ∫<sub>−1</sub><sup>6</sup> (−8x) dx = [−4x<sup>2</sup>]<sub>−1</sub><sup>6</sup> = −144 + 4 = −140.</p></div><div class="dgraph" data-exprs='["y=0{-1<=x<=6}","(2-1.6t, 0+0t){0<=t<=1}","(-1, 0)","(6, 0)"]' data-xmin="-2" data-xmax="7" data-ymin="-2" data-ymax="2"></div><p class="ans">Answer: −140.</p></div>
 <div class="prob"><h4>Ex. 15.2: 13</h4><p class="stmt">Evaluate ∫<sub>C</sub> (3x + 2y) dx + (2x − y) dy along (a) the line segment from (0, 0) to (1, 1); (b) the line segment from (0, 0) to (1, 0), then to (1, 1); (c) the line segment from (0, 0) to (0, 1), then to (1, 1); (d) the parabolic arc y = x<sup>2</sup> from (0, 0) to (1, 1).</p><div class="sol"><p>The field is conservative: ∂(3x + 2y)/∂y = 2 = ∂(2x − y)/∂x, with potential φ = 3x<sup>2</sup>/2 + 2xy − y<sup>2</sup>/2 (check: φ<sub>x</sub> = 3x + 2y, φ<sub>y</sub> = 2x − y). Hence every path from (0, 0) to (1, 1) gives φ(1, 1) − φ(0, 0) = (3/2 + 2 − 1/2) − 0 = 3.</p></div><div class="dgraph" data-exprs='["y=x{0<=x<=1}","y=x^2{0<=x<=1}","y=0{0<=x<=1}","x=1{0<=y<=1}"]' data-xmin="-0.2" data-xmax="1.2" data-ymin="-0.2" data-ymax="1.2"></div><p class="ans">Answer: (a) 3; (b) 3; (c) 3; (d) 3 — the integral is independent of the path.</p></div>
 <div class="prob"><h4>Ex. 15.2: 19</h4><p class="stmt">Evaluate ∫<sub>C</sub> 1/(1 + x) ds, where C: r(t) = t i + (2/3)t<sup>3/2</sup> j (0 ≤ t ≤ 3).</p><div class="sol"><p>r′(t) = i + t<sup>1/2</sup> j, so ‖r′(t)‖ = √(1 + t) and ds = √(1 + t) dt. The integrand is 1/(1 + t), so ∫<sub>C</sub> ds/(1 + x) = ∫<sub>0</sub><sup>3</sup> dt/√(1 + t) = [2√(1 + t)]<sub>0</sub><sup>3</sup> = 4 − 2 = 2.</p></div><div class="dgraph" data-exprs='["(t, (2/3)*t^(3/2)){0<=t<=3}","(0, 0)","(3, 3.464)"]' data-xmin="-0.5" data-xmax="3.5" data-ymin="-0.5" data-ymax="4"></div><p class="ans">Answer: 2.</p></div>
-<div class="prob"><h4>Ex. 15.2: 20</h4><p class="stmt">Evaluate ∫<sub>C</sub> x/(1 + y<sup>2</sup>) ds, where C: x = 1 + 2t, y = t (0 ≤ t ≤ 1).</p><div class="sol"><p>‖r′(t)‖ = √(2<sup>2</sup> + 1<sup>2</sup>) = √5, so ds = √5 dt. ∫<sub>0</sub><sup>1</sup> (1 + 2t)/(1 + t<sup>2</sup>) · √5 dt = √5 [tan<sup>−1</sup>t + ln(1 + t<sup>2</sup>)]<sub>0</sub><sup>1</sup> = √5(π/4 + ln 2).</p></div><div class="dgraph" data-exprs='["y=(x-1)/2{1<=x<=3}","(1, 0)","(3, 1)"]' data-xmin="0" data-xmax="4" data-ymin="-0.5" data-ymax="2"></div><p class="ans">Answer: √5(π/4 + ln 2) ≈ 2.55.</p></div>
+<div class="prob"><h4>Ex. 15.2: 20</h4><p class="stmt">Evaluate ∫<sub>C</sub> x/(1 + y<sup>2</sup>) ds, where C: x = 1 + 2t, y = t (0 ≤ t ≤ 1).</p><div class="sol"><p>‖r′(t)‖ = √(2<sup>2</sup> + 1<sup>2</sup>) = √5, so ds = √5 dt. ∫<sub>0</sub><sup>1</sup> (1 + 2t)/(1 + t<sup>2</sup>) · √5 dt = √5 [tan<sup>−1</sup>t + ln(1 + t<sup>2</sup>)]<sub>0</sub><sup>1</sup> = √5(π/4 + ln 2).</p></div><div class="dgraph" data-exprs='["y=(x-1)/2{1<=x<=3}","(1, 0)","(3, 1)"]' data-xmin="0" data-xmax="4" data-ymin="-0.5" data-ymax="2"></div><p class="ans">Answer: √5(π/4 + ln 2) ≈ 3.31.</p></div>
 <div class="prob"><h4>Ex. 15.2: 21</h4><p class="stmt">Evaluate ∫<sub>C</sub> 3x<sup>2</sup>yz ds, where C: x = t, y = t<sup>2</sup>, z = (2/3)t<sup>3</sup> (0 ≤ t ≤ 1).</p><div class="sol"><p>‖r′(t)‖ = √(1 + 4t<sup>2</sup> + 4t<sup>4</sup>) = 1 + 2t<sup>2</sup>. The integrand is 3t<sup>2</sup>·t<sup>2</sup>·(2/3)t<sup>3</sup> = 2t<sup>7</sup>. ∫<sub>0</sub><sup>1</sup> 2t<sup>7</sup>(1 + 2t<sup>2</sup>) dt = 2(1/8 + 1/5) = 13/20.</p></div><div class="dgraph" data-exprs='["y=x^2{0<=x<=1}","(0, 0)","(1, 1)"]' data-xmin="-0.5" data-xmax="1.5" data-ymin="-0.5" data-ymax="1.5"></div><div class="dgraph3d" data-exprs='["(t, t^2, (2/3)t^3){0<=t<=1}", "(0, 0, 0)", "(1, 1, 0.667)"]'></div><p class="ans">Answer: 13/20.</p></div>
 <div class="prob"><h4>Ex. 15.2: 22</h4><p class="stmt">Evaluate ∫<sub>C</sub> e<sup>−z</sup>/(x<sup>2</sup> + y<sup>2</sup>) ds, where C: r(t) = 2 cos t i + 2 sin t j + t k (0 ≤ t ≤ 2π).</p><div class="sol"><p>x<sup>2</sup> + y<sup>2</sup> = 4 and ‖r′(t)‖ = √(4 + 1) = √5, so ds = √5 dt. ∫<sub>0</sub><sup>2π</sup> (e<sup>−t</sup>/4)·√5 dt = (√5/4)(1 − e<sup>−2π</sup>).</p></div><div class="dgraph" data-exprs='["x^2+y^2=4","(2, 0)"]' data-xmin="-3" data-xmax="3" data-ymin="-3" data-ymax="3"></div><div class="dgraph3d" data-exprs='["(2cos(t), 2sin(t), t){0<=t<=6.283}", "(2, 0, 0)", "(2, 0, 6.283)"]'></div><p class="ans">Answer: (√5/4)(1 − e<sup>−2π</sup>) ≈ 0.558.</p></div>
 <div class="prob"><h4>Ex. 15.2: 23</h4><p class="stmt">Evaluate ∫<sub>C</sub> (x + 2y) dx + (x − y) dy, where C: x = 2 cos t, y = 4 sin t (0 ≤ t ≤ π/4).</p><div class="sol"><p>dx = −2 sin t dt, dy = 4 cos t dt. The integral is ∫<sub>0</sub><sup>π/4</sup> [(2 cos t + 8 sin t)(−2 sin t) + (2 cos t − 4 sin t)(4 cos t)] dt = ∫<sub>0</sub><sup>π/4</sup> (8 cos<sup>2</sup>t − 20 sin t cos t − 16 sin<sup>2</sup>t) dt = ∫<sub>0</sub><sup>π/4</sup> (12 cos 2t − 4 − 10 sin 2t) dt = 6 − π − 5 = 1 − π.</p></div><div class="dgraph" data-exprs='["(2cos(t), 4sin(t)){0<=t<=pi/4}","(2, 0)","(1.414, 2.828)"]' data-xmin="-0.5" data-xmax="2.5" data-ymin="-0.5" data-ymax="3.5"></div><p class="ans">Answer: 1 − π.</p></div>
@@ -4882,7 +4906,7 @@ Academy</a></p>
 <div class="prob"><h4>Ex. 15.2: 43</h4><p class="stmt">Find the mass of a thin wire shaped in the form of the helix x = 3 cos t, y = 3 sin t, z = 4t (0 ≤ t ≤ π/2) if the density function is δ = kx/(1 + y<sup>2</sup>) (k &gt; 0).</p><div class="sol"><p>‖r′(t)‖ = √(9 + 16) = 5, so ds = 5 dt. Mass = ∫<sub>0</sub><sup>π/2</sup> k·3 cos t/(1 + 9 sin<sup>2</sup>t) · 5 dt = 15k ∫<sub>0</sub><sup>π/2</sup> cos t/(1 + 9 sin<sup>2</sup>t) dt = 15k·(1/3)tan<sup>−1</sup>(3 sin t)|<sub>0</sub><sup>π/2</sup> = 5k tan<sup>−1</sup>3.</p></div><div class="dgraph" data-exprs='["x^2+y^2=9","(3, 0)"]' data-xmin="-3.5" data-xmax="3.5" data-ymin="-3.5" data-ymax="3.5"></div><div class="dgraph3d" data-exprs='["(3cos(t), 3sin(t), 4t){0<=t<=1.571}", "(3, 0, 0)", "(0, 3, 6.283)"]'></div><p class="ans">Answer: 5k tan<sup>−1</sup>3.</p></div>
 <div class="prob"><h4>Ex. 15.2: 44</h4><p class="stmt">Find the mass of a thin wire shaped in the form of the curve x = 2t, y = ln t, z = 4√t (1 ≤ t ≤ 4) if the density function is proportional to the distance above the xy-plane.</p><div class="sol"><p>Let δ = cz = 4c√t. ‖r′(t)‖ = √(4 + 1/t<sup>2</sup> + 4/t) = (2t + 1)/t, so ds = (2t + 1)/t dt. Mass = ∫<sub>1</sub><sup>4</sup> 4c√t·(2t + 1)/t dt = 4c∫<sub>1</sub><sup>4</sup> (2√t + 1/√t) dt = 4c[(4/3)t<sup>3/2</sup> + 2√t]<sub>1</sub><sup>4</sup> = 136c/3.</p></div><div class="dgraph" data-exprs='["y=ln(x/2){2<=x<=8}","(2, 0)","(8, 1.386)"]' data-xmin="1" data-xmax="9" data-ymin="-0.5" data-ymax="1.5"></div><div class="dgraph3d" data-exprs='["(2t, ln(t), 4sqrt(t)){1<=t<=4}", "(2, 0, 4)", "(8, 1.386, 8)"]'></div><p class="ans">Answer: 136c/3, where δ = cz.</p></div>
 <div class="prob"><h4>Ex. 15.2: 45</h4><p class="stmt">Find the work done by the force field F(x, y) = xy i + x<sup>2</sup> j on a particle that moves along the curve C: x = y<sup>2</sup> from (0, 0) to (1, 1).</p><div class="sol"><p>Parametrize x = t<sup>2</sup>, y = t, 0 ≤ t ≤ 1. Then F · dr = xy dx + x<sup>2</sup> dy = t<sup>3</sup>·2t dt + t<sup>4</sup> dt = 3t<sup>4</sup> dt. Work = ∫<sub>0</sub><sup>1</sup> 3t<sup>4</sup> dt = 3/5.</p></div><div class="dgraph" data-exprs='["x=y^2{0<=y<=1}","(1+0.5t, 1+0.5t){0<=t<=1}","(0, 0)","(1, 1)"]' data-xmin="-0.2" data-xmax="1.5" data-ymin="-0.2" data-ymax="1.5"></div><p class="ans">Answer: 3/5.</p></div>
-<div class="prob"><h4>Ex. 15.2: 46</h4><p class="stmt">Find the work done by the force field F(x, y) = (x<sup>2</sup> + xy) i + (y − x<sup>2</sup>) j on a particle that moves along the curve C: x = t, y = 1/t (1 ≤ t ≤ 3).</p><div class="sol"><p>dx = dt, dy = −dt/t<sup>2</sup>. F · dr = (t<sup>2</sup> + 1) dt + (1/t − t<sup>2</sup>)(−1/t<sup>2</sup>) dt = (t<sup>2</sup> + 2 − t<sup>−3</sup>) dt. Work = ∫<sub>1</sub><sup>3</sup> (t<sup>2</sup> + 2 − t<sup>−3</sup>) dt = [t<sup>3</sup>/3 + 2t + 1/(2t<sup>2</sup>)]<sub>1</sub><sup>3</sup> = 110/9.</p></div><div class="dgraph" data-exprs='["y=1/x{1<=x<=3}","(1, 1)","(3, 0.333)"]' data-xmin="0" data-xmax="3.5" data-ymin="0" data-ymax="1.5"></div><p class="ans">Answer: 110/9.</p></div>
+<div class="prob"><h4>Ex. 15.2: 46</h4><p class="stmt">Find the work done by the force field F(x, y) = (x<sup>2</sup> + xy) i + (y − x<sup>2</sup>) j on a particle that moves along the curve C: x = t, y = 1/t (1 ≤ t ≤ 3).</p><div class="sol"><p>dx = dt, dy = −dt/t<sup>2</sup>. F · dr = (t<sup>2</sup> + 1) dt + (1/t − t<sup>2</sup>)(−1/t<sup>2</sup>) dt = (t<sup>2</sup> + 2 − t<sup>−3</sup>) dt. Work = ∫<sub>1</sub><sup>3</sup> (t<sup>2</sup> + 2 − t<sup>−3</sup>) dt = [t<sup>3</sup>/3 + 2t + 1/(2t<sup>2</sup>)]<sub>1</sub><sup>3</sup> = 110/9. (Note: the printed solutions manual uses the integrand t<sup>2</sup> + 1 − t<sup>−3</sup> + 1/t here, which is a misprint — (1/t − t<sup>2</sup>)(−1/t<sup>2</sup>) = 1 − t<sup>−3</sup>, not 1/t − t<sup>−3</sup>.)</p></div><div class="dgraph" data-exprs='["y=1/x{1<=x<=3}","(1, 1)","(3, 0.333)"]' data-xmin="0" data-xmax="3.5" data-ymin="0" data-ymax="1.5"></div><p class="ans">Answer: 110/9.</p></div>
 <div class="prob"><h4>Ex. 15.2: 47</h4><p class="stmt">Find the work done by the force field F(x, y, z) = xy i + yz j + xz k on a particle that moves along the curve C: r(t) = t i + t<sup>2</sup> j + t<sup>3</sup> k (0 ≤ t ≤ 1).</p><div class="sol"><p>r′(t) = i + 2t j + 3t<sup>2</sup> k. F · r′ = t<sup>3</sup> + t<sup>5</sup>·2t + t<sup>4</sup>·3t<sup>2</sup> = t<sup>3</sup> + 5t<sup>6</sup>. Work = ∫<sub>0</sub><sup>1</sup> (t<sup>3</sup> + 5t<sup>6</sup>) dt = 1/4 + 5/7 = 27/28.</p></div><div class="dgraph" data-exprs='["y=x^2{0<=x<=1}","(0, 0)","(1, 1)"]' data-xmin="-0.2" data-xmax="1.2" data-ymin="-0.2" data-ymax="1.2"></div><div class="dgraph3d" data-exprs='["(t, t^2, t^3){0<=t<=1}", "(0, 0, 0)", "(1, 1, 1)"]'></div><p class="ans">Answer: 27/28.</p></div>
 <div class="prob"><h4>Ex. 15.2: 48</h4><p class="stmt">Find the work done by the force field F(x, y, z) = (x + y) i + xy j − z<sup>2</sup> k on a particle that moves along line segments from (0, 0, 0) to (1, 3, 1) to (2, −1, 4).</p><div class="sol"><p>Segment 1, r = (t, 3t, t): F · dr = (4t + 9t<sup>2</sup> − t<sup>2</sup>) dt = (4t + 8t<sup>2</sup>) dt, giving 14/3. Segment 2, r = (1 + s, 3 − 4s, 1 + 3s): F · dr = (4 − 3s) ds − 4(1 + s)(3 − 4s) ds − 3(1 + 3s)<sup>2</sup> ds = (−11 − 17s − 11s<sup>2</sup>) ds, giving −139/6. Total 14/3 − 139/6 = −37/2.</p></div><div class="dgraph" data-exprs='["(t, 3t){0<=t<=1}","(1+t, 3-4t){0<=t<=1}","(0, 0)","(2, -1)"]' data-xmin="-0.5" data-xmax="2.5" data-ymin="-1.5" data-ymax="3.5"></div><div class="dgraph3d" data-exprs='["(t, 3t, t){0<=t<=1}", "(1+t, 3-4t, 1+3t){0<=t<=1}", "(0, 0, 0)", "(2, -1, 4)"]'></div><p class="ans">Answer: −37/2.</p></div>
 <div class="prob"><h4>Ex. 15.2: 49</h4><p class="stmt">Find the work done by the force field F(x, y) = (1/(x<sup>2</sup> + y<sup>2</sup>)) i + (4/(x<sup>2</sup> + y<sup>2</sup>)) j on a particle that moves along the curve C shown in the figure: the quarter-circular arc from (4, 0) to (0, 4).</p><div class="sol"><p>On the arc x<sup>2</sup> + y<sup>2</sup> = 16. Parametrize x = 4 cos t, y = 4 sin t, 0 ≤ t ≤ π/2. Then F · dr = (1/16)(−4 sin t) dt + (4/16)(4 cos t) dt = (−sin t/4 + cos t) dt. Work = ∫<sub>0</sub><sup>π/2</sup> (−sin t/4 + cos t) dt = −1/4 + 1 = 3/4.</p></div><div class="dgraph" data-exprs='["x^2+y^2=16{0<=x<=4}","(4, 0)","(0, 4)"]' data-xmin="-0.5" data-xmax="4.5" data-ymin="-0.5" data-ymax="4.5"></div><p class="ans">Answer: 3/4.</p></div>
@@ -5051,7 +5075,7 @@ Academy</a></p>
 <h3>Exercise Set 14.4</h3>
 <div class="prob"><h4>Ex. 14.4: 1</h4><p class="stmt">Express the area of the portion of the cylinder y<sup>2</sup> + z<sup>2</sup> = 9 that is above the rectangle R = {(x, y) : 0 ≤ x ≤ 2, −3 ≤ y ≤ 3} as an iterated double integral, and then find the surface area.</p><div class="sol"><p>Take the upper half z = √(9 − y<sup>2</sup>). Then z<sub>x</sub> = 0, z<sub>y</sub> = −y/√(9 − y<sup>2</sup>), so √(1 + z<sub>x</sub><sup>2</sup> + z<sub>y</sub><sup>2</sup>) = 3/√(9 − y<sup>2</sup>). Area = ∫<sub>−3</sub><sup>3</sup>∫<sub>0</sub><sup>2</sup> 3/√(9 − y<sup>2</sup>) dx dy = 6[sin<sup>−1</sup>(y/3)]<sub>−3</sub><sup>3</sup> = 6π.</p></div><div class="dgraph" data-exprs='["x=0{-3<=y<=3}","x=2{-3<=y<=3}","y=-3{0<=x<=2}","y=3{0<=x<=2}"]' data-xmin="-0.5" data-xmax="2.5" data-ymin="-3.5" data-ymax="3.5"></div><div class="dgraph3d" data-exprs='["y^2+z^2=9"]'></div><p class="ans">Answer: 6π.</p></div>
 <div class="prob"><h4>Ex. 14.4: 2</h4><p class="stmt">Express the area of the portion of the plane 2x + 2y + z = 8 in the first octant as an iterated double integral, and then find the surface area.</p><div class="sol"><p>z = 8 − 2x − 2y, so √(1 + z<sub>x</sub><sup>2</sup> + z<sub>y</sub><sup>2</sup>) = √(1 + 4 + 4) = 3. The region in the xy-plane is the triangle x ≥ 0, y ≥ 0, x + y ≤ 4, of area 8. Area = 3·8 = 24. Iterated form: ∫<sub>0</sub><sup>4</sup>∫<sub>0</sub><sup>4−x</sup> 3 dy dx.</p></div><div class="dgraph" data-exprs='["y=0{0<=x<=4}","x=0{0<=y<=4}","x+y=4{0<=x<=4}"]' data-xmin="-0.5" data-xmax="4.5" data-ymin="-0.5" data-ymax="4.5"></div><div class="dgraph3d" data-exprs='["z=8-2x-2y", "(4, 0, 0)", "(0, 4, 0)", "(0, 0, 8)"]'></div><p class="ans">Answer: 24.</p></div>
-<div class="prob"><h4>Ex. 14.4: 3</h4><p class="stmt">Express the area of the portion of the cone z<sup>2</sup> = 4x<sup>2</sup> + 4y<sup>2</sup> that is above the region in the first quadrant bounded by the line y = x and the parabola y = x<sup>2</sup> as an iterated double integral, and then find the surface area.</p><div class="sol"><p>Take z = 2√(x<sup>2</sup> + y<sup>2</sup>). Then z<sub>x</sub><sup>2</sup> + z<sub>y</sub><sup>2</sup> = 4, so √(1 + z<sub>x</sub><sup>2</sup> + z<sub>y</sub><sup>2</sup>) = 3. The region is 0 ≤ x ≤ 1, x<sup>2</sup> ≤ y ≤ x, of area ∫<sub>0</sub><sup>1</sup> (x − x<sup>2</sup>) dx = 1/6. Area = 3·(1/6) = 1/2. Iterated form: ∫<sub>0</sub><sup>1</sup>∫<sub>x²</sub><sup>x</sup> 3 dy dx.</p></div><div class="dgraph" data-exprs='["y=x{0<=x<=1}","y=x^2{0<=x<=1}"]' data-xmin="-0.2" data-xmax="1.2" data-ymin="-0.2" data-ymax="1.2"></div><div class="dgraph3d" data-exprs='["z=2sqrt(x^2+y^2)"]'></div><p class="ans">Answer: 1/2.</p></div>
+<div class="prob"><h4>Ex. 14.4: 3</h4><p class="stmt">Express the area of the portion of the cone z<sup>2</sup> = 4x<sup>2</sup> + 4y<sup>2</sup> that is above the region in the first quadrant bounded by the line y = x and the parabola y = x<sup>2</sup> as an iterated double integral, and then find the surface area.</p><div class="sol"><p>Take z = 2√(x<sup>2</sup> + y<sup>2</sup>). Then z<sub>x</sub><sup>2</sup> + z<sub>y</sub><sup>2</sup> = 4, so √(1 + z<sub>x</sub><sup>2</sup> + z<sub>y</sub><sup>2</sup>) = √5. The region is 0 ≤ x ≤ 1, x<sup>2</sup> ≤ y ≤ x, of area ∫<sub>0</sub><sup>1</sup> (x − x<sup>2</sup>) dx = 1/6. Area = √5·(1/6) = √5/6. Iterated form: ∫<sub>0</sub><sup>1</sup>∫<sub>x²</sub><sup>x</sup> √5 dy dx.</p></div><div class="dgraph" data-exprs='["y=x{0<=x<=1}","y=x^2{0<=x<=1}"]' data-xmin="-0.2" data-xmax="1.2" data-ymin="-0.2" data-ymax="1.2"></div><div class="dgraph3d" data-exprs='["z=2sqrt(x^2+y^2)"]'></div><p class="ans">Answer: √5/6 ≈ 0.373.</p></div>
 <div class="prob"><h4>Ex. 14.4: 4</h4><p class="stmt">Express the area of the portion of the surface z = 2x + y<sup>2</sup> that is above the triangular region with vertices (0, 0), (0, 1), and (1, 1) as an iterated double integral, and then find the surface area.</p><div class="sol"><p>z<sub>x</sub> = 2, z<sub>y</sub> = 2y, so √(1 + z<sub>x</sub><sup>2</sup> + z<sub>y</sub><sup>2</sup>) = √(5 + 4y<sup>2</sup>). The triangle is 0 ≤ y ≤ 1, 0 ≤ x ≤ y. Area = ∫<sub>0</sub><sup>1</sup>∫<sub>0</sub><sup>y</sup> √(5 + 4y<sup>2</sup>) dx dy = ∫<sub>0</sub><sup>1</sup> y√(5 + 4y<sup>2</sup>) dy = (1/12)[(5 + 4y<sup>2</sup>)<sup>3/2</sup>]<sub>0</sub><sup>1</sup> = (27 − 5√5)/12.</p></div><div class="dgraph" data-exprs='["x=0{0<=y<=1}","y=1{0<=x<=1}","y=x{0<=x<=1}"]' data-xmin="-0.2" data-xmax="1.2" data-ymin="-0.2" data-ymax="1.2"></div><div class="dgraph3d" data-exprs='["z=2x+y^2"]'></div><p class="ans">Answer: (27 − 5√5)/12 ≈ 1.32.</p></div>
 <div class="prob"><h4>Ex. 14.4: 5</h4><p class="stmt">Express the area of the portion of the cone z = √(x<sup>2</sup> + y<sup>2</sup>) that lies inside the cylinder x<sup>2</sup> + y<sup>2</sup> = 2x as an iterated double integral in polar coordinates, and then find the surface area.</p><div class="sol"><p>z<sub>x</sub> = x/r, z<sub>y</sub> = y/r, so √(1 + z<sub>x</sub><sup>2</sup> + z<sub>y</sub><sup>2</sup>) = √2. In polar coordinates the cylinder is r ≤ 2 cos θ, −π/2 ≤ θ ≤ π/2. Area = ∫<sub>−π/2</sub><sup>π/2</sup>∫<sub>0</sub><sup>2 cos θ</sup> √2 r dr dθ = √2·(area of the circle of radius 1) = √2 π.</p></div><div class="dgraph" data-exprs='["(x-1)^2+y^2=1"]' data-xmin="-0.5" data-xmax="2.5" data-ymin="-1.5" data-ymax="1.5"></div><div class="dgraph3d" data-exprs='["z=sqrt(x^2+y^2)", "x^2+y^2=2x"]'></div><p class="ans">Answer: √2 π.</p></div>
 <div class="prob"><h4>Ex. 14.4: 6</h4><p class="stmt">Express the area of the portion of the paraboloid z = 1 − x<sup>2</sup> − y<sup>2</sup> that is above the xy-plane as an iterated double integral in polar coordinates, and then find the surface area.</p><div class="sol"><p>z<sub>x</sub> = −2x, z<sub>y</sub> = −2y, so √(1 + z<sub>x</sub><sup>2</sup> + z<sub>y</sub><sup>2</sup>) = √(1 + 4r<sup>2</sup>). The region is r ≤ 1. Area = ∫<sub>0</sub><sup>2π</sup>∫<sub>0</sub><sup>1</sup> √(1 + 4r<sup>2</sup>) r dr dθ = 2π·(1/12)(5√5 − 1) = π(5√5 − 1)/6.</p></div><div class="dgraph" data-exprs='["x^2+y^2=1","x^2+y^2<=1"]' data-xmin="-1.5" data-xmax="1.5" data-ymin="-1.5" data-ymax="1.5"></div><div class="dgraph3d" data-exprs='["z=1-x^2-y^2"]'></div><p class="ans">Answer: π(5√5 − 1)/6 ≈ 5.33.</p></div>
@@ -5070,7 +5094,7 @@ Academy</a></p>
 <div class="prob"><h4>Ex. 15.5: 7</h4><p class="stmt">Evaluate ∬<sub>σ</sub> f(x, y, z) dS, where f(x, y, z) = x + y + z and σ is the surface of the cube defined by 0 ≤ x ≤ 1, 0 ≤ y ≤ 1, 0 ≤ z ≤ 1. [Hint: Integrate over each face separately.]</p><div class="sol"><p>By symmetry, ∬<sub>σ</sub> x dS = ∬<sub>σ</sub> y dS = ∬<sub>σ</sub> z dS. For x: the face x = 1 contributes 1·1 = 1; the face x = 0 contributes 0; each of the other four faces contributes ∫<sub>0</sub><sup>1</sup>∫<sub>0</sub><sup>1</sup> x dx dz = 1/2, for 2 total. So ∬<sub>σ</sub> x dS = 3, and the same for y and z. Total = 9.</p></div><div class="dgraph" data-exprs='["x=0{0<=y<=1}","y=0{0<=x<=1}","x=1{0<=y<=1}","y=1{0<=x<=1}"]' data-xmin="-0.2" data-xmax="1.2" data-ymin="-0.2" data-ymax="1.2"></div><div class="dgraph3d" data-exprs='["x=1", "y=1", "z=1", "(0, 0, 0)"]'></div><p class="ans">Answer: 9.</p></div>
 <div class="prob"><h4>Ex. 15.5: 8</h4><p class="stmt">Evaluate ∬<sub>σ</sub> f(x, y, z) dS, where f(x, y, z) = x<sup>2</sup> + y<sup>2</sup> and σ is the surface of the sphere x<sup>2</sup> + y<sup>2</sup> + z<sup>2</sup> = a<sup>2</sup>.</p><div class="sol"><p>x<sup>2</sup> + y<sup>2</sup> = a<sup>2</sup> − z<sup>2</sup>. ∬<sub>σ</sub> (a<sup>2</sup> − z<sup>2</sup>) dS = a<sup>2</sup>·(4πa<sup>2</sup>) − ∬<sub>σ</sub> z<sup>2</sup> dS. By symmetry ∬<sub>σ</sub> x<sup>2</sup> dS = ∬<sub>σ</sub> y<sup>2</sup> dS = ∬<sub>σ</sub> z<sup>2</sup> dS, and their sum is ∬<sub>σ</sub> a<sup>2</sup> dS = 4πa<sup>4</sup>, so each is (4/3)πa<sup>4</sup>. Hence the integral is 4πa<sup>4</sup> − (4/3)πa<sup>4</sup> = (8/3)πa<sup>4</sup>.</p></div><div class="dgraph" data-exprs='["x^2+y^2=1"]' data-xmin="-1.5" data-xmax="1.5" data-ymin="-1.5" data-ymax="1.5"></div><div class="dgraph3d" data-exprs='["x^2+y^2+z^2=1"]'></div><p class="ans">Answer: (8/3)πa<sup>4</sup>.</p></div>
 <div class="prob"><h4>Ex. 15.5: 13</h4><p class="stmt">Consider the integral of f(x, y, z) = z + 1 over the upper hemisphere σ: z = √(1 − x<sup>2</sup> − y<sup>2</sup>) (0 ≤ x<sup>2</sup> + y<sup>2</sup> ≤ 1). (a) Explain why evaluating this surface integral using Formula (8) results in an improper integral. (b) Use (8) to evaluate the integral of f over σ<sub>r</sub>: z = √(1 − x<sup>2</sup> − y<sup>2</sup>) (0 ≤ x<sup>2</sup> + y<sup>2</sup> ≤ r<sup>2</sup> &lt; 1). Take the limit as r → 1<sup>−</sup> to determine the integral of f over σ. (c) Parametrize σ using spherical coordinates and evaluate the integral of f over σ using (6). Verify that your answer agrees with the result in part (b).</p><div class="sol"><p>(a) Formula (8) uses √(1 + z<sub>x</sub><sup>2</sup> + z<sub>y</sub><sup>2</sup>) = 1/z, so the integrand (z + 1)/z = 1 + 1/z blows up as z → 0 at the rim of the hemisphere: the integral is improper. (b) Over σ<sub>r</sub>: ∫∫ (1 + 1/z) dA = 2π∫<sub>0</sub><sup>r</sup> (ρ + ρ/√(1 − ρ<sup>2</sup>)) dρ = 2π(r<sup>2</sup>/2 + 1 − √(1 − r<sup>2</sup>)). As r → 1<sup>−</sup> this tends to 2π(1/2 + 1) = 3π. (c) Spherical: z = cos φ, dS = sin φ dφ dθ, f = 1 + cos φ. ∫<sub>0</sub><sup>2π</sup>∫<sub>0</sub><sup>π/2</sup> (1 + cos φ) sin φ dφ dθ = 2π·(3/2) = 3π, agreeing with (b).</p></div><div class="dgraph" data-exprs='["x^2+y^2=1","x^2+y^2<=1"]' data-xmin="-1.5" data-xmax="1.5" data-ymin="-1.5" data-ymax="1.5"></div><div class="dgraph3d" data-exprs='["z=sqrt(1-x^2-y^2)"]'></div><p class="ans">Answer: (a) The integrand 1 + 1/z is unbounded at the rim z = 0; (b) 2π(1 − √(1 − r<sup>2</sup>) + r<sup>2</sup>/2) → 3π; (c) 3π.</p></div>
-<div class="prob"><h4>Ex. 15.5: 14</h4><p class="stmt">Consider the integral of f(x, y, z) = x + y + z over the cone σ: z = √(x<sup>2</sup> + y<sup>2</sup>) (0 ≤ z ≤ 1). (a) Explain why evaluating this surface integral using Formula (8) results in an improper integral. (b) Use (8) to evaluate the integral of f over σ<sub>r</sub>: z = √(x<sup>2</sup> + y<sup>2</sup>) (0 &lt; r<sup>2</sup> ≤ x<sup>2</sup> + y<sup>2</sup> ≤ 1). Take the limit as r → 0<sup>+</sup> to determine the integral of f over σ. (c) Parametrize σ using spherical coordinates and evaluate the integral of f over σ using (6). Verify that your answer agrees with the result in part (b).</p><div class="sol"><p>(a) The cone is not differentiable at its tip (0, 0, 0): z<sub>x</sub> and z<sub>y</sub> do not exist there, so Formula (8) gives an improper integral at the origin. (b) On the annulus the x- and y-terms integrate to 0 by symmetry, and √(1 + z<sub>x</sub><sup>2</sup> + z<sub>y</sub><sup>2</sup>) = √2: ∫∫ z√2 dA = √2 ∫<sub>0</sub><sup>2π</sup>∫<sub>r</sub><sup>1</sup> ρ·ρ dρ dθ = 2π√2(1 − r<sup>3</sup>)/3 → 2π√2/3 as r → 0<sup>+</sup>. (c) Spherical (φ = π/4): with ρ the distance from the origin along the cone, dS = (ρ/√2) dρ dθ, f = (ρ/√2)(1 + cos θ + sin θ). ∫<sub>0</sub><sup>2π</sup>∫<sub>0</sub><sup>√2</sup> (ρ<sup>2</sup>/2)(1 + cos θ + sin θ) dρ dθ = (1/2)(2π)(2√2/3) = 2π√2/3, agreeing with (b).</p></div><div class="dgraph" data-exprs='["x^2+y^2=1","x^2+y^2<=1"]' data-xmin="-1.5" data-xmax="1.5" data-ymin="-1.5" data-ymax="1.5"></div><div class="dgraph3d" data-exprs='["z=sqrt(x^2+y^2)", "z=1"]'></div><p class="ans">Answer: (a) The cone has no tangent plane at the tip; (b) 2π√2(1 − r<sup>3</sup>)/3 → 2π√2/3; (c) 2π√2/3.</p></div>
+<div class="prob"><h4>Ex. 15.5: 14</h4><p class="stmt">Consider the integral of f(x, y, z) = √(x<sup>2</sup> + y<sup>2</sup> + z<sup>2</sup>) over the cone σ: z = √(x<sup>2</sup> + y<sup>2</sup>) (0 ≤ z ≤ 1). (a) Explain why evaluating this surface integral using Formula (8) results in an improper integral. (b) Use (8) to evaluate the integral of f over σ<sub>r</sub>: z = √(x<sup>2</sup> + y<sup>2</sup>) (0 &lt; r<sup>2</sup> ≤ x<sup>2</sup> + y<sup>2</sup> ≤ 1). Take the limit as r → 0<sup>+</sup> to determine the integral of f over σ. (c) Parametrize σ using spherical coordinates and evaluate the integral of f over σ using (6). Verify that your answer agrees with the result in part (b).</p><div class="sol"><p>(a) The cone is not differentiable at its tip (0, 0, 0): z<sub>x</sub> and z<sub>y</sub> do not exist there, so Formula (8) gives an improper integral at the origin. (b) On the cone z<sup>2</sup> = x<sup>2</sup> + y<sup>2</sup>, so f = √(2(x<sup>2</sup> + y<sup>2</sup>)) = ρ√2 (ρ the polar radius) and √(1 + z<sub>x</sub><sup>2</sup> + z<sub>y</sub><sup>2</sup>) = √2. On the annulus r<sup>2</sup> ≤ x<sup>2</sup> + y<sup>2</sup> ≤ 1: ∫∫ f dS = ∫∫ 2ρ dA = 2∫<sub>0</sub><sup>2π</sup>∫<sub>r</sub><sup>1</sup> ρ<sup>2</sup> dρ dθ = (4π/3)(1 − r<sup>3</sup>) → 4π/3 as r → 0<sup>+</sup>. (c) Spherical (φ = π/4): with ρ the distance from the origin along the cone, r(ρ, θ) = (ρ/√2)(cos θ i + sin θ j + k), ‖r<sub>ρ</sub> × r<sub>θ</sub>‖ = ρ/√2 and f = ρ. ∫<sub>0</sub><sup>2π</sup>∫<sub>0</sub><sup>√2</sup> ρ·(ρ/√2) dρ dθ = 4π/3, agreeing with (b).</p></div><div class="dgraph" data-exprs='["x^2+y^2=1","x^2+y^2<=1"]' data-xmin="-1.5" data-xmax="1.5" data-ymin="-1.5" data-ymax="1.5"></div><div class="dgraph3d" data-exprs='["z=sqrt(x^2+y^2)", "z=1"]'></div><p class="ans">Answer: (a) The cone has no tangent plane at the tip; (b) (4π/3)(1 − r<sup>3</sup>) → 4π/3; (c) 4π/3.</p></div>
 <div class="prob"><h4>Ex. 15.5: 35</h4><p class="stmt">Evaluate ∬<sub>σ</sub> f(x, y, z) dS over the surface represented by r(u, v) = u cos v i + u sin v j + 3u k (1 ≤ u ≤ 2, 0 ≤ v ≤ π/2), where f(x, y, z) = xyz.</p><div class="sol"><p>r<sub>u</sub> = (cos v, sin v, 3), r<sub>v</sub> = (−u sin v, u cos v, 0). r<sub>u</sub> × r<sub>v</sub> = (3u cos v, 3u sin v, −u), with ‖r<sub>u</sub> × r<sub>v</sub>‖ = u√10. Also xyz = 3u<sup>3</sup> sin v cos v. ∬<sub>σ</sub> xyz dS = ∫<sub>0</sub><sup>π/2</sup>∫<sub>1</sub><sup>2</sup> 3u<sup>3</sup> sin v cos v · u√10 du dv = 3√10·(31/5)·(1/2) = 93√10/10.</p></div><div class="dgraph" data-exprs='["x^2+y^2=1{0<=x<=1}","x^2+y^2=4{0<=x<=2}","x=0{1<=y<=2}","y=0{1<=x<=2}"]' data-xmin="-0.5" data-xmax="2.5" data-ymin="-0.5" data-ymax="2.5"></div><div class="dgraph3d" data-exprs='["z=3sqrt(x^2+y^2)"]'></div><p class="ans">Answer: 93√10/10 ≈ 29.41.</p></div>
 <div class="prob"><h4>Ex. 15.5: 36</h4><p class="stmt">Evaluate ∬<sub>σ</sub> f(x, y, z) dS over the surface represented by r(u, v) = 2 cos v i + u j + 2 sin v k (1 ≤ u ≤ 3, 0 ≤ v ≤ 2π), where f(x, y, z) = (x<sup>2</sup> + z<sup>2</sup>)/y.</p><div class="sol"><p>r<sub>u</sub> = (0, 1, 0), r<sub>v</sub> = (−2 sin v, 0, 2 cos v). r<sub>u</sub> × r<sub>v</sub> = (2 cos v, 0, 2 sin v), with ‖r<sub>u</sub> × r<sub>v</sub>‖ = 2. Also (x<sup>2</sup> + z<sup>2</sup>)/y = 4/u. ∬<sub>σ</sub> f dS = ∫<sub>0</sub><sup>2π</sup>∫<sub>1</sub><sup>3</sup> (4/u)·2 du dv = 16π ln 3.</p></div><div class="dgraph" data-exprs='["x=-2{1<=y<=3}","x=2{1<=y<=3}","y=1{-2<=x<=2}","y=3{-2<=x<=2}"]' data-xmin="-2.5" data-xmax="2.5" data-ymin="0.5" data-ymax="3.5"></div><div class="dgraph3d" data-exprs='["x^2+z^2=4"]'></div><p class="ans">Answer: 16π ln 3 ≈ 55.24.</p></div>
 <div class="prob"><h4>Ex. 15.5: 37</h4><p class="stmt">Evaluate ∬<sub>σ</sub> f(x, y, z) dS over the surface represented by r(u, v) = u cos v i + u sin v j + u<sup>2</sup> k (0 ≤ u ≤ sin v, 0 ≤ v ≤ π), where f(x, y, z) = 1/(1 + 4x<sup>2</sup> + 4y<sup>2</sup>).</p><div class="sol"><p>r<sub>u</sub> = (cos v, sin v, 2u), r<sub>v</sub> = (−u sin v, u cos v, 0). r<sub>u</sub> × r<sub>v</sub> = (−2u<sup>2</sup> cos v, −2u<sup>2</sup> sin v, u), with ‖r<sub>u</sub> × r<sub>v</sub>‖ = u√(1 + 4u<sup>2</sup>). Also f = 1/(1 + 4u<sup>2</sup>). ∬<sub>σ</sub> f dS = ∫<sub>0</sub><sup>π</sup>∫<sub>0</sub><sup>sin v</sup> u du dv = ∫<sub>0</sub><sup>π</sup> sin<sup>2</sup>v/2 dv = π/4.</p></div><div class="dgraph" data-exprs='["x^2+(y-0.5)^2=0.25"]' data-xmin="-0.5" data-xmax="1.5" data-ymin="-0.5" data-ymax="1.5"></div><div class="dgraph3d" data-exprs='["z=x^2+y^2"]'></div><p class="ans">Answer: π/4.</p></div>
@@ -5084,7 +5108,7 @@ Academy</a></p>
 <div class="prob"><h4>Ex. 15.6: 13</h4><p class="stmt">Find the flux of F(x, y, z) = x i + y j + 2z k across σ, the portion of the cone z<sup>2</sup> = x<sup>2</sup> + y<sup>2</sup> between the planes z = 1 and z = 2, oriented by upward unit normals.</p><div class="sol"><p>On the cone z = r, the upward normal vector is (−z<sub>x</sub>, −z<sub>y</sub>, 1) = (−x/r, −y/r, 1). F · (−x/r, −y/r, 1) = −x<sup>2</sup>/r − y<sup>2</sup>/r + 2z = −r + 2r = r. Flux = ∬<sub>1≤r≤2</sub> r dA = ∫<sub>0</sub><sup>2π</sup>∫<sub>1</sub><sup>2</sup> r<sup>2</sup> dr dθ = 2π·(7/3) = 14π/3.</p></div><div class="dgraph" data-exprs='["x^2+y^2=1","x^2+y^2=4"]' data-xmin="-2.5" data-xmax="2.5" data-ymin="-2.5" data-ymax="2.5"></div><div class="dgraph3d" data-exprs='["z=sqrt(x^2+y^2)", "z=1", "z=2"]'></div><p class="ans">Answer: 14π/3.</p></div>
 <div class="prob"><h4>Ex. 15.6: 14</h4><p class="stmt">Find the flux of F(x, y, z) = y j + k across σ, the portion of the paraboloid z = x<sup>2</sup> + y<sup>2</sup> below the plane z = 4, oriented by downward unit normals.</p><div class="sol"><p>The downward normal vector is (z<sub>x</sub>, z<sub>y</sub>, −1) = (2x, 2y, −1). F · (2x, 2y, −1) = 2y<sup>2</sup> − 1. Flux = ∬<sub>r≤2</sub> (2y<sup>2</sup> − 1) dA = 2·(π·2<sup>4</sup>/4) − 4π = 8π − 4π = 4π.</p></div><div class="dgraph" data-exprs='["x^2+y^2=4","x^2+y^2<=4"]' data-xmin="-2.5" data-xmax="2.5" data-ymin="-2.5" data-ymax="2.5"></div><div class="dgraph3d" data-exprs='["z=x^2+y^2", "z=4"]'></div><p class="ans">Answer: 4π.</p></div>
 <div class="prob"><h4>Ex. 15.6: 15</h4><p class="stmt">Find the flux of F(x, y, z) = x k across σ, the portion of the paraboloid z = x<sup>2</sup> + y<sup>2</sup> below the plane z = y, oriented by downward unit normals.</p><div class="sol"><p>The downward normal vector is (2x, 2y, −1). F · (2x, 2y, −1) = −x. The region is the disk x<sup>2</sup> + y<sup>2</sup> ≤ y, i.e. the disk of radius 1/2 centred at (0, 1/2), which is symmetric about x = 0. Hence ∬<sub>R</sub> (−x) dA = 0.</p></div><div class="dgraph" data-exprs='["x^2+(y-0.5)^2=0.25"]' data-xmin="-1" data-xmax="1" data-ymin="-0.5" data-ymax="1.5"></div><div class="dgraph3d" data-exprs='["z=x^2+y^2", "z=y"]'></div><p class="ans">Answer: 0.</p></div>
-<div class="prob"><h4>Ex. 15.6: 16</h4><p class="stmt">Find the flux of F(x, y, z) = x<sup>2</sup> i + yx j + zx k across σ, the portion of the plane 6x + 3y + 2z = 6 in the first octant, oriented by unit normals with positive components.</p><div class="sol"><p>Use the normal vector (6, 3, 2). F · (6, 3, 2) = 6x<sup>2</sup> + 3xy + 2zx. On the plane z = 3 − 3x − (3/2)y, this simplifies to 6x<sup>2</sup> + 3xy + 6x − 6x<sup>2</sup> − 3xy = 6x. The region is the triangle x ≥ 0, y ≥ 0, 6x + 3y ≤ 6. Flux = ∫<sub>0</sub><sup>1</sup>∫<sub>0</sub><sup>2−2x</sup> 6x dy dx = ∫<sub>0</sub><sup>1</sup> 6x(2 − 2x) dx = 2.</p></div><div class="dgraph" data-exprs='["x=0{0<=y<=2}","y=0{0<=x<=1}","6x+3y=6{0<=x<=1}"]' data-xmin="-0.5" data-xmax="1.5" data-ymin="-0.5" data-ymax="2.5"></div><div class="dgraph3d" data-exprs='["z=3-3x-1.5y", "(1, 0, 0)", "(0, 2, 0)", "(0, 0, 3)"]'></div><p class="ans">Answer: 2.</p></div>
+<div class="prob"><h4>Ex. 15.6: 16</h4><p class="stmt">Find the flux of F(x, y, z) = x<sup>2</sup> i + yx j + zx k across σ, the portion of the plane 6x + 3y + 2z = 6 in the first octant, oriented by unit normals with positive components.</p><div class="sol"><p>For the plane z = 3 − 3x − (3/2)y, Formula (11) uses the normal (−z<sub>x</sub>, −z<sub>y</sub>, 1) = (3, 3/2, 1) — not the plane's gradient (6, 3, 2), which is twice that vector and would double the flux. F · (3, 3/2, 1) = 3x<sup>2</sup> + (3/2)xy + zx. On the plane z = 3 − 3x − (3/2)y, this simplifies to 3x<sup>2</sup> + (3/2)xy + 3x − 3x<sup>2</sup> − (3/2)xy = 3x. The region is the triangle x ≥ 0, y ≥ 0, 6x + 3y ≤ 6. Flux = ∫<sub>0</sub><sup>1</sup>∫<sub>0</sub><sup>2−2x</sup> 3x dy dx = ∫<sub>0</sub><sup>1</sup> 3x(2 − 2x) dx = 1.</p></div><div class="dgraph" data-exprs='["x=0{0<=y<=2}","y=0{0<=x<=1}","6x+3y=6{0<=x<=1}"]' data-xmin="-0.5" data-xmax="1.5" data-ymin="-0.5" data-ymax="2.5"></div><div class="dgraph3d" data-exprs='["z=3-3x-1.5y", "(1, 0, 0)", "(0, 2, 0)", "(0, 0, 3)"]'></div><p class="ans">Answer: 1.</p></div>
 <div class="prob"><h4>Ex. 15.6: 17</h4><p class="stmt">Find the flux of F(x, y, z) = x i + y j + k across σ in the direction of positive orientation, where σ is the portion of the paraboloid r(u, v) = u cos v i + u sin v j + (1 − u<sup>2</sup>) k with 1 ≤ u ≤ 2, 0 ≤ v ≤ 2π.</p><div class="sol"><p>r<sub>u</sub> = (cos v, sin v, −2u), r<sub>v</sub> = (−u sin v, u cos v, 0). r<sub>u</sub> × r<sub>v</sub> = (2u<sup>2</sup> cos v, 2u<sup>2</sup> sin v, u). F = (u cos v, u sin v, 1), so F · (r<sub>u</sub> × r<sub>v</sub>) = 2u<sup>3</sup> + u. Flux = ∫<sub>0</sub><sup>2π</sup>∫<sub>1</sub><sup>2</sup> (2u<sup>3</sup> + u) du dv = 2π·[(u<sup>4</sup> + u<sup>2</sup>)/2]<sub>1</sub><sup>2</sup> = 2π·9 = 18π.</p></div><div class="dgraph" data-exprs='["x^2+y^2=1","x^2+y^2=4"]' data-xmin="-2.5" data-xmax="2.5" data-ymin="-2.5" data-ymax="2.5"></div><div class="dgraph3d" data-exprs='["z=1-x^2-y^2"]'></div><p class="ans">Answer: 18π.</p></div>
 <div class="prob"><h4>Ex. 15.6: 18</h4><p class="stmt">Find the flux of F(x, y, z) = e<sup>−y</sup> i − y j + x sin z k across σ in the direction of positive orientation, where σ is the portion of the elliptic cylinder r(u, v) = 2 cos v i + sin v j + u k with 0 ≤ u ≤ 5, 0 ≤ v ≤ 2π.</p><div class="sol"><p>r<sub>u</sub> = (0, 0, 1), r<sub>v</sub> = (−2 sin v, cos v, 0). r<sub>u</sub> × r<sub>v</sub> = (−cos v, −2 sin v, 0). F · (r<sub>u</sub> × r<sub>v</sub>) = −e<sup>−sin v</sup> cos v + 2 sin<sup>2</sup>v. Flux = ∫<sub>0</sub><sup>2π</sup>∫<sub>0</sub><sup>5</sup> (−e<sup>−sin v</sup> cos v + 2 sin<sup>2</sup>v) du dv = 5[0 + 2π] = 10π, since ∫<sub>0</sub><sup>2π</sup> e<sup>−sin v</sup> cos v dv = 0.</p></div><div class="dgraph" data-exprs='["x^2/4+y^2=1"]' data-xmin="-2.5" data-xmax="2.5" data-ymin="-1.5" data-ymax="1.5"></div><div class="dgraph3d" data-exprs='["x^2/4+y^2=1"]'></div><p class="ans">Answer: 10π.</p></div>
 <div class="prob"><h4>Ex. 15.6: 19</h4><p class="stmt">Find the flux of F(x, y, z) = √(x<sup>2</sup> + y<sup>2</sup>) k across σ in the direction of positive orientation, where σ is the portion of the cone r(u, v) = u cos v i + u sin v j + 2u k with 0 ≤ u ≤ sin v, 0 ≤ v ≤ π.</p><div class="sol"><p>r<sub>u</sub> = (cos v, sin v, 2), r<sub>v</sub> = (−u sin v, u cos v, 0). r<sub>u</sub> × r<sub>v</sub> = (−2u cos v, −2u sin v, u). On the cone √(x<sup>2</sup> + y<sup>2</sup>) = u, so F · (r<sub>u</sub> × r<sub>v</sub>) = u·u = u<sup>2</sup>. Flux = ∫<sub>0</sub><sup>π</sup>∫<sub>0</sub><sup>sin v</sup> u<sup>2</sup> du dv = ∫<sub>0</sub><sup>π</sup> sin<sup>3</sup>v/3 dv = (1/3)(4/3) = 4/9.</p></div><div class="dgraph" data-exprs='["x^2+(y-0.5)^2=0.25"]' data-xmin="-0.5" data-xmax="1.5" data-ymin="-0.5" data-ymax="1.5"></div><div class="dgraph3d" data-exprs='["z=2sqrt(x^2+y^2)"]'></div><p class="ans">Answer: 4/9.</p></div>
@@ -5193,10 +5217,10 @@ Academy</a></p>
 <div class="howto"><h3>Coverage summary</h3>
 <p><strong>Notes:</strong> all 23 lectures covered — Lecture 0 (recap, not in the syllabus), Lectures 1–10, Lectures 11–12 (problem-solving sessions, no new topic), Lecture 13, Lectures 14–18, Lectures 19–22. Nothing is missing.</p>
 <p><strong>Figures:</strong> 49 real textbook figures, none drawn by hand — 46 from Anton 10th edition (the book you shared), 2 from OpenStax Calculus Volume 3, 1 from Gilbert Strang's Calculus (MIT OCW). Each figure carries its printed caption and its source book and page number. Lectures 11–12 have no figure because they introduce no new section.</p>
-<p><strong>Solutions:</strong> 558 problems solved step by step — every problem listed in the lecture plan — and every single one has its own Desmos graph: the curve, the shaded region, the tangent line, the level curves, or the path the integral runs along, drawn from that problem's own numbers. Graphs load as you scroll to them (they need an internet connection for Desmos) and you can drag, zoom and change the expressions inside each one. On top of that, 300 genuinely 3D problems have a second, rotatable Desmos 3D graph — the actual surface, helix, solid or vector field, not a flat shadow of it. Tap "View in 3D" on a problem to load it. Only one problem is unsolved: Ex. 14.2-12, whose figure is lost in the text extraction; the general method for both integration orders is given instead, so check that figure in the book. While solving, a few errors in the earlier course guide were found and corrected in the solutions: Ex. 13.2 #3 is −8 (not −2), #17 is 8/3 (not 8/9), Ex. 13.3 #82 and #106, Ex. 14.1-11, the Ex. 14.3-8 rose remark, and Making Connections 2(d) (not homogeneous). Flags from the guide are kept in the notes where they belong: Lecture 17's exercise set is listed as Ex 13.9 on the plan but is really Ex 14.7; Lecture 7 has no multivariable Taylor series in §13.4 (only the first-order linear approximation); Lecture 8's "Euler's equation" is Euler's homogeneous-function theorem (Making Connections, p. 999); Lecture 15 lists Ex 14.3: 32–34 twice; Ex 13.2 #6 is a cube root; the polar Jacobian in Ex 14.7-15 is r, not r²; Ex 15.7-17 is the cone z = √(x²+y²), not the paraboloid.</p>
+<p><strong>Solutions:</strong> 558 problems solved step by step — every problem listed in the lecture plan — and every single one has its own Desmos graph: the curve, the shaded region, the tangent line, the level curves, or the path the integral runs along, drawn from that problem's own numbers. Graphs load as you scroll to them (they need an internet connection for Desmos) and you can drag, zoom and change the expressions inside each one. On top of that, 300 genuinely 3D problems have a second, rotatable Desmos 3D graph — the actual surface, helix, solid or vector field, not a flat shadow of it. Tap "View in 3D" on a problem to load it. Every one of the 558 is solved, including Ex. 14.2-12, whose figure was lost in the book's text extraction — the official solutions manual gives the region (the unit disk), and both integration orders are now worked out. Checking every solution against the official Anton solutions manual caught more errors in the earlier course guide, now corrected here: Ex. 13.2 #3 is −8 (not −2), #17 is 8/3 (not 8/9), #26 is 0 by squeeze (not "does not exist"), Ex. 13.3 #82 and #106, Ex. 14.1-11 (the integrand is xy·e^(xy²)), Ex. 14.1-36 averages 24 (not 45/2), Ex. 14.2-3 is 9 (not 63/2), Ex. 14.2-4 is 13/80, Ex. 14.5-16 is 4/15, and Making Connections 2(d) is homogeneous of degree −4 (not "not homogeneous"). Flags from the guide are kept in the notes where they belong: Lecture 17's exercise set is listed as Ex 13.9 on the plan but is really Ex 14.7; Lecture 7 has no multivariable Taylor series in §13.4 (only the first-order linear approximation); Lecture 8's "Euler's equation" is Euler's homogeneous-function theorem (Making Connections, p. 999); Lecture 15 lists Ex 14.3: 32–34 twice; Ex 13.2 #6 is a cube root; the polar Jacobian in Ex 14.7-15 is r, not r²; Ex 15.7-17 is the cone z = √(x²+y²), not the paraboloid.</p>
 <p>One honest limit of the graphs: a solid is shown by its bounding surfaces (Desmos cannot shade a solid), a vector field by 2–3 sample vectors at the stated points, and a few graphs with a general parameter (radius a, and so on) are drawn with a representative value like a = 1 or a = 2.</p>
 </div>
-<footer>Compiled 2026-11-22 from Anton 10th edition and the ACCE MAT 2101 Lecture Plan, 2026. Figures are reproduced from the textbooks for study use. Worked answers were verified with SymPy and against the book's answers appendix; video links are exact URLs from search results — where only an embed or summary page was returned, that is stated instead of a guessed link.</footer>
+<footer>Compiled 2026-11-22 from Anton 10th edition and the ACCE MAT 2101 Lecture Plan, 2026. Figures are reproduced from the textbooks for study use. Worked answers were verified with SymPy, against the book's answers appendix, and against the official Anton solutions manual; video links are exact URLs from search results — where only an embed or summary page was returned, that is stated instead of a guessed link.</footer>
 </div>
 <script src="https://www.desmos.com/api/v1.12/calculator.js?apiKey=dcb31709b452b1cf9dc26972add0fda6"></script>
 <script>
@@ -5274,6 +5298,128 @@ Academy</a></p>
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', observe);
   } else { observe(); }
+})();
+</script>
+<script>
+/* Solution finder: type a problem number (e.g. 14.2-3, 13.5 10, MC 2) to jump
+   straight to its worked solution; or pick a lecture to jump to its solutions. */
+(function () {
+  var box = document.getElementById('finder');
+  if (!box) return;
+  var input = document.getElementById('finder-q');
+  var results = document.getElementById('finder-results');
+  var lecSel = document.getElementById('finder-lec');
+  var probs = [];
+  var active = -1;
+
+  function norm(s) {
+    return s.toLowerCase().replace(/making connections/g, 'mc').replace(/[^a-z0-9]/g, '');
+  }
+  function lecName(sec) {
+    var n = sec.id.replace('sol-', '');
+    return n === '11-12' ? 'Lectures 11–12 — solutions' : 'Lecture ' + n + ' — solutions';
+  }
+
+  Array.prototype.slice.call(document.querySelectorAll('section.solutions')).forEach(function (sec) {
+    var opt = document.createElement('option');
+    opt.value = sec.id;
+    opt.textContent = lecName(sec);
+    lecSel.appendChild(opt);
+    var lec = sec.id.replace('sol-', '');
+    Array.prototype.slice.call(sec.querySelectorAll('.prob')).forEach(function (prob, i) {
+      var h4 = prob.querySelector('h4');
+      var label = h4 ? h4.textContent.trim() : 'Problem';
+      var stmt = prob.querySelector('.stmt');
+      var snippet = stmt ? stmt.textContent.trim().replace(/\s+/g, ' ') : '';
+      if (snippet.length > 90) snippet = snippet.slice(0, 90) + '…';
+      prob.id = 'prob-' + lec + '-' + i;
+      probs.push({ label: label, lec: lec, snippet: snippet, key: norm(label), el: prob });
+    });
+  });
+  var allOpt = document.createElement('option');
+  allOpt.value = '';
+  allOpt.textContent = 'Jump to a lecture…';
+  lecSel.insertBefore(allOpt, lecSel.firstChild);
+  lecSel.value = '';
+
+  function jump(p) {
+    if (!p) return;
+    p.el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    p.el.classList.add('flash');
+    setTimeout(function () { p.el.classList.remove('flash'); }, 2600);
+    results.hidden = true;
+    input.blur();
+  }
+  function render(matches, total) {
+    results.innerHTML = '';
+    active = -1;
+    if (!matches.length) {
+      results.innerHTML = '<div class="finder-none">No solution matches that — try e.g. 14.2-3 or 13.5 10.</div>';
+    } else {
+      matches.forEach(function (p) {
+        var b = document.createElement('button');
+        b.type = 'button';
+        b.setAttribute('role', 'option');
+        b.innerHTML = '<b></b><span></span>';
+        b.querySelector('b').textContent = p.label + '  ·  Lecture ' + p.lec;
+        b.querySelector('span').textContent = p.snippet;
+        b.addEventListener('click', function () { jump(p); });
+        results.appendChild(b);
+      });
+      if (total > matches.length) {
+        var more = document.createElement('div');
+        more.className = 'finder-more';
+        more.textContent = '…and ' + (total - matches.length) + ' more — keep typing to narrow it down.';
+        results.appendChild(more);
+      }
+    }
+    results.hidden = false;
+  }
+  input.addEventListener('input', function () {
+    var q = norm(input.value);
+    if (q.length < 2) { results.hidden = true; return; }
+    var scored = [];
+    probs.forEach(function (p) {
+      var at = p.key.indexOf(q);
+      if (at !== -1) scored.push({ p: p, score: at });
+    });
+    scored.sort(function (a, b) { return a.score - b.score || (a.p.label < b.p.label ? -1 : 1); });
+    render(scored.slice(0, 8).map(function (s) { return s.p; }), scored.length);
+  });
+  input.addEventListener('keydown', function (e) {
+    var items = results.querySelectorAll('button');
+    if (e.key === 'Escape') { results.hidden = true; input.blur(); return; }
+    if (e.key === 'ArrowDown' && items.length) {
+      e.preventDefault();
+      active = Math.min(active + 1, items.length - 1);
+    } else if (e.key === 'ArrowUp' && items.length) {
+      e.preventDefault();
+      active = Math.max(active - 1, 0);
+    } else if (e.key === 'Enter') {
+      e.preventDefault();
+      if (active >= 0 && items[active]) { items[active].click(); return; }
+      var q = norm(input.value);
+      if (q.length >= 2) {
+        for (var i = 0; i < probs.length; i++) {
+          if (probs[i].key.indexOf(q) !== -1) { jump(probs[i]); return; }
+        }
+      }
+      return;
+    } else { return; }
+    items.forEach(function (b, i) { b.classList.toggle('active', i === active); });
+    if (items[active]) items[active].scrollIntoView({ block: 'nearest' });
+  });
+  input.addEventListener('focus', function () {
+    if (input.value.trim().length >= 2) input.dispatchEvent(new Event('input'));
+  });
+  document.addEventListener('click', function (e) {
+    if (!box.contains(e.target)) results.hidden = true;
+  });
+  lecSel.addEventListener('change', function () {
+    var sec = document.getElementById(lecSel.value);
+    if (sec) sec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    lecSel.value = '';
+  });
 })();
 </script>
 </body>
