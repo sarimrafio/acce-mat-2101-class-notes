@@ -6,33 +6,39 @@
 <title>ACCE MAT 2101 — Class Notes</title>
 <style>
   * { box-sizing: border-box; }
-  body { margin: 0; background: #fdfbf7; color: #1f2937; font-family: Georgia, 'Times New Roman', serif; font-size: 17px; line-height: 1.65; }
-  .wrap { max-width: 860px; margin: 0 auto; padding: 0 22px 80px; }
-  header.hero { padding: 44px 0 10px; border-bottom: 3px double #0f766e; }
-  header.hero h1 { font-size: 34px; line-height: 1.2; margin: 0 0 6px; color: #111827; }
-  header.hero p.sub { font-size: 18px; color: #4b5563; margin: 4px 0; }
-  header.hero p.note { font-family: 'Segoe Print', 'Comic Sans MS', cursive; color: #0f766e; font-size: 16px; }
-  nav.contents { position: sticky; top: 0; background: #fdfbf7; border-bottom: 1px solid #e5e7eb; padding: 10px 0; z-index: 5; }
-  nav.contents strong { color: #0f766e; }
-  nav.contents a { color: #0f766e; text-decoration: none; margin-right: 10px; font-size: 15px; white-space: nowrap; }
-  nav.contents a:hover { text-decoration: underline; }
-  section { padding: 34px 0 10px; border-bottom: 1px dashed #d1d5db; }
-  h2 { font-size: 26px; line-height: 1.3; color: #111827; margin: 0 0 10px; }
+  html { -webkit-text-size-adjust: 100%; }
+  body { margin: 0; background: #fdfbf7; color: #1f2937; font-family: Georgia, 'Times New Roman', serif; font-size: clamp(16px, 0.25vw + 15px, 19px); line-height: 1.65; overflow-x: clip; }
+  img, svg { max-width: 100%; height: auto; }
+  /* Full-width fluid page: no fixed column cap, so no screen leaves wide empty margins.
+     Side padding scales with the viewport instead. */
+  .wrap { width: 100%; max-width: none; margin: 0; padding: 0 clamp(14px, 3vw, 48px) 80px; }
+  header.hero { padding: clamp(28px, 4vw, 44px) 0 10px; border-bottom: 3px double #0f766e; }
+  header.hero h1 { font-size: clamp(26px, 2vw + 18px, 44px); line-height: 1.2; margin: 0 0 6px; color: #111827; }
+  header.hero p.sub { font-size: clamp(16px, 0.4vw + 14px, 19px); color: #4b5563; margin: 4px 0; }
+  header.hero p.note { font-family: 'Segoe Print', 'Comic Sans MS', cursive; color: #0f766e; font-size: clamp(15px, 0.3vw + 14px, 17px); }
+  /* Sticky jump-nav: one scrollable row on every screen, never a tall wrapped block. */
+  nav.contents { position: sticky; top: 0; background: #fdfbf7; border-bottom: 1px solid #e5e7eb; padding: 8px 0; z-index: 5; display: flex; align-items: center; gap: 2px; overflow-x: auto; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+  nav.contents::-webkit-scrollbar { display: none; }
+  nav.contents strong { color: #0f766e; flex: 0 0 auto; margin-right: 6px; }
+  nav.contents a { color: #0f766e; text-decoration: none; margin-right: 2px; font-size: 15px; white-space: nowrap; flex: 0 0 auto; padding: 6px 8px; border-radius: 6px; }
+  nav.contents a:hover { text-decoration: underline; background: #f0fdfa; }
+  section { padding: 34px 0 10px; border-bottom: 1px dashed #d1d5db; scroll-margin-top: 64px; }
+  h2 { font-size: clamp(22px, 1.2vw + 18px, 32px); line-height: 1.3; color: #111827; margin: 0 0 10px; }
   h2 .lecno { color: #0f766e; }
-  h3 { font-size: 18px; color: #0f766e; margin: 22px 0 6px; font-family: Georgia, serif; }
-  .oneline { font-size: 19px; font-style: italic; border-left: 4px solid #0f766e; padding: 8px 14px; background: #f0fdfa; margin: 12px 0 18px; }
+  h3 { font-size: clamp(17px, 0.5vw + 15px, 20px); color: #0f766e; margin: 22px 0 6px; font-family: Georgia, serif; }
+  .oneline { font-size: clamp(17px, 0.4vw + 15px, 20px); font-style: italic; border-left: 4px solid #0f766e; padding: 8px 14px; background: #f0fdfa; margin: 12px 0 18px; }
   .teacher p { margin: 10px 0; }
   .diagram { margin: 18px 0; text-align: center; }
-  .diagram svg { max-width: 520px; width: 100%; height: auto; background: #fffefb; border: 1px solid #e5e7eb; border-radius: 10px; padding: 8px; }
+  .diagram svg { max-width: min(520px, 100%); width: 100%; height: auto; background: #fffefb; border: 1px solid #e5e7eb; border-radius: 10px; padding: 8px; }
   .caption { font-family: 'Segoe Print', 'Comic Sans MS', cursive; font-size: 14px; color: #6b7280; margin: 6px 0 0; }
   .bookfig { margin: 18px 0; text-align: center; }
-  .bookfig img { max-width: 560px; width: 100%; height: auto; background: #fff; border: 1px solid #e5e7eb; border-radius: 10px; padding: 10px; }
+  .bookfig img { max-width: min(560px, 100%); width: 100%; height: auto; background: #fff; border: 1px solid #e5e7eb; border-radius: 10px; padding: 10px; }
   .bookfig figcaption { font-size: 14px; color: #4b5563; margin: 8px 0 0; text-align: left; }
   .bookfig .figsrc { color: #6b7280; font-size: 13px; }
-  .solutions { padding: 10px 0 30px; }
-  .solutions h2 { font-size: 24px; }
+  .solutions { padding: 10px 0 30px; scroll-margin-top: 64px; }
+  .solutions h2 { font-size: clamp(22px, 1.2vw + 18px, 30px); }
   .solutions h2 .lecno { color: #0f766e; }
-  .prob { border: 1px solid #e5e7eb; border-radius: 8px; padding: 12px 16px; margin: 12px 0; background: #fff; }
+  .prob { border: 1px solid #e5e7eb; border-radius: 8px; padding: 12px 16px; margin: 12px 0; background: #fff; min-width: 0; }
   .prob h4 { margin: 0 0 6px; font-size: 17px; color: #111827; }
   .prob .stmt { margin: 6px 0; }
   .prob .sol p { margin: 6px 0; }
@@ -42,12 +48,12 @@
   .dgraph .dcg-container { border-radius: 8px; }
   .dgraph3d { height: 340px; width: 100%; border: 1px solid #e5e7eb; border-radius: 8px; background: #fff; margin: 12px 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; color: #6b7280; font-size: 14px; font-family: Georgia, serif; text-align: center; padding: 8px; }
   .dgraph3d.loaded { display: block; padding: 0; }
-  .dgraph3d button { font-family: Georgia, serif; font-size: 16px; color: #fff; background: #0f766e; border: none; border-radius: 6px; padding: 10px 18px; cursor: pointer; }
+  .dgraph3d button { font-family: Georgia, serif; font-size: 16px; color: #fff; background: #0f766e; border: none; border-radius: 6px; padding: 12px 22px; min-height: 44px; cursor: pointer; }
   .dgraph3d button:hover { background: #0d5c56; }
-  #resources { padding: 34px 0 10px; border-bottom: 1px dashed #d1d5db; }
+  #resources { padding: 34px 0 10px; border-bottom: 1px dashed #d1d5db; scroll-margin-top: 64px; }
   #resources a { color: #0f766e; }
   .solnote { background: #f0fdfa; border: 1px solid #0f766e; border-radius: 8px; padding: 12px 16px; margin: 16px 0; }
-  .formula { background: #fff; border: 1px solid #0f766e; border-radius: 8px; padding: 12px 16px; margin: 16px 0; font-size: 17px; }
+  .formula { background: #fff; border: 1px solid #0f766e; border-radius: 8px; padding: 12px 16px; margin: 16px 0; font-size: 17px; overflow-x: auto; }
   .formula p, .formula div { margin: 4px 0; }
   .worked { background: #fffbeb; border: 1px solid #f59e0b; border-radius: 8px; padding: 14px 16px; margin: 16px 0; }
   .worked h3 { color: #92400e; margin-top: 0; }
@@ -58,13 +64,58 @@
   .recall h3 { color: #166534; margin-top: 0; }
   .practice { margin: 16px 0; }
   .videos { margin: 16px 0; }
-  .videos a { color: #0f766e; }
+  .videos a { color: #0f766e; overflow-wrap: anywhere; }
   .videos a:hover { text-decoration: underline; }
+  .practice a { overflow-wrap: anywhere; }
   ul, ol { margin: 8px 0; padding-left: 24px; }
   li { margin: 4px 0; }
   .howto { background: #f0fdfa; border: 1px solid #0f766e; border-radius: 8px; padding: 16px 18px; margin: 26px 0; }
   footer { color: #6b7280; font-size: 14px; margin-top: 30px; }
-  @media print { nav.contents { display: none; } body { font-size: 14px; } section { break-inside: avoid-page; } }
+  /* ---- Phones: 360, 375, 390, 393, 412, 414px wide ---- */
+  @media (max-width: 640px) {
+    body { line-height: 1.6; }
+    .wrap { padding: 0 14px 64px; }
+    section { padding: 26px 0 8px; }
+    .oneline { padding: 8px 12px; }
+    .prob { padding: 12px; }
+    .formula, .worked, .mistake, .recall, .solnote, .howto { padding: 12px; }
+    .dgraph { height: 260px; }
+    .dgraph3d { height: 300px; }
+    .bookfig img, .diagram svg { padding: 6px; }
+    nav.contents a { font-size: 14px; padding: 8px 7px; }
+    ul, ol { padding-left: 20px; }
+  }
+  /* ---- Tablets portrait: 768, 800, 810, 820px wide ---- */
+  @media (min-width: 641px) and (max-width: 1023px) {
+    .wrap { padding: 0 24px 72px; }
+    .dgraph { height: 300px; }
+    .dgraph3d { height: 340px; }
+    .bookfig img { max-width: 620px; }
+    .diagram svg { max-width: 600px; }
+  }
+  /* ---- Laptops: 1024px and up (1280, 1366) — solution cards in two columns ---- */
+  @media (min-width: 1024px) {
+    .solutions { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 18px; align-items: start; }
+    .solutions > h2, .solutions > h3, .solutions > .solnote { grid-column: 1 / -1; }
+    .solutions .prob { margin: 0; }
+    .bookfig img { max-width: 680px; }
+    .diagram svg { max-width: 620px; }
+    #resources ul { columns: 2; column-gap: 36px; }
+    #resources li { break-inside: avoid; }
+  }
+  /* ---- Wide laptops / desktops: 1500px and up (1536, 1920) ---- */
+  @media (min-width: 1500px) {
+    .wrap { padding: 0 48px 80px; }
+    .bookfig img { max-width: 760px; }
+    .diagram svg { max-width: 700px; }
+    .dgraph { height: 340px; }
+    .dgraph3d { height: 380px; }
+  }
+  /* ---- Very wide: 1800px and up (1920 and wider) — three solution columns ---- */
+  @media (min-width: 1800px) {
+    .solutions { grid-template-columns: 1fr 1fr 1fr; }
+  }
+  @media print { nav.contents { display: none; } body { font-size: 14px; } section { break-inside: avoid-page; } .solutions { display: block; } }
 </style>
 </head>
 <body>
